@@ -3,9 +3,9 @@
     <div class="footer__container _container">
       <div class="footer__top">
         <div class="footer__description">
-          <div class="footer__logo">
+          <a href="" class="footer__logo">
             <img src="@/assets/img/logo2.svg" alt="" />
-          </div>
+          </a>
           <p class="footer__text">
             Товары для животных и груминг салон в Нижневартовске, бесплатная
             доставка при покупке от 2000₽
@@ -60,10 +60,10 @@
             <a href="tel:+7 (999) 999-99-99" class="footer-contacts__tel">
               +7 (982) 537-81-27
             </a>
-            <a class="footer-contacts__viver">
+            <a href="" class="footer-contacts__viver">
               <img src="@/assets/img/viber.svg" alt="" />
             </a>
-            <a class="footer-contacts__vk">
+            <a href="" class="footer-contacts__vk">
               <img src="@/assets/img/vk.svg" alt="" />
             </a>
             <button class="footer-contacts__btn">Запись онлайн</button>
@@ -171,9 +171,22 @@ export default {}
   z-index: 2;
   // .footer__container
   &__container {
+    position: relative;
     display: flex;
     flex-direction: column;
+    background: url('../assets/img/paw.svg') no-repeat 37% 21px;
     // padding-top: 103px;
+    // &::before {
+    //   content: '';
+    //   position: absolute;
+    //   top: 21px;
+    //   left: 37%;
+    //   width: 38%;
+    //   padding-top: 39%;
+    //   // height: 100%;
+    //   background: url('../assets/img/paw.svg') no-repeat 35% 21px;
+    //   z-index: -1;
+    // }
   }
   // .footer__top
   &__top {
@@ -190,6 +203,7 @@ export default {}
   }
   // .footer__logo
   &__logo {
+    display: block;
     margin-bottom: 30px;
   }
   // .footer__text

@@ -188,6 +188,37 @@ export default {}
   }
 }
 
+.header__user-actions {
+  &__favorites {
+    position: relative;
+    &::before {
+      content: '';
+      position: absolute;
+      top: -7px;
+      right: -7px;
+      width: 15px;
+      height: 15px;
+      background: $blue-main;
+      border-radius: 50%;
+    }
+  }
+  &__user {
+  }
+  &__cart {
+    position: relative;
+    &::before {
+      content: '';
+      position: absolute;
+      top: -5px;
+      right: -7px;
+      width: 15px;
+      height: 15px;
+      background: $blue-main;
+      border-radius: 50%;
+    }
+  }
+}
+
 .header-socials {
   display: flex;
   flex-direction: row;
@@ -302,6 +333,8 @@ export default {}
     align-items: center;
     gap: 25px;
     margin-left: 25px;
+    font-size: 15px;
+    color: $silver-text;
   }
 }
 </style>

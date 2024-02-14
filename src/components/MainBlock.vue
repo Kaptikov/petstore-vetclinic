@@ -1,5 +1,5 @@
 <template>
-  <div class="main-block">
+  <section class="main-block">
     <div class="main-block__container _container">
       <h2 class="main-block__title">
         Всё для счастья <br />
@@ -27,7 +27,7 @@
       </div>
       <div class="main-block__images"></div>
     </div>
-  </div>
+  </section>
 </template>
 <script>
 export default {}
