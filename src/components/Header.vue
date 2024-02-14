@@ -24,11 +24,7 @@
         <form action="" class="header__search header-search">
           <!-- <input class="header-search__btn" type="submit" value="Поиск" /> -->
           <div class="header-search__btn"></div>
-          <input
-            class="header-search__input"
-            type="search"
-            placeholder="Поиск по каталогу"
-          />
+          <input class="header-search__input" type="search" placeholder="Поиск по каталогу" />
         </form>
       </div>
       <div class="header__bottom">
@@ -90,7 +86,11 @@
   </header>
 </template>
 <script>
-export default {}
+import PopupMenu from '@/components/PopupMenu.vue';
+
+export default {
+
+}
 </script>
 <style lang="scss">
 .header {
@@ -100,12 +100,14 @@ export default {}
   transform: translateX(-50%);
   width: 100%;
   z-index: 5;
+
   // .header__container
   &__container {
     display: flex;
     flex-direction: column;
     gap: 25px;
   }
+
   // .header__top
   &__top {
     display: flex;
@@ -113,9 +115,11 @@ export default {}
     align-items: center;
     color: $white;
   }
+
   // .header__logo
   &__logo {
     position: relative;
+
     &::after {
       content: '';
       position: absolute;
@@ -127,10 +131,12 @@ export default {}
       background: #fff;
     }
   }
+
   // .header__text
   &__text {
     font-size: 11px;
   }
+
   // .header__btn
   &__btn {
     font-size: 15px;
@@ -138,17 +144,20 @@ export default {}
     border-radius: 66px;
     padding: 12px 22px;
     transition: border-color 0.2s, background 0.2s;
+
     &:hover {
       border-color: $blue-second;
       background: $blue-second;
     }
   }
+
   // .header__socials
   &__socials {
     display: flex;
     flex-direction: row;
     gap: 12px;
   }
+
   // .header__search
   &__search {
     position: relative;
@@ -158,6 +167,7 @@ export default {}
     background: rgba(255, 255, 255, 0.2);
     border-radius: 77px;
   }
+
   // .header__bottom
   &__bottom {
     display: flex;
@@ -168,14 +178,16 @@ export default {}
     background: $white;
     border-radius: 56px;
   }
+
   // .header__dropdown
-  &__dropdown {
-  }
+  &__dropdown {}
+
   // .header__menu
   &__menu {
     display: flex;
     flex-grow: 1;
   }
+
   // .header__user-actions
   &__user-actions {
     display: flex;
@@ -191,6 +203,7 @@ export default {}
 .header__user-actions {
   &__favorites {
     position: relative;
+
     &::before {
       content: '';
       position: absolute;
@@ -202,10 +215,12 @@ export default {}
       border-radius: 50%;
     }
   }
-  &__user {
-  }
+
+  &__user {}
+
   &__cart {
     position: relative;
+
     &::before {
       content: '';
       position: absolute;
@@ -225,29 +240,34 @@ export default {}
   // justify-content: space-between;
   gap: 10px;
   align-items: center;
+
   // .header-socials__phone
   &__phone {
     font-size: 16px;
     line-height: 120%;
   }
+
   // .header-socials__viber
-  &__viber {
-  }
+  &__viber {}
+
   // .header-socials__vk
-  &__vk {
-  }
+  &__vk {}
+
   &__vk,
   &__viber {
     background: rgba(255, 255, 255, 0.2);
     border-radius: 50%;
     padding: 8px;
     transition: background 0.2s;
+
     &:hover {
       background: $blue-second;
     }
   }
 }
+
 .header-search {
+
   // .header-search__btn
   &__btn {
     position: absolute;
@@ -258,6 +278,7 @@ export default {}
     height: 24px;
     background: url('../assets/img/search.svg') no-repeat 100%;
   }
+
   // .header-search__input
   &__input {
     font-size: 16px;
@@ -265,22 +286,28 @@ export default {}
     padding: 12px 20px 9px 59px;
     width: 100%;
     color: $white;
+
     &::placeholder {
       color: $white;
     }
+
     &:focus {
       border: none;
       outline: none;
     }
+
     &::-ms-clear {
       display: none;
     }
+
     &::-webkit-search-cancel-button {
       display: none;
     }
   }
 }
+
 .header-dropdown {
+
   // .header-dropdown__btn
   &__btn {
     font-size: 16px;
@@ -290,9 +317,11 @@ export default {}
     padding: 17px 70px 14px 20px;
     position: relative;
     transition: background 0.2s;
+
     &:hover {
       background: $blue-second;
     }
+
     &::after {
       content: '';
       position: absolute;
@@ -304,27 +333,30 @@ export default {}
       background: url('../assets/img/menu.svg') no-repeat 100%;
     }
   }
+
   // .header-dropdown__list
   &__list {
     display: none;
   }
+
   // .header-dropdown__item
-  &__item {
-  }
+  &__item {}
+
   // .header-dropdown__link
-  &__link {
-  }
+  &__link {}
 }
+
 .header-menu {
+
   // .header-menu__list-categories
-  &__list-categories {
-  }
+  &__list-categories {}
+
   // .header-menu__item
-  &__item {
-  }
+  &__item {}
+
   // .header-menu__link
-  &__link {
-  }
+  &__link {}
+
   // .header-menu__list
   &__list {
     display: flex;
