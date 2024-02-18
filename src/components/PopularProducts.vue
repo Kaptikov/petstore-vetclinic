@@ -156,6 +156,7 @@ export default {
 }
 
 .popular-products {
+  padding-bottom: 115px;
   background: $white-bg;
 
   // .popular-products__container
