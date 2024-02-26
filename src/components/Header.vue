@@ -369,4 +369,10 @@ export default {
     color: $silver-text;
   }
 }
+
+@media (max-width: 996px) {
+  .header {
+    display: none;
+  }
+}
 </style>

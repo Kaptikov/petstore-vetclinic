@@ -1,7 +1,7 @@
 <template>
   <section class="main-block">
     <div class="main-block__container _container">
-      <h2 class="main-block__title">
+      <h2 class="main-block__title ">
         Всё для счастья <br />
         ваших любимцев
       </h2>
@@ -10,7 +10,7 @@
       <div class="main-block__img-sparkle">
         <img src="@/assets/img/sparkle.svg" alt="" />
       </div>
-      <div class="main-block__img-vector">
+      <!-- <div class="main-block__img-vector">
         <img src="@/assets/img/vector1.svg" alt="" />
       </div>
       <div class="main-block__img-dog">
@@ -25,7 +25,16 @@
       <div class="main-block__img-sketch-line-heart">
         <img src="@/assets/img/sketch-line-heart.svg" alt="" />
       </div>
-      <div class="main-block__images"></div>
+      <div class="main-block__images"></div> -->
+
+      <div class="main-block__img-bg">
+        <picture>
+          <!-- <source media="(min-width: 1201px)" srcset="../assets/img/header-bg-4.png"> -->
+          <source media="(max-width: 1200px)" srcset="../assets/img/header-bg-4.png">
+          <img src="@/assets/img/header-bg-3.png" alt="Description">
+        </picture>
+        <!-- <img class="main-block__img--1200" src="@/assets/img/header-bg-3.png" alt=""> -->
+      </div>
     </div>
   </section>
 </template>
@@ -34,28 +43,34 @@ export default {}
 </script>
 <style lang="scss">
 .main-block {
-  // background: url('../assets/img/vector1.svg') no-repeat 110% 100%;
+  position: relative;
+  overflow: hidden;
+  // background: $blue-bg, url('../assets/img/header-bg-3.png') no-repeat 100%;
   background: $blue-bg;
   color: $white;
+
   // .main-block__container
   &__container {
     position: relative;
     min-height: 659px;
   }
+
   // .main-block__title
   &__title {
-    font-size: 68px;
+    font-size: clamp(30px, 1.032rem + 4.21vw, 68px);
     line-height: 110%;
     font-weight: 700;
     letter-spacing: 4px;
     padding-top: 231px;
   }
+
   // .main-block__subtitle
   &__subtitle {
     font-size: 20px;
     line-height: 140%;
     margin-top: 20px;
   }
+
   // .main-block__btn
   &__btn {
     position: relative;
@@ -66,6 +81,7 @@ export default {}
     border-radius: 66px;
     transition: outline-color 0.2s ease-in-out;
     outline: 2px solid transparent;
+
     &::after {
       content: '';
       position: absolute;
@@ -76,23 +92,27 @@ export default {}
       background: url('../assets/img/arrow-right.svg') no-repeat 100%;
       transition: right 0.2s ease-in-out;
     }
+
     &:hover {
       outline: 2px solid;
       outline-color: $blue-main;
+
       &::after {
         right: 15px;
       }
     }
   }
+
   // .main-block__img-sparkle
   &__img-sparkle {
     position: absolute;
     top: 173px;
     left: -27px;
   }
+
   // .main-block__images
-  &__images {
-  }
+  &__images {}
+
   // .main-block__img-vector
   &__img-vector {
     // display: none;
@@ -107,6 +127,7 @@ export default {}
     padding-top: 70.4%;
 
     z-index: 0;
+
     // transform: rotate(-28.81deg);
     & img {
       position: absolute;
@@ -117,6 +138,7 @@ export default {}
       object-fit: contain;
     }
   }
+
   // .main-block__img-dog
   &__img-dog {
     position: absolute;
@@ -126,6 +148,7 @@ export default {}
     width: 33.4%;
     padding-top: 37.8%;
     z-index: 2;
+
     &::before {
       content: '';
       position: absolute;
@@ -140,6 +163,7 @@ export default {}
       border-radius: 85px;
     }
   }
+
   &__img-dog img {
     position: absolute;
     top: 0;
@@ -148,6 +172,7 @@ export default {}
     height: 100%;
     object-fit: contain;
   }
+
   // .main-block__img-sketch-line-curly
   &__img-sketch-line-curly {
     position: absolute;
@@ -155,6 +180,7 @@ export default {}
     right: 469px;
     z-index: 1;
   }
+
   // .main-block__img-sketch-line-M
   &__img-sketch-line-M {
     position: absolute;
@@ -162,12 +188,84 @@ export default {}
     right: 0;
     z-index: 1;
   }
+
   // .main-block__img-sketch-line-heart
   &__img-sketch-line-heart {
     position: absolute;
     top: 181px;
     right: 102.5px;
     z-index: 1;
+  }
+
+  // .main-block__img-bg
+  &__img-bg {
+    position: absolute;
+    bottom: -1px;
+    right: -33px;
+    width: 76%;
+    padding-top: 45%;
+
+    // &::before {
+    //   content: '';
+    //   background: url(../assets/img/header-bg-3.png);
+    //   position: absolute;
+    //   top: 0;
+    //   left: 0;
+    //   width: 100%;
+    //   height: 100%;
+    //   object-fit: cover;
+    // }
+
+    & img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .main-block {
+    &__img-bg {
+      position: absolute;
+      bottom: -1px;
+      right: -200px;
+      width: 76%;
+      padding-top: 45%;
+
+      & img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
+  }
+}
+
+@media (max-width: 730px) {
+  .main-block {
+    &__img-bg {
+      position: absolute;
+      bottom: -1px;
+      right: -30px;
+      width: 76%;
+      padding-top: 45%;
+
+      & img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
   }
 }
 </style>

@@ -15,15 +15,16 @@
           <div v-for="(tab, index) in tabs" :key="index" v-show="activeTab === index">
             <!-- {{ tab.content }} -->
             <swiper :slidesPerView="4" :spaceBetween="20" :loop="true" :navigation="true" :modules="modules" :breakpoints="{
-              768: {
+              996: {
                 slidesPerView: 4,
                 spaceBetween: 20
               },
-              360: {
+              767: {
                 slidesPerView: 3,
                 spaceBetween: 10
               },
               320: {
+                spaceBetween: 10,
                 slidesPerView: 2
               }
             }" class="popular-products__swiper swiper">

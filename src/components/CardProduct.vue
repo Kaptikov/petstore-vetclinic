@@ -277,6 +277,7 @@ export default {
     justify-content: center;
     align-items: center;
     gap: 10px;
+    white-space: nowrap;
     font-size: 15px;
     font-weight: 600;
     line-height: 120%;
