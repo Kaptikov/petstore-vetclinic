@@ -6,7 +6,7 @@
     <PopularProducts />
     <OurBrands />
     <Advantages />
-    <!-- <Promotions /> -->
+    <Promotions />
     <PopupMenu />
   </div>
   <Footer />

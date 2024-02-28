@@ -68,8 +68,13 @@ a:hover {
 @media (max-width: 1192px) {
 	.title {
 		// font-family: 'PT Serif', sans-serif;
-		@include adaptiv-font(68, 30);
+		// @include adaptiv-font(68, 30);
 	}
+}
+
+.title h3,
+h4 {
+	font-size: clamp(24px, 1.187rem + 1.39vw, 36px);
 }
 
 .stop-scroll {
