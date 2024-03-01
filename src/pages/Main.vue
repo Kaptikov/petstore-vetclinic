@@ -7,6 +7,7 @@
     <OurBrands />
     <Advantages />
     <Promotions />
+    <Locations />
     <PopupMenu />
   </div>
   <Footer />
@@ -19,6 +20,7 @@ import PopularProducts from '@/components/PopularProducts.vue'
 import OurBrands from '@/components/OurBrands.vue'
 import Advantages from '@/components/Advantages.vue'
 import Promotions from '@/components/Promotions.vue'
+import Locations from '@/components/Locations.vue'
 import PopupMenu from '@/components/PopupMenu.vue'
 import Footer from '@/components/Footer.vue'
 export default {
@@ -30,6 +32,7 @@ export default {
     OurBrands,
     Advantages,
     Promotions,
+    Locations,
     PopupMenu,
     Footer,
   },

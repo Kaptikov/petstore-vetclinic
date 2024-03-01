@@ -27,7 +27,7 @@
         <button class="card-product__button" :class="{ 'promotion__card-product__button': isPromotion }">В корзину <img
             src="@/assets/img/shopping-cart.svg" alt=""></button>
       </div>
-      <button class="card-product__favourite" :class="{ 'promotion__card-product__favourite': isFavourite }">
+      <button class="card-product__favourite" :class="{ 'promotion__card-product__favourite': isPromotion }">
         <svg width="24" height="24" viewBox="0 0 24 21" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             d="M20.844 2.60987C20.3333 2.09888 19.7268 1.69352 19.0594 1.41696C18.3919 1.14039 17.6765 0.998047 16.954 0.998047C16.2315 0.998047 15.5161 1.14039 14.8487 1.41696C14.1812 1.69352 13.5748 2.09888 13.064 2.60987L12.004 3.66987L10.944 2.60987C9.91233 1.57818 8.51306 0.998582 7.05403 0.998582C5.59499 0.998582 4.19572 1.57818 3.16403 2.60987C2.13233 3.64156 1.55273 5.04084 1.55273 6.49987C1.55273 7.95891 2.13233 9.35818 3.16403 10.3899L4.22402 11.4499L12.004 19.2299L19.784 11.4499L20.844 10.3899C21.355 9.87912 21.7604 9.27269 22.0369 8.60523C22.3135 7.93777 22.4559 7.22236 22.4559 6.49987C22.4559 5.77738 22.3135 5.06198 22.0369 4.39452C21.7604 3.72706 21.355 3.12063 20.844 2.60987V2.60987Z"
@@ -49,7 +49,7 @@ export default {
   props: {
     isPromotion: {
       type: Boolean,
-      required: true,
+      required: false,
       default: false,
     }
   },
