@@ -1,26 +1,26 @@
 <template>
-  <section class="appointment-booking">
-    <div class="appointment-booking__container _container">
-      <div class="appointment-booking__wrapper">
-        <div class="appointment-booking__title">
+  <section class="appointment">
+    <div class="appointment__container _container">
+      <div class="appointment__wrapper">
+        <div class="appointment__title">
           Записывемся на ноготочки!
         </div>
-        <div class="appointment-booking__description">
+        <div class="appointment__description">
           Полный комплекс процедур для красоты и здоровья вашего питомца
         </div>
-        <form class="appointment-booking__form">
-          <input type="tel" placeholder="+7 ___ ___-__-__" class="appointment-booking__input">
-          <!-- <input type="submit" value="Записаться на прием" class="appointment-booking__btn"> -->
-          <button class="appointment-booking__btn" type="submit">Записаться на прием</button>
+        <form class="appointment__form">
+          <input type="tel" placeholder="+7 ___ ___-__-__" class="appointment__input">
+          <!-- <input type="submit" value="Записаться на прием" class="appointment__btn"> -->
+          <button class="appointment__btn" type="submit">Записаться на прием</button>
         </form>
       </div>
-      <div class="appointment-booking__img-spiral">
+      <div class="appointment__img-spiral">
         <img src="@/assets/img/spiral.svg" alt="">
       </div>
-      <div class="appointment-booking__img-dog">
+      <div class="appointment__img-dog">
         <img src="@/assets/img/dog-bg.png" alt="">
       </div>
-      <div class="appointment-booking__img-sheet">
+      <div class="appointment__img-sheet">
         <img src="@/assets/img/sheet.svg" alt="">
       </div>
     </div>
@@ -34,10 +34,10 @@ export default {
 </script>
 
 <style lang="scss">
-.appointment-booking {
+.appointment {
   margin: 110px 0 110px 0;
 
-  // .appointment-booking__container
+  // .appointment__container
   &__container {
     position: relative;
     display: flex;
@@ -48,7 +48,7 @@ export default {
     z-index: 1;
   }
 
-  // .appointment-booking__wrapper
+  // .appointment__wrapper
   &__wrapper {
     max-width: 422px;
     margin-left: clamp(25px, -3.946rem + 8.85vw, 45px);
@@ -57,7 +57,7 @@ export default {
     z-index: 2;
   }
 
-  // .appointment-booking__title
+  // .appointment__title
   &__title {
     font-weight: 700;
     font-size: clamp(24px, 0.874rem + 2.78vw, 48px);
@@ -66,7 +66,7 @@ export default {
     color: $white;
   }
 
-  // .appointment-booking__description
+  // .appointment__description
   &__description {
     font-weight: 400;
     font-size: 16px;
@@ -75,7 +75,7 @@ export default {
     color: $white;
   }
 
-  // .appointment-booking__form
+  // .appointment__form
   &__form {
     display: flex;
     justify-content: space-between;
@@ -86,7 +86,7 @@ export default {
     background: $white;
   }
 
-  // .appointment-booking__input
+  // .appointment__input
   &__input {
     font-weight: 400;
     font-size: 15px;
@@ -100,7 +100,7 @@ export default {
     }
   }
 
-  // .appointment-booking__btn
+  // .appointment__btn
   &__btn {
     // font-weight: 600;
     font-size: 15px;
@@ -112,13 +112,14 @@ export default {
     border-radius: 66px;
   }
 
-  // .appointment-booking__img-spiral
+  // .appointment__img-spiral
   &__img-spiral {
-    display: none;
+    // display: none;
     position: absolute;
     top: -59px;
     left: -45px;
     width: 40%;
+    // min-width: 500px;
     // height: 100%;
     padding-top: 40.4255%;
     z-index: 0;
@@ -133,7 +134,7 @@ export default {
     }
   }
 
-  // .appointment-booking__img-dog
+  // .appointment__img-dog
   &__img-dog {
     position: relative;
     // max-width: 542px;
@@ -156,7 +157,7 @@ export default {
     }
   }
 
-  // .appointment-booking__img-sheet
+  // .appointment__img-sheet
   &__img-sheet {
     position: absolute;
     bottom: -31px;
@@ -183,7 +184,7 @@ export default {
 }
 
 @media (max-width: 996px) {
-  .appointment-booking {
+  .appointment {
     &__form {
       flex-direction: column;
       background: none;
@@ -202,7 +203,7 @@ export default {
 }
 
 @media (max-width: 767px) {
-  .appointment-booking {
+  .appointment {
 
 
     &__img-dog {
@@ -213,23 +214,39 @@ export default {
 }
 
 @media (max-width: 645px) {
-  .appointment-booking {
+  .appointment {
     &__container {
       flex-direction: column;
     }
 
+    &__img-spiral {
+      top: -44px;
+      left: 30px;
+      width: 90.27%;
+      padding-top: 91.1%;
+    }
+
     &__img-dog {
-      width: 87.222%;
-      padding-bottom: 72.38%;
+      width: 84.72%;
+      padding-bottom: 86.94%;
       margin-right: 0;
-      margin-left: -19px;
+      margin-left: -10px;
+      margin-bottom: -16px;
       min-width: 0;
+    }
+
+    &__img-sheet {
+      right: -77px;
+      bottom: -44px;
+      max-width: 230px;
+      width: 48.05%;
+      padding-bottom: 51.94%;
     }
   }
 }
 
 @media (max-width: 556px) {
-  .appointment-booking {
+  .appointment {
     &__wrapper {
       max-width: 100%;
       margin-left: 0;

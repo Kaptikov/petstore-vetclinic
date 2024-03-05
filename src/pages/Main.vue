@@ -9,11 +9,12 @@
     <Promotions />
     <Locations />
     <News />
-    <AppointmentBooking />
+    <Appointment />
     <PopupMenu />
   </main>
   <Footer />
 </template>
+
 <script>
 import Header from '@/components/Header.vue'
 import MainBlock from '@/components/MainBlock.vue'
@@ -24,7 +25,7 @@ import Advantages from '@/components/Advantages.vue'
 import Promotions from '@/components/Promotions.vue'
 import Locations from '@/components/Locations.vue'
 import News from '@/components/News.vue'
-import AppointmentBooking from '@/components/AppointmentBooking.vue'
+import Appointment from '@/components/Appointment.vue'
 import PopupMenu from '@/components/PopupMenu.vue'
 import Footer from '@/components/Footer.vue'
 export default {
@@ -38,10 +39,11 @@ export default {
     Promotions,
     Locations,
     News,
-    AppointmentBooking,
+    Appointment,
     PopupMenu,
     Footer,
   },
 }
 </script>
+
 <style lang="scss"></style>
