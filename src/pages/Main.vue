@@ -9,6 +9,7 @@
     <Promotions />
     <Locations />
     <News />
+    <AppointmentBooking />
     <PopupMenu />
   </main>
   <Footer />
@@ -23,6 +24,7 @@ import Advantages from '@/components/Advantages.vue'
 import Promotions from '@/components/Promotions.vue'
 import Locations from '@/components/Locations.vue'
 import News from '@/components/News.vue'
+import AppointmentBooking from '@/components/AppointmentBooking.vue'
 import PopupMenu from '@/components/PopupMenu.vue'
 import Footer from '@/components/Footer.vue'
 export default {
@@ -36,6 +38,7 @@ export default {
     Promotions,
     Locations,
     News,
+    AppointmentBooking,
     PopupMenu,
     Footer,
   },
