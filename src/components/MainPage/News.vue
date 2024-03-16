@@ -2,7 +2,8 @@
   <section class="news">
     <div class="news__container _container">
       <h4 class="news__title title">Новости и полезные статьи</h4>
-      <swiper :spaceBetween="20" :loop="false" :navigation="true" :centeredSlides="false" :modules="modules" :breakpoints="{
+      <swiper :spaceBetween="20" :loop="false" :navigation="true" :centeredSlides="false" :modules="modules"
+        :breakpoints="{
         996: {
           slidesPerView: 4,
           spaceBetween: 20
@@ -38,7 +39,7 @@
 </template>
 
 <script>
-import CardNews from '@/components/CardNews.vue';
+import CardNews from '@/components/MainPage/CardNews.vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 
 // Import Swiper styles

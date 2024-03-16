@@ -1,5 +1,5 @@
 import Main from '@/pages/Main.vue'
-import Catalog from '@/pages/Catalog.vue'
+import CatalogPage from '@/pages/CatalogPage.vue'
 import ProductPage from '@/pages/ProductPage.vue'
 import FavouritePage from '@/pages/FavouritePage.vue'
 import { createRouter, createWebHistory } from 'vue-router'
@@ -13,7 +13,7 @@ const routes = [
   {
     path: '/catalog/',
     name: 'catalog',
-    component: Catalog,
+    component: CatalogPage,
   },
   {
     path: '/product/:id',

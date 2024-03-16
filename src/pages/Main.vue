@@ -1,5 +1,5 @@
 <template>
-  <Header />
+  <Header isMainPage />
   <main class="page main__page">
     <MainBlock />
     <ProductCategories />
@@ -17,15 +17,15 @@
 
 <script>
 import Header from '@/components/Header.vue'
-import MainBlock from '@/components/MainBlock.vue'
-import ProductCategories from '@/components/ProductCategories.vue'
-import PopularProducts from '@/components/PopularProducts.vue'
-import OurBrands from '@/components/OurBrands.vue'
-import Advantages from '@/components/Advantages.vue'
-import Promotions from '@/components/Promotions.vue'
-import Locations from '@/components/Locations.vue'
-import News from '@/components/News.vue'
-import Appointment from '@/components/Appointment.vue'
+import MainBlock from '@/components/MainPage/MainBlock.vue'
+import ProductCategories from '@/components/MainPage/ProductCategories.vue'
+import PopularProducts from '@/components/MainPage/PopularProducts.vue'
+import OurBrands from '@/components/MainPage/OurBrands.vue'
+import Advantages from '@/components/MainPage/Advantages.vue'
+import Promotions from '@/components/MainPage/Promotions.vue'
+import Locations from '@/components/MainPage/Locations.vue'
+import News from '@/components/MainPage/News.vue'
+import Appointment from '@/components/MainPage/Appointment.vue'
 import PopupMenu from '@/components/PopupMenu.vue'
 import Footer from '@/components/Footer.vue'
 export default {
@@ -43,6 +43,7 @@ export default {
     PopupMenu,
     Footer,
   },
+
 }
 </script>
 

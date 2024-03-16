@@ -14,20 +14,21 @@
         <div class="popular-products__content">
           <div v-for="(tab, index) in tabs" :key="index" v-show="activeTab === index">
             <!-- {{ tab.content }} -->
-            <swiper :slidesPerView="4" :spaceBetween="20" :loop="true" :navigation="true" :modules="modules" :breakpoints="{
-              996: {
-                slidesPerView: 4,
-                spaceBetween: 20
-              },
-              767: {
-                slidesPerView: 3,
-                spaceBetween: 10
-              },
-              320: {
-                spaceBetween: 10,
-                slidesPerView: 2
-              }
-            }" class="popular-products__swiper swiper">
+            <swiper :slidesPerView="4" :spaceBetween="20" :loop="true" :navigation="true" :modules="modules"
+              :breakpoints="{
+            996: {
+              slidesPerView: 4,
+              spaceBetween: 20
+            },
+            767: {
+              slidesPerView: 3,
+              spaceBetween: 10
+            },
+            320: {
+              spaceBetween: 10,
+              slidesPerView: 2
+            }
+          }" class="popular-products__swiper swiper">
               <swiper-slide class="popular-products__slide">
                 <CardProduct />
               </swiper-slide>

@@ -1,38 +1,63 @@
 <template>
-  <header class="header">
+  <header class="header" :class="{ 'header-second': isMainPage }">
     <div class="header__container _container">
-      <div class="header__top">
-        <a href="#" class="header__logo">
+      <div class="header__top" :class="{ 'header-second__top': isMainPage }">
+        <a href="#" class="header__logo" :class="{ 'header-second__logo': isMainPage }" v-if="isMainPage">
           <img src="@/assets/img/logo.svg" alt="logo" />
         </a>
-        <div class="header__text">
+        <a href="#" class="header__logo" v-else>
+          <img src="@/assets/img/header-logo-second.svg" alt="logo" />
+        </a>
+        <div class="header__text" :class="{ 'header-second__text': isMainPage }">
           Зоомагазин и груминг салон <br />
           в Нижневартовске
         </div>
-        <button class="header__btn">Запись на прием онлайн</button>
+        <button class="header__btn" :class="{ 'header-second__btn': isMainPage }">Запись на прием онлайн</button>
         <div class="header__socials header-socials">
           <a href="tel:+79999999999" class="header-socials__phone">
             +7 (982) 537-81-27
           </a>
-          <a href="" class="header-socials__viber">
+          <a href="" class="header-socials__viber" :class="{ 'header-socials__viber--white': isMainPage }"
+            v-if="isMainPage">
             <img src="@/assets/img/viber.svg" alt="viber" />
           </a>
-          <a href="" class="header-socials__vk">
+          <a href="" class="header-socials__viber" v-else>
+            <img src="@/assets/img/viber-blue.svg" alt="viber" />
+          </a>
+          <a href="" class="header-socials__vk" :class="{ 'header-socials__vk--white': isMainPage }" v-if="isMainPage">
             <img src="@/assets/img/vk.svg" alt="vk" />
           </a>
+          <a href="" class="header-socials__vk" v-else>
+            <img src="@/assets/img/vk-blue.svg" alt="vk" />
+          </a>
         </div>
-        <form action="" class="header__search header-search">
+        <form action="" class="header__search header-search" :class="{ 'header-second__search': isMainPage }">
           <!-- <input class="header-search__btn" type="submit" value="Поиск" /> -->
-          <div class="header-search__btn"></div>
-          <input class="header-search__input" type="search" placeholder="Поиск по каталогу" />
+          <button class="header-search__btn" :class="{ 'header-search__btn--white': isMainPage }"></button>
+          <input class="header-search__input" :class="{ 'header__second-search__input': isMainPage }" type="search"
+            placeholder="Поиск по каталогу" />
         </form>
       </div>
       <div class="header__bottom">
-        <div class="header__dropdown header-dropdown">
+        <!-- <div class="header__dropdown header-dropdown">
           <button class="header-dropdown__btn">Каталог</button>
-          <ul class="header-dropdown__list">
+       <ul class="header-dropdown__menu">
             <li class="header-dropdown__item">
               <a class="header-dropdown__link" href="#">Для собак</a>
+              <ul class="header-dropdown__submenu submenu">
+                <li class="submenu__item">
+                  <a class="submenu__link" href="#">Корм</a>
+                </li>
+                <li class="submenu__item">
+                  <a class="submenu__link" href="#">Корм</a>
+                </li>
+                <li class="submenu__item">
+                  <a class="submenu__link" href="#">Корм</a>
+                </li>
+                <li class="submenu__item">
+                  <a class="submenu__link" href="#">Корм</a>
+                </li>
+              </ul>
             </li>
             <li class="header-dropdown__item">
               <a class="header-dropdown__link" href="#">Для кошек</a>
@@ -46,9 +71,10 @@
             <li class="header-dropdown__item">
               <a class="header-dropdown__link" href="#">Для рыбок</a>
             </li>
-          </ul>
-        </div>
+          </ul> 
+        </div> -->
         <nav class="header__menu header-menu">
+          <button @click="show = !show" class="header-dropdown__btn">Каталог</button>
           <ul class="header-menu__list">
             <li class="header-menu__item">
               <a class="header-menu__link" href="#">Акции</a>
@@ -81,24 +107,112 @@
             <img src="@/assets/img/cart.svg" alt="" />
           </a>
         </div>
+        <transition name="slide-fade">
+          <div v-if="show" class="header__dropdown header-dropdown">
+            <div class="header-dropdown__menu dropdown-menu">
+              <div class="dropdown-menu__item" v-for="(tab, index) in tabs" :key="index" @click="activeTab = index"
+                :class="{ 'active': activeTab === index }">
+                <button class="dropdown-menu__btn">
+                  {{ tab.title }}
+                </button>
+              </div>
+            </div>
+            <div class="header-dropdown__submenu dropdown-submenu" v-for="(tab, index) in tabs" :key="index"
+              v-show="activeTab === index">
+              <div class="dropdown-submenu__item" v-for="(content, contentIndex) in tab.content" :key="contentIndex">
+                <a href="#" class="dropdown-submenu__link">
+                  {{ content.link }}
+                </a>
+              </div>
+            </div>
+          </div>
+        </transition>
       </div>
+
     </div>
   </header>
 </template>
+
 <script>
+import { ref, computed } from 'vue'
 import PopupMenu from '@/components/PopupMenu.vue';
 
-export default {
+import { useCategoryStore } from '@/store/CategoryStore';
+import { useSubcategoryStore } from '@/store/SubcategoryStore';
 
+export default {
+  props: {
+    isMainPage: {
+      type: Boolean,
+      required: false,
+      default: false,
+    }
+  },
+  setup() {
+    const show = ref(false)
+    const showOutline = computed(() => show.value)
+
+    return {
+      show,
+      showOutline,
+    }
+  },
+  data() {
+    return {
+      activeTab: 0,
+      tabs: [
+        {
+          title: 'Корм',
+          content: [
+            { link: 'Content for tab 1' },
+            { link: 'Content for tab 2' },
+            { link: 'Content for tab 3' },
+
+          ]
+        },
+        {
+          title: 'Игрушки',
+          content: [
+            { link: 'Content for tab 1' },
+            { link: 'Content for tab 2' },
+          ]
+        },
+        {
+          title: 'Лежанки',
+          content: [
+            { link: 'Content for tab 1' }]
+        },
+        // { title: 'Игрушки', content: 'Content for tab 2' },
+        // { title: 'Лежанки', content: 'Content for tab 3' },
+      ],
+    };
+  },
 }
 </script>
+
 <style lang="scss">
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  // width: 0%;
+  opacity: 0;
+}
+
 .header {
   position: absolute;
   top: 25px;
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
+  color: $black-text;
   z-index: 5;
 
   // .header__container
@@ -113,41 +227,46 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: $white;
+    color: $black-text;
   }
 
   // .header__logo
   &__logo {
     position: relative;
-
-    &::after {
-      content: '';
-      position: absolute;
-      top: 0px;
-      right: -12px;
-      width: 1px;
-      height: 100%;
-      opacity: 20%;
-      background: #fff;
-    }
   }
 
   // .header__text
   &__text {
+    position: relative;
     font-size: 11px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: -9px;
+      left: -12px;
+      width: 1px;
+      height: 40px;
+      opacity: 20%;
+      background: $black-text;
+    }
   }
 
   // .header__btn
   &__btn {
     font-size: 15px;
-    border: 2px solid $white;
+    font-weight: 600;
+    line-height: 120%;
+    color: $blue-main;
+    border: 2px solid $blue-main;
     border-radius: 66px;
     padding: 12px 22px;
-    transition: border-color 0.2s, background 0.2s;
+    transition: border-color 0.2s, background 0.2s, color 0.2s;
 
     &:hover {
-      border-color: $blue-second;
-      background: $blue-second;
+      border-color: $blue-main;
+      background: $blue-main;
+      color: $white;
     }
   }
 
@@ -164,12 +283,13 @@ export default {
     max-width: 299px;
     width: 100%;
     // padding: 0 0 0 59px;
-    background: rgba(255, 255, 255, 0.2);
+    background: $white;
     border-radius: 77px;
   }
 
   // .header__bottom
   &__bottom {
+    position: relative;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -179,8 +299,31 @@ export default {
     border-radius: 56px;
   }
 
-  // .header__dropdown
-  &__dropdown {}
+  //.header__dropdown
+  &__dropdown {
+    position: absolute;
+    top: 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    // flex-direction: row;
+    // justify-content: space-between;
+    padding: 15px 0;
+    max-width: 477px;
+    width: 100%;
+    background: $white;
+    border-radius: 20px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 100%;
+      background: $gray-border;
+    }
+  }
 
   // .header__menu
   &__menu {
@@ -255,10 +398,20 @@ export default {
 
   &__vk,
   &__viber {
-    background: rgba(255, 255, 255, 0.2);
+    background: none;
     border-radius: 50%;
     padding: 8px;
     transition: background 0.2s;
+
+    &:hover {
+      background: $white;
+    }
+  }
+
+  &__vk--white,
+  &__viber--white {
+    background: rgba(255, 255, 255, 0.2);
+
 
     &:hover {
       background: $blue-second;
@@ -276,6 +429,10 @@ export default {
     transform: translateY(-50%);
     width: 24px;
     height: 24px;
+    background: url('../assets/img/search-second.svg') no-repeat 100%;
+  }
+
+  &__btn--white {
     background: url('../assets/img/search.svg') no-repeat 100%;
   }
 
@@ -285,10 +442,10 @@ export default {
     background: none;
     padding: 12px 20px 9px 59px;
     width: 100%;
-    color: $white;
+    color: $black-text;
 
     &::placeholder {
-      color: $white;
+      color: #A9A9A9;
     }
 
     &:focus {
@@ -334,16 +491,83 @@ export default {
     }
   }
 
-  // .header-dropdown__list
-  &__list {
-    display: none;
+  // .header-dropdown__menu
+  &__menu {
+    display: flex;
+    flex-direction: column;
+  }
+
+  // .header-dropdown__submenu
+  &__submenu {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+
   }
 
   // .header-dropdown__item
-  &__item {}
+  &__item {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 120%;
+  }
 
   // .header-dropdown__link
-  &__link {}
+  &__link {
+    display: block;
+    padding: 10px 20px;
+
+    &:hover {
+      background-color: $blue-bg-second;
+    }
+  }
+}
+
+.dropdown-menu {
+
+  // .dropdown-menu__item
+  &__item {}
+
+  &__item.active {
+    .dropdown-menu__btn {
+      background-color: $blue-bg-third;
+    }
+  }
+
+  // .dropdown-menu__link
+  &__btn {
+    display: block;
+    padding: 10px 0 10px 20px;
+    text-align: start;
+    width: 100%;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 120%;
+
+    &:hover {
+      background-color: $blue-bg-third;
+
+    }
+  }
+}
+
+.dropdown-submenu {
+
+  // .dropdown-menu__item
+  &__item {
+    &:not(:last-child) {
+      margin-bottom: 15px;
+    }
+  }
+
+  // .dropdown-menu__link
+  &__link {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 120%;
+    color: $silver-text;
+
+  }
 }
 
 .header-menu {
@@ -367,6 +591,48 @@ export default {
     margin-left: 25px;
     font-size: 15px;
     color: $silver-text;
+  }
+}
+
+.submenu {}
+
+.header-second {
+  &__top {
+    color: $white;
+  }
+
+  &__text {
+    &::before {
+      background: $white;
+    }
+  }
+
+  &__logo {}
+
+  &__search {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  &__btn {
+    border: 2px solid $white;
+
+    color: $white;
+    transition: border-color 0.2s, background 0.2s, ;
+
+    &:hover {
+      border-color: $blue-second;
+      background: $blue-second;
+    }
+  }
+}
+
+.header__second-search {
+  &__input {
+    color: $white;
+
+    &::placeholder {
+      color: $white;
+    }
   }
 }
 
