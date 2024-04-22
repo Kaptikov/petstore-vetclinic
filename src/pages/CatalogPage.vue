@@ -3,18 +3,21 @@
   <main class="page catalog__page">
     <Catalog />
     <Appointment />
+    <Recommendations />
   </main>
   <Footer />
 </template>
 
 <script>
+// import { onMounted, onUpdated, defineComponent } from 'vue'
+import { useProductStore } from '../store/ProductStore'
+
 import Header from '@/components/Header.vue'
-
-
 import Footer from '@/components/Footer.vue'
-
 import Catalog from '@/components/CatalogPage/Catalog.vue'
 import Appointment from '@/components/Appointment.vue'
+import Recommendations from '@/components/CatalogPage/Recommendations.vue'
+
 
 export default {
   components: {
@@ -22,7 +25,25 @@ export default {
     Footer,
     Catalog,
     Appointment,
-  }
+    Recommendations,
+  },
+
+  // props: {
+  //   id: {
+  //     type: String,
+  //     default: '',
+  //   },
+  // },
+
+  // setup(props) {
+  //   const productStore = useProductStore()
+  //   onMounted(() => {
+  //     productStore.getProduct(props.id)
+  //   })
+  //   return {
+  //     productStore,
+  //   }
+  // },
 }
 </script>
 

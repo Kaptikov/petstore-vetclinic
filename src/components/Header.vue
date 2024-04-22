@@ -2,12 +2,12 @@
   <header class="header" :class="{ 'header-second': isMainPage }">
     <div class="header__container _container">
       <div class="header__top" :class="{ 'header-second__top': isMainPage }">
-        <a href="#" class="header__logo" :class="{ 'header-second__logo': isMainPage }" v-if="isMainPage">
+        <router-link to="/" class="header__logo" :class="{ 'header-second__logo': isMainPage }" v-if="isMainPage">
           <img src="@/assets/img/logo.svg" alt="logo" />
-        </a>
-        <a href="#" class="header__logo" v-else>
+        </router-link>
+        <router-link to="/" class="header__logo" v-else>
           <img src="@/assets/img/header-logo-second.svg" alt="logo" />
-        </a>
+        </router-link>
         <div class="header__text" :class="{ 'header-second__text': isMainPage }">
           Зоомагазин и груминг салон <br />
           в Нижневартовске
@@ -74,7 +74,13 @@
           </ul> 
         </div> -->
         <nav class="header__menu header-menu">
-          <button @click="show = !show" class="header-dropdown__btn">Каталог</button>
+          <button @click="show = !show" class="header-dropdown__btn">
+            <!-- <a class="header-dropdown__btn-label">Каталог</a> -->
+            <router-link class="header-dropdown__btn-label" to="/catalog/">Каталог</router-link>
+            <div class="header-dropdown__btn-burger burger-btn">
+              <div class="burger-btn__line"></div>
+            </div>
+          </button>
           <ul class="header-menu__list">
             <li class="header-menu__item">
               <a class="header-menu__link" href="#">Акции</a>
@@ -97,15 +103,15 @@
           </ul>
         </nav>
         <div class="header__user-actions">
-          <a href="#" class="header__user-actions__favorites">
+          <router-link to="/login/" class="header__user-actions__favorites">
             <img src="@/assets/img/favorites.svg" alt="" />
-          </a>
-          <a href="#" class="header__user-actions__user">
+          </router-link>
+          <router-link to="/profile/" class="header__user-actions__user">
             <img src="@/assets/img/user.svg" alt="" />
-          </a>
-          <a href="#" class="header__user-actions__cart">
+          </router-link>
+          <router-link to="/cart" class="header__user-actions__cart">
             <img src="@/assets/img/cart.svg" alt="" />
-          </a>
+          </router-link>
         </div>
         <transition name="slide-fade">
           <div v-if="show" class="header__dropdown header-dropdown">
@@ -467,11 +473,15 @@ export default {
 
   // .header-dropdown__btn
   &__btn {
-    font-size: 16px;
-    color: $white;
+    display: flex;
+    flex-direction: row;
+    // justify-content: space-between;
+    align-items: center;
+    gap: 26px;
+
     background: $blue-main;
     border-radius: 61px;
-    padding: 17px 70px 14px 20px;
+    padding: 17px 20px 14px 20px;
     position: relative;
     transition: background 0.2s;
 
@@ -480,6 +490,7 @@ export default {
     }
 
     &::after {
+      display: none;
       content: '';
       position: absolute;
       top: 14px;
@@ -489,6 +500,20 @@ export default {
       height: 24px;
       background: url('../assets/img/menu.svg') no-repeat 100%;
     }
+  }
+
+  // .header-dropdown__btn-label
+  &__btn-label {
+    font-size: 16px;
+    color: $white;
+  }
+
+  // .header-dropdown__btn-burger
+  &__btn-burger {
+
+    width: 24px;
+    height: 24px;
+    // background: url('../assets/img/menu.svg') no-repeat 100%;
   }
 
   // .header-dropdown__menu
@@ -626,6 +651,52 @@ export default {
   }
 }
 
+// .burger-btn
+.burger-btn {
+  position: relative;
+  // display: none;
+  width: 24px;
+  height: 24px;
+  background: url('../assets/img/menu.svg') no-repeat 100%;
+  // cursor: pointer;
+
+  // .burger-btn__line
+  // &__line {
+  //   display: n;
+  //   position: absolute;
+  //   left: 0;
+  //   top: 50%;
+  //   transform: translateY(-50%);
+  //   width: 10px;
+  //   height: 2px;
+  //   background: $white;
+  //   border-radius: 2px;
+
+
+  // }
+
+  // &::before,
+  // &::after {
+  //   content: '';
+  //   position: absolute;
+  //   left: 0;
+  //   display: block;
+  //   // width: 24px;
+  //   height: 2px;
+  //   background: $white;
+  // }
+
+  // &::before {
+  //   top: 0;
+  //   width: 18px;
+  // }
+
+  // &::after {
+  //   bottom: 0;
+  //   width: 16px;
+  // }
+}
+
 .header__second-search {
   &__input {
     color: $white;
@@ -636,9 +707,36 @@ export default {
   }
 }
 
+@media (max-width: 1222px) {
+  .header {
+    &__text {
+      display: none;
+    }
+
+    &__search {
+      display: none;
+    }
+  }
+
+  .header-second {
+    &__text {}
+  }
+
+}
+
 @media (max-width: 996px) {
   .header {
-    display: none;
+
+    // display: none;
+    &__user-actions {
+      display: none;
+    }
+  }
+
+  .header-dropdown {
+    &__btn-label {
+      display: none;
+    }
   }
 }
 </style>

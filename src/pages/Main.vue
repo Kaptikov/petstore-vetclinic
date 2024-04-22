@@ -12,6 +12,7 @@
     <Appointment />
     <PopupMenu />
   </main>
+  <BottomMenu />
   <Footer />
 </template>
 
@@ -27,6 +28,7 @@ import Locations from '@/components/MainPage/Locations.vue'
 import News from '@/components/MainPage/News.vue'
 import Appointment from '@/components/MainPage/Appointment.vue'
 import PopupMenu from '@/components/PopupMenu.vue'
+import BottomMenu from '@/components/BottomMenu.vue'
 import Footer from '@/components/Footer.vue'
 export default {
   components: {
@@ -41,6 +43,7 @@ export default {
     News,
     Appointment,
     PopupMenu,
+    BottomMenu,
     Footer,
   },
 

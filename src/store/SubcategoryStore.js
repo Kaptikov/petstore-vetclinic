@@ -6,15 +6,19 @@ export const useSubcategoryStore = defineStore('subcategoryStore', {
     subcategories: [
       {
         id: 1,
-        name: 'Корм',
+        name: 'Сухой корм',
       },
       {
         id: 2,
-        name: 'Корм',
+        name: 'Консервы',
       },
       {
         id: 3,
-        name: 'Корм',
+        name: 'Лакомства',
+      },
+      {
+        id: 4,
+        name: 'Витамины и добавки',
       },
     ],
   }),
