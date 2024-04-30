@@ -18,19 +18,19 @@
           <div class="personal-data__items">
             <div class="personal-data__item">
               <div class="personal-data__label">Имя</div>
-              <div class="personal-data__name">Виктория</div>
+              <div class="personal-data__name"> {{ userStore.user.name }} </div>
             </div>
             <div class="personal-data__item">
               <div class="personal-data__label">Фамилия</div>
-              <div class="personal-data__lastname">Иванова</div>
+              <div class="personal-data__lastname">{{ userStore.user.lastname }}</div>
             </div>
             <div class="personal-data__item">
               <div class="personal-data__label">email</div>
-              <div class="personal-data__email">email@example.com</div>
+              <div class="personal-data__email">{{ userStore.user.email }}</div>
             </div>
             <div class="personal-data__item">
               <div class="personal-data__label">Телефон</div>
-              <div class="personal-data__phone">+7 926 123 45 67</div>
+              <div class="personal-data__phone">{{ userStore.user.phone }}</div>
             </div>
           </div>
         </div>
@@ -40,11 +40,30 @@
 </template>
 
 <script>
+import { onMounted } from 'vue';
+import { useUserStore } from '@/store/UserStore.js';
+import { useLoginStore } from '@/store/LoginStore.js';
+
 export default {
+  props: {
+    id: {
+      type: String,
+      default: '',
+    },
+    user: {},
+  },
+  setup(props) {
+    const userStore = useUserStore();
+    onMounted(() => {
+      userStore.getUser();
+    })
 
-}
+    return {
+      userStore
+    };
+  },
+} 
 </script>
-
 <style lang="scss">
 .personal-data {
   max-width: 888px;

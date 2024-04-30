@@ -13,9 +13,10 @@ export const useLoginStore = defineStore('loginStore', {
           username,
           password,
         })
-
-        this.token = response.data.token
+        this.token = response.data
         localStorage.setItem('token', this.token)
+        console.log('Login successful')
+        // console.log('token', this.token)
         return true
       } catch (error) {
         console.error('Login error:', error)
@@ -27,6 +28,7 @@ export const useLoginStore = defineStore('loginStore', {
       if (token) {
         this.token = token
       }
+      // console.log('Token:', this.token)
     },
     async logoutUser() {
       try {

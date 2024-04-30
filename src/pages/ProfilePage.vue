@@ -22,6 +22,7 @@ import AsideNavigation from '@/components/ProfilePage/AsideNavigation.vue'
 import PersonalData from '@/components/ProfilePage/PersonalData.vue'
 
 import { useLoginStore } from '@/store/LoginStore.js'
+import { useUserStore } from '@/store/UserStore.js';
 
 export default {
   components: {
@@ -30,16 +31,25 @@ export default {
     PersonalData,
     Footer
   },
-  created() {
-    const loginStore = useLoginStore()
-    loginStore.initialize()
-  },
+
   computed: {
     isLoggedIn() {
       const loginStore = useLoginStore()
       return !!loginStore.token
     },
   },
+  created() {
+    const loginStore = useLoginStore()
+    loginStore.initialize()
+  },
+  // setup() {
+  //   const userStore = useUserStore();
+  //   const user = userStore.user;
+
+  //   return {
+  //     user,
+  //   };
+  // },
 }
 </script>
 
