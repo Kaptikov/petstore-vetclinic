@@ -103,7 +103,7 @@
           </ul>
         </nav>
         <div class="header__user-actions">
-          <router-link to="/login/" class="header__user-actions__favorites">
+          <router-link to="/favorite/" class="header__user-actions__favorites">
             <img src="@/assets/img/favorites.svg" alt="" />
           </router-link>
           <router-link to="/profile/" class="header__user-actions__user">

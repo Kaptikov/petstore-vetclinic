@@ -1,7 +1,7 @@
 <template>
 	<div class="card-product" :class="{ 'promotion__card-product': isPromotion }">
 		<div class="card-product__image" :class="{ 'promotion__card-product__image': isPromotion }">
-			<img src="@/assets/img/product.jpg" alt="" />
+			<img :src="product.imgUrl" alt="Товар" />
 		</div>
 		<div class="card-product__content" :class="{ 'promotion__card-product__content': isPromotion }">
 			<div class="card-product__prices">
@@ -9,7 +9,8 @@
 				<div class="card-product__old-price" v-if="product.oldPrice > 0"><s>{{ product.oldPrice }}</s>
 				</div>
 			</div>
-			<div class="card-product__title">{{ product.name }}</div>
+			<router-link :to="{ name: 'productPage', params: { id: product.id } }" class="card-product__title">{{ product.name
+				}}</router-link>
 			<div class="card-product__subtitle">{{ product.description }}
 			</div>
 			<div class="card-product__weights" :class="{ 'promotion__card-product__weights': isPromotion }">
@@ -43,6 +44,7 @@
 <script>
 import { ref, onMounted } from 'vue'
 import { useProductStore } from '@/store/ProductStore'
+import { useProductImgStore } from '@/store/ProductImgStore'
 
 export default {
 	data() {
@@ -69,7 +71,6 @@ export default {
 			this.selectedWeight = weight;
 		},
 	},
-
 }
 </script>
 <style lang="scss">

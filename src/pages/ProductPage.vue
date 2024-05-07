@@ -3,8 +3,15 @@
   <main class="page product__page">
     <div class="product-card">
       <div class="product-card__container _container">
-        <ProductCardTop />
-        <ProductCardBottom />
+        <template v-if="productStore.products">
+          <ProductCardTop :product="productStore.products" />
+          <div>
+          </div>
+          <ProductCardBottom :product="productStore.products" />
+        </template>
+        <template v-else>
+          <h4>Продукт не найден</h4>
+        </template>
       </div>
     </div>
 
@@ -13,18 +20,40 @@
 </template>
 
 <script>
+import { onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 
 import ProductCardTop from '@/components/ProductPage/ProductCardTop.vue'
 import ProductCardBottom from '@/components/ProductPage/ProductCardBottom.vue'
+
+import { useProductStore } from '@/store/ProductStore'
+
 export default {
   components: {
     Header,
     Footer,
     ProductCardTop,
     ProductCardBottom,
-  }
+  },
+  props: {
+
+  },
+  setup() {
+    const productStore = useProductStore()
+    const route = useRoute()
+
+    onMounted(() => {
+      const currentProductId = route.params.id
+      productStore.getProduct(currentProductId)
+    },
+    )
+    return {
+      productStore,
+    }
+  },
+
 }
 </script>
 

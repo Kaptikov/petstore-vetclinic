@@ -1,7 +1,7 @@
 <template>
   <div class="personal-data">
     <div class="personal-data__wrapper">
-      <div class="personal-data__title">ЛИЧНЫЕ ДАННЫЕ</div>
+      <div class="profile-page__title personal-data__title">Личные данные</div>
       <div class="personal-data__content">
         <div class="personal-data__left">
           <div class="personal-data__img">
@@ -18,21 +18,48 @@
           <div class="personal-data__items">
             <div class="personal-data__item">
               <div class="personal-data__label">Имя</div>
-              <div class="personal-data__name"> {{ userStore.user.name }} </div>
+              <div class="personal-data__name"> {{ user.name }} </div>
             </div>
             <div class="personal-data__item">
               <div class="personal-data__label">Фамилия</div>
-              <div class="personal-data__lastname">{{ userStore.user.lastname }}</div>
+              <div class="personal-data__lastname">{{ user.lastname }}</div>
             </div>
             <div class="personal-data__item">
               <div class="personal-data__label">email</div>
-              <div class="personal-data__email">{{ userStore.user.email }}</div>
+              <div class="personal-data__email">{{ user.email }}</div>
             </div>
             <div class="personal-data__item">
               <div class="personal-data__label">Телефон</div>
-              <div class="personal-data__phone">{{ userStore.user.phone }}</div>
+              <div class="personal-data__phone">{{ user.phone }}</div>
             </div>
           </div>
+          <PopupMenuUser :user="user" />
+          <!-- <PopupMenu :user="user" /> -->
+          <!-- <button >Редактировать</button> -->
+          <!-- <form>
+            <label for="name" class="personal-data__label">имя</label>
+            <input type="text" name="name" v-model="user.name" :disabled="!isEditing"
+              class="personal-data__input personal-data__input-name">
+
+            <label for="lastname" class="personal-data__label">фамилия</label>
+            <input type="text" name="lastname" v-model="user.lastname" :disabled="!isEditing"
+              class="personal-data__input">
+
+            <label for="email" class="personal-data__label">отчетсво</label>
+            <input type="text" name="email" v-model="user.email" :disabled="!isEditing" class="personal-data__input">
+
+            <label for="phone" class="personal-data__label">phone</label>
+            <input type="text" name="phone" v-model="user.phone" :disabled="!isEditing" class="personal-data__input">
+            <template v-if="!isEditing">
+              <button @click.prevent="toggleEdit">Редактировать</button>
+            </template>
+
+<div v-else>
+  <textarea v-model="editedText"></textarea>
+  <button @click.prevent="cancelEdit">Отменить</button>
+  <button @click.prevent="saveEdit">Сохранить</button>
+</div>
+</form> -->
         </div>
       </div>
     </div>
@@ -42,32 +69,43 @@
 <script>
 import { onMounted } from 'vue';
 import { useUserStore } from '@/store/UserStore.js';
-import { useLoginStore } from '@/store/LoginStore.js';
+// import { useLoginStore } from '@/store/LoginStore.js';
+import PopupMenuUser from '@/Components/ProfilePage/PopupMenuUser.vue';
+import PopupMenu from '@/Components/ProfilePage/PopupMenu.vue';
 
 export default {
+  components: {
+    PopupMenuUser,
+    PopupMenu,
+  },
+  data() {
+    return {
+    }
+  },
   props: {
     id: {
       type: String,
       default: '',
     },
     user: {},
+    // userEdit: {},
   },
   setup(props) {
-    const userStore = useUserStore();
+    // const userStore = useUserStore();
+
     onMounted(() => {
-      userStore.getUser();
+      // userStore.getUser();
+      // console.log("USEID", userStore.user.id);
     })
 
     return {
-      userStore
+      // userStore,
     };
   },
 } 
 </script>
 <style lang="scss">
 .personal-data {
-  max-width: 888px;
-  width: 100%;
 
   // .personal-data__wrapper
   &__wrapper {
@@ -78,14 +116,15 @@ export default {
 
   // .personal-data__title
   &__title {
-    font-weight: 700;
-    font-size: 30px;
-    line-height: 133%;
+    // font-weight: 700;
+    // font-size: 30px;
+    // line-height: 133%;
     margin-bottom: 30px;
   }
 
   // .personal-data__content
   &__content {
+    position: relative;
     display: flex;
     flex-direction: row;
     gap: 30px;
@@ -126,6 +165,19 @@ export default {
   // .personal-data__btn
   &__btn {
     color: $blue-main;
+
+    &:hover {
+      color: $blue-second;
+    }
+  }
+
+  // .personal-data__btn-popup
+  &__btn-popup {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    color: $blue-main;
+    transition: color 0.2s ease-in-out;
 
     &:hover {
       color: $blue-second;

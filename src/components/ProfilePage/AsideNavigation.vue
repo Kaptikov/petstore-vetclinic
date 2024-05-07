@@ -1,11 +1,11 @@
 <template>
   <aside class="aside-navigation">
     <div class="aside-navigation__wrapper">
-      <div class="aside-navigation__title">Виктория</div>
+      <div class="aside-navigation__title">{{ user.name }}</div>
       <nav class="aside-navigation__menu">
         <ul class="aside-navigation__list">
           <li class="aside-navigation__item">
-            <a class="aside-navigation__link" href="#">ЛИЧНЫЕ ДАННЫЕ</a>
+            <a class="aside-navigation__link" href="#">Личные данные</a>
           </li>
           <li class="aside-navigation__item">
             <a class="aside-navigation__link" href="#">История заказов</a>
@@ -28,11 +28,21 @@
 import { useLoginStore } from '@/store/LoginStore.js';
 
 export default {
+  props: {
+    // id: {
+    //   type: String,
+    //   default: '',
+    // },
+    user: {},
+  },
+
   methods: {
     logout() {
       const loginStore = useLoginStore()
       loginStore.logoutUser()
-      this.$router.push('/profile')
+      // this.$router.push('/profile')
+      // this.$router.go(0)
+      window.location.reload()
       console.log("выход выполнен");
     },
   },

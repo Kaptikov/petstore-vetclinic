@@ -3,11 +3,18 @@
   <main class="page profile-page">
     <div class="profile-page__container _container">
       <template v-if="isLoggedIn">
-        <AsideNavigation />
-        <PersonalData />
+        <AsideNavigation :user="userStore.user" />
+        <div class="profile-page__wrapper" v-if="userStore.user && userStore.user.id">
+          <PersonalData :user="userStore.user" />
+          <OrderHistory :user="userStore.user" />
+          <Animals :id="userStore.user.id" />
+        </div>
       </template>
+      <!-- <template v-else-if="isLoading">
+        <Loader />
+      </template> -->
       <template v-else>
-        <h3 class="profile-page__title">Войдите в систему</h3>
+        <h3 class=" profile-page__title">Войдите в систему</h3>
         <router-link to="/login/" class="profile-page__link">Вход</router-link>
       </template>
     </div>
@@ -16,20 +23,36 @@
 </template>
 
 <script>
+import { onMounted, watchEffect } from 'vue';
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 import AsideNavigation from '@/components/ProfilePage/AsideNavigation.vue'
 import PersonalData from '@/components/ProfilePage/PersonalData.vue'
+import OrderHistory from '@/components/ProfilePage/OrderHistory.vue'
+import Animals from '@/components/ProfilePage/Animals.vue'
+
+import Loader from '@/components/Loader.vue';
+
 
 import { useLoginStore } from '@/store/LoginStore.js'
 import { useUserStore } from '@/store/UserStore.js';
+import { useAnimalStore } from '@/store/AnimalStore.js';
 
 export default {
   components: {
     Header,
     AsideNavigation,
     PersonalData,
+    OrderHistory,
+    Animals,
+    Loader,
     Footer
+  },
+
+  data() {
+    return {
+      isLoading: false,
+    };
   },
 
   computed: {
@@ -42,14 +65,21 @@ export default {
     const loginStore = useLoginStore()
     loginStore.initialize()
   },
-  // setup() {
-  //   const userStore = useUserStore();
-  //   const user = userStore.user;
+  setup() {
+    const userStore = useUserStore();
+    const animalStore = useAnimalStore();
 
-  //   return {
-  //     user,
-  //   };
-  // },
+    onMounted(() => {
+      userStore.getUser();
+      // console.log("id", userStore.user);
+      // animalStore.getAnimals(userStore.user.id);
+    })
+
+    return {
+      userStore,
+      animalStore,
+    };
+  },
 }
 </script>
 
@@ -67,9 +97,22 @@ export default {
     margin-bottom: 100px;
   }
 
+  // .profile-page__wrapper
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    max-width: 888px;
+    width: 100%;
+    gap: 50px;
+  }
+
   // .profile-page__title
   &__title {
-    font-size: 48px;
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 133%;
+    margin-bottom: 30px;
+    color: #000;
   }
 
   // .profile-page__link

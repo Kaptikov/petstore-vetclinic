@@ -52,9 +52,12 @@
 					</div>
 					<Select :options="options" />
 				</div>
-				<div class="catalog__products">
+				<div class="catalog__products" v-if="productStore.products.length > 0">
 					<!-- <CardProduct v-for="n in 5" :key="n" /> -->
 					<CardProduct v-for="product of productStore.products" :key="product.id" :product="product" />
+				</div>
+				<div class="catalog__products" v-else>
+					Продукты не найдены
 				</div>
 				<button class="catalog__btn-more">Загрузить ещё</button>
 			</div>

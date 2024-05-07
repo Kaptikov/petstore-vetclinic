@@ -3,50 +3,30 @@
     <div class="product-card__left">
       <swiper :direction="'vertical'" :spaceBetween="10" :navigation="false" :thumbs="{ swiper: thumbsSwiper }"
         :modules="modules" class="product-card__swiper-first">
-        <swiper-slide class="product-card__swiper-slide product-card__swiper-slide-first">
-          <img src="@/assets/img/product.jpg" alt="Изображение товара" class="card-catalog__img" />
-        </swiper-slide>
-        <swiper-slide class="product-card__swiper-slide  product-card__swiper-slide-first">
-          <img src="@/assets/img/product.jpg" alt="Изображение товара" class="card-catalog__img" />
-        </swiper-slide>
-        <swiper-slide class="product-card__swiper-slide  product-card__swiper-slide-first">
-          <img src="@/assets/img/product.jpg" alt="Изображение товара" class="card-catalog__img" />
+        <swiper-slide class="product-card__swiper-slide product-card__swiper-slide-first" v-for="productImg in getProductImgForProduct(
+          product.id
+        )" :key="productImg.id">
+          <img :src="productImg.imgUrl" alt="Изображение товара" class="card-catalog__img" />
         </swiper-slide>
       </swiper>
 
       <swiper @swiper="setThumbsSwiper" :direction="'horizontal'" :spaceBetween="12" :slidesPerView="6"
         :watchSlidesProgress="true" :modules="modules" :navigation="true" class="
         product-card__swiper-second">
-        <swiper-slide class="product-card__swiper-slide product-card__swiper-slide-second">
-          <img src="@/assets/img/product.jpg" alt="Изображение товара" class="card-catalog__img" />
-        </swiper-slide>
-        <swiper-slide class="product-card__swiper-slide product-card__swiper-slide-second">
-          <img src="@/assets/img/product.jpg" alt="Изображение товара" class="card-catalog__img" />
-        </swiper-slide>
-        <swiper-slide class="product-card__swiper-slide product-card__swiper-slide-second">
-          <img src="@/assets/img/product.jpg" alt="Изображение товара" class="card-catalog__img" />
-        </swiper-slide>
-        <swiper-slide class="product-card__swiper-slide product-card__swiper-slide-second">
-          <img src="@/assets/img/product.jpg" alt="Изображение товара" class="card-catalog__img" />
-        </swiper-slide>
-        <swiper-slide class="product-card__swiper-slide product-card__swiper-slide-second">
-          <img src="@/assets/img/product.jpg" alt="Изображение товара" class="card-catalog__img" />
-        </swiper-slide>
-        <swiper-slide class="product-card__swiper-slide product-card__swiper-slide-second">
-          <img src="@/assets/img/product.jpg" alt="Изображение товара" class="card-catalog__img" />
-        </swiper-slide>
-        <swiper-slide class="product-card__swiper-slide product-card__swiper-slide-second">
-          <img src="@/assets/img/product.jpg" alt="Изображение товара" class="card-catalog__img" />
+        <swiper-slide class="product-card__swiper-slide product-card__swiper-slide-second" v-for="productImg in getProductImgForProduct(
+          product.id
+        )" :key="productImg.id">
+          <img :src="productImg.imgUrl" alt="Изображение товара" class="card-catalog__img" />
         </swiper-slide>
       </swiper>
     </div>
     <div class="product-card__right">
-      <div class="product-card__tag">FLORIDA</div>
-      <div class="product-card__title">Корм сухой корм для взрослых стерилизованных кошек с лососем и черникой</div>
+      <div class="product-card__tag">{{ product.name }}</div>
+      <div class="product-card__title">{{ product.description }}</div>
       <div class="product-card__prices">
-        <div class="product-card__actual-price">3 446 ₽.</div>
-        <div class="product-card__old-price">8 999</div>
-        <div class="product-card__discount"> -50% </div>
+        <div class="product-card__actual-price">{{ product.price }} ₽.</div>
+        <div class="product-card__old-price">{{ product.oldPrice }}</div>
+        <div class="product-card__discount"> {{ product.discount }}% </div>
       </div>
       <div class="product-card__weights">
         <button v-for="  weight in weights  " :key="weight"
@@ -94,8 +74,10 @@
   </section>
 </template>
 <script>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
+
+import { useProductImgStore } from '@/store/ProductImgStore'
 
 // Import Swiper styles
 import 'swiper/css'
@@ -106,6 +88,15 @@ import 'swiper/css/thumbs'
 
 import { FreeMode, Navigation, Thumbs } from 'swiper/modules'
 export default {
+  props: {
+    id: {
+      type: String,
+      default: '',
+    },
+    product: {
+      type: Object,
+    }
+  },
   components: {
     Swiper,
     SwiperSlide,
@@ -117,13 +108,26 @@ export default {
     };
   },
 
-  setup() {
+  setup(props) {
+    const productImgStore = useProductImgStore()
     const thumbsSwiper = ref()
     const setThumbsSwiper = swiper => {
       thumbsSwiper.value = swiper
     }
 
+    const getProductImgForProduct = productId => {
+      return productImgStore.productImgs.filter(
+        propoductImg => propoductImg.productId === productId
+      )
+    }
+
+
+    onMounted(() => {
+      productImgStore.getProductImg(props.id)
+    })
     return {
+      getProductImgForProduct,
+      productImgStore,
       thumbsSwiper,
       setThumbsSwiper,
       modules: [FreeMode, Navigation, Thumbs],

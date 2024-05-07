@@ -4,7 +4,8 @@ import axios from 'axios'
 export const useProductStore = defineStore('productStore', {
   state: () => ({
     products: [],
-    // allProducts: [],
+    allProducts: [],
+    imgUrls: [],
   }),
 
   actions: {
@@ -12,8 +13,9 @@ export const useProductStore = defineStore('productStore', {
       axios
         .get(`/api/Product/${id}`)
         .then(response => {
-          //this.allProducts = response.data
+          this.allProducts = response.data
           this.products = response.data
+          // console.log(this.products)
         })
         .catch(error => {
           console.log(error)

@@ -1,6 +1,6 @@
 <template>
   <div class="login-form__container _container">
-    <form class="login-form" v-on:submit="submitForm">
+    <form class="login-form" @submit.prevent="submitForm">
       <label for="username">Логин:</label>
       <input type="text" name="username" placeholder="Логин" required v-model="username" class="login-form__input">
       <label for="password">Пароль:</label>
@@ -23,12 +23,13 @@ export default {
     };
   },
   methods: {
-    submitForm(event) {
-      event.preventDefault();
+    submitForm() {
+      //event.preventDefault();
       const loginStore = useLoginStore();
       loginStore.loginUser(this.username, this.password)
         .then(() => {
           this.$router.push('/profile');
+          // this.$router.go(0);
         })
         .catch((error) => {
           console.error('Ошибка входа:', error);
