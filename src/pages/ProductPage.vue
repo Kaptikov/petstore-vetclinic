@@ -4,10 +4,10 @@
     <div class="product-card">
       <div class="product-card__container _container">
         <template v-if="productStore.products">
-          <ProductCardTop :product="productStore.products" />
+          <ProductCardTop :product="productStore.allProducts" />
           <div>
           </div>
-          <ProductCardBottom :product="productStore.products" />
+          <ProductCardBottom :product="productStore.allProducts" />
         </template>
         <template v-else>
           <h4>Продукт не найден</h4>

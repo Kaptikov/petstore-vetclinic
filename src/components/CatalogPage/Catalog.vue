@@ -4,7 +4,7 @@
 			<Filters />
 			<div class="catalog__wrapper">
 				<Banner />
-				<Subcategories />
+				<Subcategories :subcategory="categoryStore.subcategories" />
 				<div class="catalog__title">Корм</div>
 				<div class="catalog__controls catalog-controls">
 					<div class="catalog-controls__quantity">
@@ -66,8 +66,10 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useProductStore } from '@/store/ProductStore'
+import { useCategoryStore } from '@/store/CategoryStore'
+import { useRoute } from 'vue-router'
 
 import Filters from '@/components/CatalogPage/Filters.vue'
 import Banner from '@/components/CatalogPage/Banner.vue'
@@ -102,12 +104,18 @@ export default {
 	},
 
 	setup(props) {
+		const route = useRoute()
 		const productStore = useProductStore()
+		const categoryStore = useCategoryStore()
+
 		onMounted(() => {
-			productStore.getProduct(props.id)
+			const categoryId = route.params.id
+			categoryStore.getSubcategories(categoryId)
+			productStore.getProductByCategory(categoryId)
 		})
 		return {
 			productStore,
+			categoryStore,
 		}
 	},
 }

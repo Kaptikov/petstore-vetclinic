@@ -3,19 +3,55 @@ import axios from 'axios'
 
 export const useCategoryStore = defineStore('categoryStore', {
   state: () => ({
-    categories: [
-      {
-        id: 1,
-        name: 'Для кошек',
-      },
-      {
-        id: 2,
-        name: 'Для собак',
-      },
-      {
-        id: 3,
-        name: 'Для грызунов',
-      },
-    ],
+    categories: [],
+    subcategories: [],
+    subsubcategories: [],
+    category: [],
   }),
+
+  actions: {
+    // async getCategory() {
+    //   try {
+    //     const response = await axios.get('/api/Category/')
+    //     this.subsubcategories = response.data
+    //     console.log('categories', this.subsubcategories)
+    //   } catch (error) {
+    //     console.log(error)
+    //   }
+    // },
+    async getCategories() {
+      try {
+        const response = await axios.get('/api/Category/categories')
+        this.categories = response.data
+        console.log('categories', this.categories)
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async getSubcategories(id) {
+      try {
+        const response = await axios.get(`/api/Category/subcategories/${id}`)
+        this.subcategories = response.data
+        console.log('subcategories', this.subcategories)
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
+    async getSubSubcategories(id) {
+      try {
+        const response = await axios.get(`/api/Category/subsubcategories/${id}`)
+        this.subsubcategories = response.data
+        // this.subsubcategories = response.data.filter(
+        //   subsubcategory => subsubcategory.parentId === id
+        // )
+        // this.subsubcategories = subsubcategories.sort((a, b) =>
+        //   a.name.localeCompare(b.name)
+        // )
+        console.log('subsubcategories', this.subsubcategories)
+      } catch (error) {
+        console.log(error)
+      }
+    },
+  },
 })

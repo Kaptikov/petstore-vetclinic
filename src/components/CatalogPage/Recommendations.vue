@@ -1,6 +1,6 @@
 <template>
   <section class="recommendations">
-    <div class="recommendations__container _container" v-if="productStore.products.length > 0">
+    <div class="recommendations__container _container" v-if="productStore.allProducts.length > 0">
       <h4 class="recommendations__title title">Вы смотрели/Вам понравится</h4>
       <swiper :spaceBetween="20" :loop="true" :navigation="true" :modules="modules" :breakpoints="{
         996: {
@@ -16,7 +16,7 @@
           spaceBetween: 10,
         }
       }" class="recommendations__swiper swiper">
-        <swiper-slide class="recommendations__slide" v-for="product in productStore.products" :key="product.id">
+        <swiper-slide class="recommendations__slide" v-for="product of productStore.allProducts" :key="product.id">
           <CardProduct :product="product" />
         </swiper-slide>
       </swiper>

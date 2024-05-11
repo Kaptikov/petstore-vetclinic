@@ -1,123 +1,58 @@
 <template>
 	<section class="product-categories">
 		<div class="product-categories__container _container">
-			<div class="product-categories__cards">
-				<button @click="show = !show" class="product-categories__card" :class="{ 'with-outline': show }">
-					<div class="product-categories__card-label">Для собак</div>
-					<img src="@/assets/img/card-dog.png" alt="" />
-				</button>
-				<button class="product-categories__card">
-					<div class="product-categories__card-label">Для собак</div>
-					<img src="@/assets/img/card-cat.png" alt="" />
-				</button>
-				<button class="product-categories__card">
-					<div class="product-categories__card-label">Для собак</div>
-					<img src="@/assets/img/card-bird.png" alt="" />
-				</button>
-				<button class="product-categories__card">
-					<div class="product-categories__card-label">Для собак</div>
-					<img src="@/assets/img/card-rodent.png" alt="" />
-				</button>
-				<button class="product-categories__card">
-					<div class="product-categories__card-label">Для собак</div>
-					<img src="@/assets/img/card-fish.png" alt="" />
-				</button>
-				<button class="product-categories__card">
-					<div class="product-categories__card-label">Для собак</div>
-					<img src="@/assets/img/card-clinic.png" alt="" />
-				</button>
-				<!-- <p v-if="show">hello</p> -->
+			<div class="product-categories__cards" v-if="categoryStore.categories.length > 0">
+				<category-card v-for="category in categoryStore.categories" :key="category.id" :category="category"
+					@mouseover="handleMouseOver(category.id)" @mouseleave="handleMouseLeave" />
+				<router-link to="`/catalog/${category.id}`" class="product-categories__card">
+					<div class="product-categories__card-label">Клиника</div>
+					<img src="@/assets/img/category-clinic.png" alt="" />
+				</router-link>
 			</div>
-
 			<transition name="slide-fade">
-				<div v-if="show" class="product-categories__dropdown-menu">
-					<div class="product-categories__dropdown-menu__column">
-						<div class="product-categories__dropdown-menu__label">Корм</div>
-						<ul class="product-categories__dropdown-menu__list">
-							<li class="product-categories__dropdown-menu__item">
-								<a href="" class="product-categories__dropdown-menu__link">Сухой корм</a>
-							</li>
-							<li class="product-categories__dropdown-menu__item">
-								<a href="" class="product-categories__dropdown-menu__link">Консервы</a>
-							</li>
-							<li class="product-categories__dropdown-menu__item">
-								<a href="" class="product-categories__dropdown-menu__link">Пресервы</a>
-							</li>
-							<li class="product-categories__dropdown-menu__item">
-								<a href="" class="product-categories__dropdown-menu__link">Лакомства</a>
-							</li>
-							<li class="product-categories__dropdown-menu__item">
-								<a href="" class="product-categories__dropdown-menu__link">Витамины и добавки</a>
-							</li>
-						</ul>
-					</div>
-					<div class="product-categories__dropdown-menu__column">
-						<div class="product-categories__dropdown-menu__label">
-							Диетический Корм
-						</div>
-						<ul class="product-categories__dropdown-menu__list">
-							<li class="product-categories__dropdown-menu__item">
-								<a href="" class="product-categories__dropdown-menu__link">Сухой корм</a>
-							</li>
-							<li class="product-categories__dropdown-menu__item">
-								<a href="" class="product-categories__dropdown-menu__link">Консервы</a>
-							</li>
-							<li class="product-categories__dropdown-menu__item">
-								<a href="" class="product-categories__dropdown-menu__link">Пресервы</a>
-							</li>
-							<li class="product-categories__dropdown-menu__item">
-								<a href="" class="product-categories__dropdown-menu__link">Лакомства</a>
-							</li>
-							<li class="product-categories__dropdown-menu__item">
-								<a href="" class="product-categories__dropdown-menu__link">Витамины и добавки</a>
-							</li>
-						</ul>
-					</div>
-					<div class="product-categories__dropdown-menu__column">
-						<div class="product-categories__dropdown-menu__label">
-							Содержание и уход
-						</div>
-						<ul class="product-categories__dropdown-menu__list">
-							<li class="product-categories__dropdown-menu__item">
-								<a href="" class="product-categories__dropdown-menu__link">Домики и лежаки</a>
-							</li>
-							<li class="product-categories__dropdown-menu__item">
-								<a href="" class="product-categories__dropdown-menu__link">Игрушки</a>
-							</li>
-							<li class="product-categories__dropdown-menu__item">
-								<a href="" class="product-categories__dropdown-menu__link">Транспортировка, переноски</a>
-							</li>
-							<li class="product-categories__dropdown-menu__item">
-								<a href="" class="product-categories__dropdown-menu__link">Лакомства</a>
-							</li>
-							<li class="product-categories__dropdown-menu__item">
-								<a href="" class="product-categories__dropdown-menu__link">Туалеты, пеленки и подгузники</a>
-							</li>
-							<li class="product-categories__dropdown-menu__item">
-								<a href="" class="product-categories__dropdown-menu__link">Клиника</a>
-							</li>
-							<li class="product-categories__dropdown-menu__item">
-								<a href="" class="product-categories__dropdown-menu__link">Посуда</a>
-							</li>
-						</ul>
-					</div>
-				</div>
+				<category-dropdown-menu v-if="categoryStore.categories.length > 0" :subcategory="categoryStore.subcategories"
+					:subsubcategory="categoryStore.subsubcategories" />
 			</transition>
 		</div>
 	</section>
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { useCategoryStore } from '@/store/CategoryStore'
+import CategoryCard from '@/components/MainPage/CategoryCard.vue'
+import CategoryDropdownMenu from '@/components/MainPage/CategoryDropdownMenu.vue'
 
 export default {
+	components: {
+		CategoryCard,
+		CategoryDropdownMenu
+	},
 	setup() {
-		const show = ref(false)
-		const showOutline = computed(() => show.value)
+		const categoryStore = useCategoryStore()
+		const parentId = ref(null)
+		parentId.value = 2
+		const handleMouseOver = (categoryId) => {
+			parentId.value = categoryId
+			console.log("parentId", parentId);
+			categoryStore.getSubcategories(parentId.value);
+			// categoryStore.getSubSubcategories(parentId.value);
+		}
+		const handleMouseLeave = () => {
+			parentId.value = null
+		}
+
+		onMounted(() => {
+			categoryStore.getCategories()
+			categoryStore.getSubcategories(parentId.value);
+			//categoryStore.getSubSubcategories(parentId.value);
+		})
 
 		return {
-			show,
-			showOutline,
+			categoryStore,
+			parentId,
+			handleMouseOver,
+			handleMouseLeave
 		}
 	},
 }
@@ -129,7 +64,7 @@ export default {
 }
 
 .slide-fade-leave-active {
-	transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
+	transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
 }
 
 .slide-fade-enter-from,
@@ -162,7 +97,7 @@ export default {
 		position: relative;
 		border-radius: 20px;
 		outline: 3px solid transparent;
-		transition: outline 0.2s ease;
+		transition: outline 0.3s ease-in-out;
 
 		& img {
 			width: 100%;
@@ -171,7 +106,8 @@ export default {
 		}
 
 		&:hover {
-			outline: 3px solid $white;
+			transition: outline 0.3s ease-in-out;
+			outline: 3px solid $blue-main;
 		}
 
 		&--active {

@@ -14,8 +14,42 @@ export const useProductStore = defineStore('productStore', {
         .get(`/api/Product/${id}`)
         .then(response => {
           this.allProducts = response.data
-          this.products = response.data
+          // this.products = response.data
           // console.log(this.products)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+
+    async getProductByCategory(id) {
+      try {
+        const response = await axios.get(`/api/Product/Category/${id}`)
+        this.products = response.data
+        console.log('products by category', this.products)
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
+    async getProductBySubcategory(id) {
+      axios
+        .get(`/api/Product/subcategories/${id}`)
+        .then(response => {
+          this.products = response.data
+          console.log(this.products)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+
+    async getProductBySubsubcategory(id) {
+      axios
+        .get(`/api/Product/subsubcategories/${id}`)
+        .then(response => {
+          this.products = response.data
+          console.log(this.products)
         })
         .catch(error => {
           console.log(error)

@@ -1,17 +1,25 @@
 <template>
-  <div class="catalog__subcategories subcategories">
-    <button class="subcategories__item">Сухой корм</button>
-    <button class="subcategories__item">Консервы</button>
-    <button class="subcategories__item">Пресервы</button>
-    <button class="subcategories__item">Лакомства</button>
-    <button class="subcategories__item">Витамины и добавки</button>
+  <div class="catalog__subcategories subcategories" v-for=" subcategory of subcategory" :key="subcategory.id">
+    <button class="subcategories__item">{{ subcategory.name }}</button>
   </div>
 </template>
 <script>
-// import { useSubcategoryStore } from '@/store/SubcategoryStore';
+import { onMounted } from 'vue';
+// import { useCategoryStore } from '@/store/CategoryStore';
 
 export default {
+  props: {
+    subcategory: {
+      type: Object,
+    }
+  },
+  setup(props) {
+    // const categoryStore = useCategoryStore();
 
+    // onMounted(() => {
+    //   categoryStore.getSubcategories();
+    // })
+  }
 }
 </script>
 <style lang="scss">

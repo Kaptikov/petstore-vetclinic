@@ -3,13 +3,13 @@
   <main class="page main__page">
     <MainBlock />
     <ProductCategories />
-    <PopularProducts />
+    <!-- <PopularProducts /> -->
     <OurBrands />
     <Advantages />
-    <Promotions />
+    <!-- <Promotions /> -->
     <Locations />
     <News />
-    <Appointment />
+    <!-- <Appointment /> -->
     <PopupMenu />
   </main>
   <BottomMenu />
