@@ -12,7 +12,8 @@
           Зоомагазин и груминг салон <br />
           в Нижневартовске
         </div>
-        <button class="header__btn" :class="{ 'header-second__btn': isMainPage }">Запись на прием онлайн</button>
+        <!-- <button class="header__btn" :class="{ 'header-second__btn': isMainPage }">Запись на прием онлайн</button> -->
+        <popup-menu :isMainPage="isMainPage" />
         <div class="header__socials header-socials">
           <a href="tel:+79999999999" class="header-socials__phone">
             +7 (982) 537-81-27
@@ -33,53 +34,46 @@
         </div>
         <form action="" class="header__search header-search" :class="{ 'header-second__search': isMainPage }">
           <!-- <input class="header-search__btn" type="submit" value="Поиск" /> -->
-          <button class="header-search__btn" :class="{ 'header-search__btn--white': isMainPage }"></button>
+          <button class="header-search__btn" @click.prevent="handleSearch(productStore.products.name)"
+            :class="{ 'header-search__btn--white': isMainPage }"></button>
           <input class="header-search__input" :class="{ 'header__second-search__input': isMainPage }" type="search"
-            placeholder="Поиск по каталогу" />
+            placeholder="Поиск по каталогу" v-model="productStore.products.name"
+            @input="handleSearch(productStore.products.name)" />
+
+          <div class="header-search__results"
+            v-if="productStore.searchProducts && productStore.searchProducts.length > 0">
+            <div class="header-search__result" v-for="product of productStore.searchProducts" :key="product.id">
+              <router-link class="header-search__result-link" :to="`/product/${product.id}`" @click="clearInput">
+                <div class="header-search__result-img">
+                  <img :src="product.imgUrl" alt="pets" />
+                </div>
+                <div class="header-search__result-text">
+                  <div class="header-search__result-title">
+                    {{ product.name }}
+                  </div>
+                  <div class="header-search__result-price">
+                    {{ product.price }}
+                  </div>
+                </div>
+              </router-link>
+            </div>
+          </div>
+          <!-- <div class="header-search__results" v-else-if="productStore.searchProducts === null">
+            <div class="header-search__result">Загрузка...</div>
+          </div> -->
+          <!-- <div class="header-search__results" v-else-if="productStore.searchProducts !== null">
+            <div class="header-search__result"> Результаты не найдены.</div>
+          </div> -->
         </form>
       </div>
       <div class="header__bottom">
-        <!-- <div class="header__dropdown header-dropdown">
-          <button class="header-dropdown__btn">Каталог</button>
-       <ul class="header-dropdown__menu">
-            <li class="header-dropdown__item">
-              <a class="header-dropdown__link" href="#">Для собак</a>
-              <ul class="header-dropdown__submenu submenu">
-                <li class="submenu__item">
-                  <a class="submenu__link" href="#">Корм</a>
-                </li>
-                <li class="submenu__item">
-                  <a class="submenu__link" href="#">Корм</a>
-                </li>
-                <li class="submenu__item">
-                  <a class="submenu__link" href="#">Корм</a>
-                </li>
-                <li class="submenu__item">
-                  <a class="submenu__link" href="#">Корм</a>
-                </li>
-              </ul>
-            </li>
-            <li class="header-dropdown__item">
-              <a class="header-dropdown__link" href="#">Для кошек</a>
-            </li>
-            <li class="header-dropdown__item">
-              <a class="header-dropdown__link" href="#">Для птиц</a>
-            </li>
-            <li class="header-dropdown__item">
-              <a class="header-dropdown__link" href="#">Для грызунов</a>
-            </li>
-            <li class="header-dropdown__item">
-              <a class="header-dropdown__link" href="#">Для рыбок</a>
-            </li>
-          </ul> 
-        </div> -->
         <nav class="header__menu header-menu">
-          <button @click="show = !show" class="header-dropdown__btn">
-            <!-- <a class="header-dropdown__btn-label">Каталог</a> -->
-            <router-link class="header-dropdown__btn-label" to="/catalog/">Каталог</router-link>
-            <div class="header-dropdown__btn-burger burger-btn">
-              <div class="burger-btn__line"></div>
-            </div>
+          <button class="header-menu__btn" @mouseover="handleMouseOver" @mouseleave="handleMouseLeave">
+            <span class="header-menu__btn-label">Каталог</span>
+            <img class="header-menu__btn-img" src="@/assets/img/menu.svg" alt="">
+          </button>
+          <button class="header-menu__burger burger" @click="showBurgerMenu = !showBurgerMenu">
+            <img src="@/assets/img/menu.svg" alt="">
           </button>
           <ul class="header-menu__list">
             <li class="header-menu__item">
@@ -89,7 +83,7 @@
               <a class="header-menu__link" href="#">Новинки</a>
             </li>
             <li class="header-menu__item">
-              <a class="header-menu__link" href="#">Клиника</a>
+              <router-link to="/vetclinic/" class="header-menu__link">Клиника</router-link>
             </li>
             <li class="header-menu__item">
               <a class="header-menu__link" href="#">Доставка</a>
@@ -105,98 +99,224 @@
         <div class="header__user-actions">
           <router-link to="/favorite/" class="header__user-actions__favorites">
             <img src="@/assets/img/favorites.svg" alt="" />
+
+            <!-- <span class="header__user-actions__favorites-count"
+              v-if="favoriteStore.favouriteItems.length > 0 && userStore.user && userStore.user.id">
+              {{ favoriteStore.favouriteItems.length }}
+            </span> -->
           </router-link>
           <router-link to="/profile/" class="header__user-actions__user">
             <img src="@/assets/img/user.svg" alt="" />
           </router-link>
           <router-link to="/cart" class="header__user-actions__cart">
             <img src="@/assets/img/cart.svg" alt="" />
+            <!-- <span class="header__user-actions__cart-count" v-if="cartStore.cartItems.length > 0">{{
+              cartStore.cartItems.length
+            }}</span> -->
           </router-link>
         </div>
         <transition name="slide-fade">
-          <div v-if="show" class="header__dropdown header-dropdown">
-            <div class="header-dropdown__menu dropdown-menu">
-              <div class="dropdown-menu__item" v-for="(tab, index) in tabs" :key="index" @click="activeTab = index"
-                :class="{ 'active': activeTab === index }">
-                <button class="dropdown-menu__btn">
-                  {{ tab.title }}
-                </button>
-              </div>
-            </div>
-            <div class="header-dropdown__submenu dropdown-submenu" v-for="(tab, index) in tabs" :key="index"
-              v-show="activeTab === index">
-              <div class="dropdown-submenu__item" v-for="(content, contentIndex) in tab.content" :key="contentIndex">
-                <a href="#" class="dropdown-submenu__link">
-                  {{ content.link }}
-                </a>
-              </div>
-            </div>
-          </div>
+          <HeaderDropdownMenu v-if="showDropdown && categoryStore.categories.length > 0" @mouseenter="handleMouseOver"
+            @mouseleave="handleMouseLeave" :category="categoryStore.categories"
+            :subcategory="categoryStore.subcategories" />
         </transition>
       </div>
 
     </div>
+    <transition name="slide-down">
+      <BurgerMenu v-if="showBurgerMenu" :category="categoryStore.category" @close="showBurgerMenu = false" />
+    </transition>
   </header>
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import PopupMenu from '@/components/PopupMenu.vue';
+import HeaderDropdownMenu from '@/components/HeaderDropdownMenu.vue';
+import BurgerMenu from '@/components/BurgerMenu.vue';
 
 import { useCategoryStore } from '@/store/CategoryStore';
-import { useSubcategoryStore } from '@/store/SubcategoryStore';
+import { useUserStore } from '@/store/UserStore';
+import { useCartStore } from '@/store/CartStore';
+import { useFavouriteStore } from '@/store/FavouriteStore';
+import { useProductStore } from '@/store/ProductStore.js';
+
 
 export default {
+  components: {
+    HeaderDropdownMenu,
+    BurgerMenu,
+    PopupMenu,
+  },
+  data() {
+    return {
+      showDropdown: false,
+      dropdownMouseOver: false,
+      searchQuery: ''
+    };
+  },
+  methods: {
+    handleMouseOver() {
+      this.dropdownMouseOver = true;
+      this.showDropdown = true;
+    },
+    handleMouseLeave() {
+      this.dropdownMouseOver = false;
+      setTimeout(() => {
+        if (!this.dropdownMouseOver) {
+          this.showDropdown = false;
+        }
+      }, 200);
+    },
+  },
   props: {
+    // id: {},
     isMainPage: {
       type: Boolean,
       required: false,
       default: false,
     }
   },
-  setup() {
+  setup(props) {
+    const showBurgerMenu = ref(false)
     const show = ref(false)
     const showOutline = computed(() => show.value)
+    const categoryStore = useCategoryStore()
+    const userStore = useUserStore()
+    const cartStore = useCartStore()
+    const favoriteStore = useFavouriteStore()
+    const productStore = useProductStore()
+
+    function handleSearch(name) {
+      setTimeout(() => {
+        productStore.getProductFromSearch(name);
+      }, 200);
+    }
+    function clearInput() {
+      productStore.products.name = ''
+      productStore.getProductFromSearch(productStore.products.name)
+      console.log("search cleared");
+    }
+
+    onMounted(() => {
+      categoryStore.getCategories()
+      userStore.getUser()
+      // productStore.getProductFromSearch(productStore.searchProducts.name)
+      // productStore.getProductFromSearch(name)
+      // cartStore.getCartItems(userStore.user.id)
+      // favoriteStore.getFavouriteItems(userStore.user.id)
+    })
+    // watch(() => productStore.searchProducts, (name) => {
+    //   productStore.getProductFromSearch(name)
+    // })
+    // watch(() => props.id, (newId) => {
+    //   // Fetch data when props.id changes
+    //   cartStore.getCartItems(newId);
+    //   favoriteStore.getFavouriteItems(newId);
+    // });
 
     return {
+      userStore,
+      cartStore,
+      favoriteStore,
+      productStore,
       show,
       showOutline,
+      categoryStore,
+      showBurgerMenu,
+      handleSearch,
+      clearInput
     }
   },
-  data() {
-    return {
-      activeTab: 0,
-      tabs: [
-        {
-          title: 'Корм',
-          content: [
-            { link: 'Content for tab 1' },
-            { link: 'Content for tab 2' },
-            { link: 'Content for tab 3' },
+  // data() {
+  //   return {
+  //     activeTab: 0,
+  //     tabs: [
+  //       {
+  //         title: 'Корм',
+  //         content: [
+  //           { link: 'Content for tab 1' },
+  //           { link: 'Content for tab 2' },
+  //           { link: 'Content for tab 3' },
 
-          ]
-        },
-        {
-          title: 'Игрушки',
-          content: [
-            { link: 'Content for tab 1' },
-            { link: 'Content for tab 2' },
-          ]
-        },
-        {
-          title: 'Лежанки',
-          content: [
-            { link: 'Content for tab 1' }]
-        },
-        // { title: 'Игрушки', content: 'Content for tab 2' },
-        // { title: 'Лежанки', content: 'Content for tab 3' },
-      ],
-    };
-  },
+  //         ]
+  //       },
+  //       {
+  //         title: 'Игрушки',
+  //         content: [
+  //           { link: 'Content for tab 1' },
+  //           { link: 'Content for tab 2' },
+  //         ]
+  //       },
+  //       {
+  //         title: 'Лежанки',
+  //         content: [
+  //           { link: 'Content for tab 1' }]
+  //       },
+  //       // { title: 'Игрушки', content: 'Content for tab 2' },
+  //       // { title: 'Лежанки', content: 'Content for tab 3' },
+  //     ],
+  //   };
+  // },
 }
 </script>
 
 <style lang="scss">
+.slide-down-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-down-enter-active {
+  // transition: opacity 0.3s ease-out;
+  transition-delay: 0.1s;
+}
+
+.slide-down-leave-active {
+  transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-down-enter-from,
+.slide-down-leave-to {
+  transform: translateY(-100px);
+  // transform: scale(0.8);
+  opacity: 0;
+}
+
+.slide-down-enter-active .burger-menu__top .burger-menu__bottom,
+.slide-down-leave-active .burger-menu__top .burger-menu__bottom {
+  transition: all 0.3s ease-in-out;
+}
+
+.slide-down-enter-active .burger-menu__top .burger-menu__bottom {
+  transition-delay: 0.1s;
+}
+
+.slide-down-enter-from .burger-menu__top .burger-menu__bottom,
+.slide-down-leave-to .burger-menu__top .burger-menu__bottom {
+  transform: scale(0.8);
+  // transform: scale3d(0.5, 0.5, 0.5);
+  opacity: 0;
+}
+
+.slide-down-enter-active .burger-menu__middle,
+.slide-down-leave-active .burger-menu__middle {
+  transition: all 0.3s ease-in-out;
+}
+
+.slide-down-enter-active .burger-menu__middle {
+  transition-delay: 0.2s;
+}
+
+.slide-down-enter-from .burger-menu__middle,
+.slide-down-leave-to .burger-menu__middle {
+  transform: translateX(-100px);
+  // width: 0;
+  // transform: scale3d(0.5, 0.5, 0.5);
+  opacity: 0;
+}
+
+
+
 .slide-fade-enter-active {
   transition: all 0.3s ease-out;
 }
@@ -352,34 +472,35 @@ export default {
 .header__user-actions {
   &__favorites {
     position: relative;
+  }
 
-    &::before {
-      content: '';
-      position: absolute;
-      top: -7px;
-      right: -7px;
-      width: 15px;
-      height: 15px;
-      background: $blue-main;
-      border-radius: 50%;
-    }
+  &__favorites-count {
+    content: '';
+    position: absolute;
+    top: -7px;
+    right: -7px;
+    width: 15px;
+    height: 15px;
+    background: $blue-main;
+    border-radius: 50%;
   }
 
   &__user {}
 
   &__cart {
     position: relative;
+  }
 
-    &::before {
-      content: '';
-      position: absolute;
-      top: -5px;
-      right: -7px;
-      width: 15px;
-      height: 15px;
-      background: $blue-main;
-      border-radius: 50%;
-    }
+  &__cart-count {
+    content: '';
+    position: absolute;
+    top: -5px;
+    right: -7px;
+    width: 15px;
+    height: 15px;
+    background: $blue-main;
+    border-radius: 50%;
+
   }
 }
 
@@ -426,6 +547,7 @@ export default {
 }
 
 .header-search {
+  position: relative;
 
   // .header-search__btn
   &__btn {
@@ -467,135 +589,244 @@ export default {
       display: none;
     }
   }
+
+  &__results {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    max-width: 477px;
+    max-height: 300px;
+    background: $white;
+    border-radius: 20px;
+    // padding: 15px 0;
+    z-index: 4;
+    overflow-y: auto;
+  }
+
+  &__result {}
+
+  &__result-link {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    font-size: 16px;
+    line-height: 120%;
+    padding: 10px 20px;
+    color: $black-text;
+    border-bottom: 1px solid $gray-border;
+    transition: background 0.2s ease-in-out;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover {
+      transition: background 0.2s ease-in-out;
+      background: $white-bg;
+    }
+  }
+
+
+
+  &__result-img {
+    position: relative;
+    width: 50px;
+    height: 54px;
+    border-radius: 50%;
+
+    & img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__result-text {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1 1 auto;
+    // gap: 5px;
+  }
+
+  &__result-title {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 120%;
+  }
+
+  &__result-price {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 120%;
+    color: $blue-main;
+  }
 }
 
-.header-dropdown {
+// .header-dropdown {
 
-  // .header-dropdown__btn
+//   // .header-dropdown__btn
+//   &__btn {
+//     display: flex;
+//     flex-direction: row;
+//     // justify-content: space-between;
+//     align-items: center;
+//     gap: 26px;
+
+//     background: $blue-main;
+//     border-radius: 61px;
+//     padding: 17px 20px 14px 20px;
+//     position: relative;
+//     transition: background 0.2s;
+
+//     &:hover {
+//       background: $blue-second;
+//     }
+
+//     &::after {
+//       display: none;
+//       content: '';
+//       position: absolute;
+//       top: 14px;
+//       right: 20px;
+//       // transform: translateY(-50%);
+//       width: 24px;
+//       height: 24px;
+//       background: url('../assets/img/menu.svg') no-repeat 100%;
+//     }
+//   }
+
+//   // .header-dropdown__btn-label
+//   &__btn-label {
+//     font-size: 16px;
+//     color: $white;
+//   }
+
+//   // .header-dropdown__btn-burger
+//   &__btn-burger {
+
+//     width: 24px;
+//     height: 24px;
+//     // background: url('../assets/img/menu.svg') no-repeat 100%;
+//   }
+
+//   // .header-dropdown__menu
+//   &__menu {
+//     display: flex;
+//     flex-direction: column;
+//   }
+
+//   // .header-dropdown__submenu
+//   &__submenu {
+//     display: flex;
+//     flex-direction: column;
+//     margin-left: 20px;
+
+//   }
+
+//   // .header-dropdown__item
+//   &__item {
+//     font-weight: 600;
+//     font-size: 16px;
+//     line-height: 120%;
+//   }
+
+//   // .header-dropdown__link
+//   &__link {
+//     display: block;
+//     padding: 10px 20px;
+
+//     &:hover {
+//       background-color: $blue-bg-second;
+//     }
+//   }
+// }
+
+// .dropdown-menu {
+
+//   // .dropdown-menu__item
+//   &__item {}
+
+//   &__item.active {
+//     .dropdown-menu__btn {
+//       background-color: $blue-bg-third;
+//     }
+//   }
+
+//   // .dropdown-menu__link
+//   &__btn {
+//     display: block;
+//     padding: 10px 0 10px 20px;
+//     text-align: start;
+//     width: 100%;
+//     font-weight: 600;
+//     font-size: 16px;
+//     line-height: 120%;
+
+//     &:hover {
+//       background-color: $blue-bg-third;
+
+//     }
+//   }
+// }
+
+// .dropdown-submenu {
+
+//   // .dropdown-menu__item
+//   &__item {
+//     &:not(:last-child) {
+//       margin-bottom: 15px;
+//     }
+//   }
+
+//   // .dropdown-menu__link
+//   &__link {
+//     font-weight: 400;
+//     font-size: 14px;
+//     line-height: 120%;
+//     color: $silver-text;
+
+//   }
+// }
+
+.header-menu {
+
+  // .header-menu__btn
   &__btn {
     display: flex;
     flex-direction: row;
     // justify-content: space-between;
     align-items: center;
     gap: 26px;
-
     background: $blue-main;
     border-radius: 61px;
     padding: 17px 20px 14px 20px;
     position: relative;
+    color: $white;
     transition: background 0.2s;
 
     &:hover {
       background: $blue-second;
     }
-
-    &::after {
-      display: none;
-      content: '';
-      position: absolute;
-      top: 14px;
-      right: 20px;
-      // transform: translateY(-50%);
-      width: 24px;
-      height: 24px;
-      background: url('../assets/img/menu.svg') no-repeat 100%;
-    }
   }
 
-  // .header-dropdown__btn-label
-  &__btn-label {
-    font-size: 16px;
-    color: $white;
+  // .header-menu__burger
+  &__burger {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background: $blue-main;
+    border-radius: 43px;
+    padding: 12px 20px;
+    width: 50px;
+    height: 50px;
   }
-
-  // .header-dropdown__btn-burger
-  &__btn-burger {
-
-    width: 24px;
-    height: 24px;
-    // background: url('../assets/img/menu.svg') no-repeat 100%;
-  }
-
-  // .header-dropdown__menu
-  &__menu {
-    display: flex;
-    flex-direction: column;
-  }
-
-  // .header-dropdown__submenu
-  &__submenu {
-    display: flex;
-    flex-direction: column;
-    margin-left: 20px;
-
-  }
-
-  // .header-dropdown__item
-  &__item {
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 120%;
-  }
-
-  // .header-dropdown__link
-  &__link {
-    display: block;
-    padding: 10px 20px;
-
-    &:hover {
-      background-color: $blue-bg-second;
-    }
-  }
-}
-
-.dropdown-menu {
-
-  // .dropdown-menu__item
-  &__item {}
-
-  &__item.active {
-    .dropdown-menu__btn {
-      background-color: $blue-bg-third;
-    }
-  }
-
-  // .dropdown-menu__link
-  &__btn {
-    display: block;
-    padding: 10px 0 10px 20px;
-    text-align: start;
-    width: 100%;
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 120%;
-
-    &:hover {
-      background-color: $blue-bg-third;
-
-    }
-  }
-}
-
-.dropdown-submenu {
-
-  // .dropdown-menu__item
-  &__item {
-    &:not(:last-child) {
-      margin-bottom: 15px;
-    }
-  }
-
-  // .dropdown-menu__link
-  &__link {
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 120%;
-    color: $silver-text;
-
-  }
-}
-
-.header-menu {
 
   // .header-menu__list-categories
   &__list-categories {}
@@ -638,6 +869,8 @@ export default {
     background: rgba(255, 255, 255, 0.2);
   }
 
+
+
   &__btn {
     border: 2px solid $white;
 
@@ -653,11 +886,11 @@ export default {
 
 // .burger-btn
 .burger-btn {
-  position: relative;
-  // display: none;
-  width: 24px;
-  height: 24px;
-  background: url('../assets/img/menu.svg') no-repeat 100%;
+  // position: relative;
+  // // display: none;
+  // width: 24px;
+  // height: 24px;
+  // background: url('../assets/img/menu.svg') no-repeat 100%;
   // cursor: pointer;
 
   // .burger-btn__line
@@ -726,6 +959,9 @@ export default {
 
 @media (max-width: 996px) {
   .header {
+    &__bottom {
+      // display: none;
+    }
 
     // display: none;
     &__user-actions {
@@ -733,8 +969,34 @@ export default {
     }
   }
 
-  .header-dropdown {
-    &__btn-label {
+  .header-menu {
+    &__btn {
+      display: none;
+    }
+
+    &__burger {
+      display: flex;
+    }
+
+    &__list {
+      // gap: 15px;
+      // display: none;
+    }
+  }
+
+
+  // .header-dropdown {
+  //   &__btn-label {
+  //     display: none;
+  //   }
+  // }
+}
+
+@media (max-width: 768px) {
+  .header {}
+
+  .header-menu {
+    &__list {
       display: none;
     }
   }

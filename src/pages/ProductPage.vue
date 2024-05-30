@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { onMounted } from 'vue'
+import { onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
@@ -49,6 +49,9 @@ export default {
       productStore.getProduct(currentProductId)
     },
     )
+    watch(() => route.params.id, (newId) => {
+      productStore.getProduct(newId)
+    });
     return {
       productStore,
     }

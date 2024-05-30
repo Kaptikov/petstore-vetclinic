@@ -18,10 +18,19 @@
 </template>
 
 <script>
-import { defineProps } from 'vue'
+import { defineProps, ref, onMounted, computed, onBeforeUnmount } from 'vue'
+import { useRoute } from 'vue-router'
+import { useProductStore } from '@/store/ProductStore.js';
 
 export default {
 	props: {
+		// options: {
+		// 	type: Array,
+		// required: true,
+		// 	default() {
+		// 		return []
+		// 	}
+		// },
 		options: {
 			type: Array,
 			required: true,
@@ -29,37 +38,93 @@ export default {
 				return []
 			}
 		},
+		products: {}
 	},
 	data() {
 		return {
 			selectedOption: '',
 			isDropdownVisible: false,
+
 		};
 	},
-	methods: {
-		toggleOptionSelect(option) {
-			this.selectedOption = option.name;
-			this.isDropdownVisible = false;
-		},
-		toggleDropdown() {
-			this.isDropdownVisible = !this.isDropdownVisible;
-		},
+	// methods: {
+	// 	toggleOptionSelect(option) {
+	// 		if (option.value === 1) {
+	// 			this.$store.dispatch('getSortedProductsbyDescending', this.categoryId);
+	// 		} else if (option.value === 2) {
+	// 			this.$store.dispatch('getSortedProductsbyAscending', this.categoryId);
+	// 		}
+	// 		this.selectedOption = option.name;
+	// 		this.isDropdownVisible = false;
+	// 	},
+	// 	toggleDropdown() {
+	// 		this.isDropdownVisible = !this.isDropdownVisible;
+	// 	},
 
-		hideDropdown(event) {
-			const target = event.target;
-			if (!this.$el.contains(target)) {
-				this.isDropdownVisible = false;
+	// 	hideDropdown(event) {
+	// 		const target = event.target;
+	// 		if (!this.$el.contains(target)) {
+	// 			this.isDropdownVisible = false;
+	// 		}
+	// 	},
+	// },
+	// mounted() {
+	// 	if (this.options.length > 0) {
+	// 		this.selectedOption = this.options[0].name;
+	// 	}
+	// 	document.addEventListener('click', this.hideDropdown);
+	// },
+	// beforeUnmount() {
+	// 	document.removeEventListener('click', this.hideDropdown);
+	// },
+
+	setup(props) {
+		const route = useRoute()
+		const productStore = useProductStore()
+		const categoryId = route.params.id
+		const selectedOption = ref('');
+		const isDropdownVisible = ref(false);
+
+		const toggleOptionSelect = (option) => {
+			const categoryId = route.params.id
+			if (option.value === 1) {
+				productStore.getSortedProductsbyAscending(categoryId);
+			} else if (option.value === 2) {
+				productStore.getSortedProductsbyDescending(categoryId);
 			}
-		},
-	},
-	mounted() {
-		if (this.options.length > 0) {
-			this.selectedOption = this.options[0].name;
-		}
-		document.addEventListener('click', this.hideDropdown);
-	},
-	beforeUnmount() {
-		document.removeEventListener('click', this.hideDropdown);
+			selectedOption.value = option.name;
+			isDropdownVisible.value = false;
+		};
+
+		const toggleDropdown = () => {
+			isDropdownVisible.value = !isDropdownVisible.value;
+		};
+
+		const hideDropdown = (event) => {
+			const target = event.target;
+			if (!event.target.closest('.catalog-controls__select')) {
+				isDropdownVisible.value = false;
+			}
+		};
+
+		onMounted(() => {
+			if (props.options.length > 0) {
+				selectedOption.value = props.options[0].name;
+			}
+			document.addEventListener('click', hideDropdown);
+		});
+
+		onBeforeUnmount(() => {
+			document.removeEventListener('click', hideDropdown);
+		});
+
+		return {
+			selectedOption,
+			isDropdownVisible,
+			toggleOptionSelect,
+			toggleDropdown,
+			categoryId,
+		};
 	},
 }
 </script>

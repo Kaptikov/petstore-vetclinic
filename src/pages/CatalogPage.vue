@@ -11,6 +11,7 @@
 <script>
 // import { onMounted, onUpdated, defineComponent } from 'vue'
 import { useProductStore } from '../store/ProductStore'
+import { useUserStore } from "@/store/UserStore";
 
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
@@ -28,6 +29,7 @@ export default {
     Recommendations,
   },
 
+
   // props: {
   //   id: {
   //     type: String,
@@ -35,15 +37,17 @@ export default {
   //   },
   // },
 
-  // setup(props) {
-  //   const productStore = useProductStore()
-  //   onMounted(() => {
-  //     productStore.getProduct(props.id)
-  //   })
-  //   return {
-  //     productStore,
-  //   }
-  // },
+  setup(props) {
+    // const productStore = useProductStore()
+    // const userStore = useUserStore()
+    // onMounted(() => {
+    //   // productStore.getProduct(props.id)
+    //   // userStore.getUser()
+    // })
+    return {
+      // productStore,
+    }
+  },
 }
 </script>
 

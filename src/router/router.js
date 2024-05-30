@@ -3,6 +3,7 @@ import CatalogPage from '../pages/CatalogPage.vue'
 import ProductPage from '../pages/ProductPage.vue'
 import FavouritePage from '../pages/FavouritePage.vue'
 import CartPage from '../pages/CartPage.vue'
+import VetclinicPage from '../pages/VetclinicPage.vue'
 import ProfilePage from '../pages/ProfilePage.vue'
 import LoginPage from '../pages/LoginPage.vue'
 import SignUpPage from '../pages/SignUpPage.vue'
@@ -16,7 +17,7 @@ const routes = [
     component: Main,
   },
   {
-    path: '/catalog/:id',
+    path: '/catalog/:id(\\d+)',
     name: 'catalog',
     component: CatalogPage,
   },
@@ -34,6 +35,11 @@ const routes = [
     path: '/cart/',
     name: 'cartPage',
     component: CartPage,
+  },
+  {
+    path: '/vetclinic/',
+    name: 'vetclinicPage',
+    component: VetclinicPage,
   },
   {
     path: '/profile/',

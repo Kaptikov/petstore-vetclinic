@@ -30,7 +30,7 @@
 			<div class="main-block__img-bg">
 				<picture>
 					<!-- <source media="(min-width: 1201px)" srcset="../assets/img/header-bg-4.png"> -->
-					<source media="(max-width: 1200px)" srcset="../assets/img/header-bg-4.png">
+					<source media="(max-width: 1200px)" srcset="@/assets/img/header-bg-4.png">
 					<img src="@/assets/img/header-bg-3.png" alt="Description">
 				</picture>
 				<!-- <img class="main-block__img--1200" src="@/assets/img/header-bg-3.png" alt=""> -->
@@ -41,7 +41,7 @@
 <script>
 export default {}
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .main-block {
 	position: relative;
 	overflow: hidden;

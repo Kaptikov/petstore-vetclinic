@@ -1,21 +1,32 @@
 <template>
 	<div class="catalog">
 		<div class="catalog__container _container">
-			<Filters />
+			<Filters :products="productStore.products" />
 			<div class="catalog__wrapper">
 				<Banner />
 				<Subcategories :subcategory="categoryStore.subcategories" />
 				<div class="catalog__title">Корм</div>
 				<div class="catalog__controls catalog-controls">
 					<div class="catalog-controls__quantity">
-						{{ 203 }} товара
+						{{ productStore.products.length }}
 					</div>
 					<div class="catalog-controls__filter-per-page">
 						<div class="catalog-controls__label">Показывать по:</div>
-						<button class="catalog-controls__btn-per-page">9</button>
-						<button class="catalog-controls__btn-per-page">12</button>
-						<button class="catalog-controls__btn-per-page">18</button>
-						<button class="catalog-controls__btn-per-page">24</button>
+						<!-- <button class="catalog-controls__btn-per-page"
+							:class="{ 'catalog-controls__btn-per-page--active': productsPerPage === 2 }"
+							@click="setProductsPerPage(2)">9</button>
+						<button class="catalog-controls__btn-per-page"
+							:class="{ 'catalog-controls__btn-per-page--active': productsPerPage === 3 }"
+							@click="setProductsPerPage(3)">12</button>
+						<button class="catalog-controls__btn-per-page"
+							:class="{ 'catalog-controls__btn-per-page--active': productsPerPage === 5 }"
+							@click="setProductsPerPage(5)">18</button>
+						<button class="catalog-controls__btn-per-page"
+							:class="{ 'catalog-controls__btn-per-page--active': productsPerPage === 24 }"
+							@click="setProductsPerPage(24)">24</button> -->
+						<button v-for="(count, index) in [2, 3, 5, 12, 18, 24]" :key="index" class="catalog-controls__btn-per-page"
+							:class="{ 'catalog-controls__btn-per-page--active': productsPerPage === count }"
+							@click="setProductsPerPage(count)">{{ count }}</button>
 					</div>
 					<div class="catalog-controls__filter-view-mode">
 						<button class="catalog-controls__btn-view-mode">
@@ -50,11 +61,12 @@
 							</svg>
 						</button>
 					</div>
-					<Select :options="options" />
+					<Select :products="productStore.products" :options="productStore.options" />
 				</div>
 				<div class="catalog__products" v-if="productStore.products.length > 0">
-					<!-- <CardProduct v-for="n in 5" :key="n" /> -->
-					<CardProduct v-for="product of productStore.products" :key="product.id" :product="product" />
+					<!-- < CardProduct v -for=" n in 5" :key="n" /> -->
+					<CardProduct v-for="product of productStore.products" :key="product.id" :product="product"
+						:id="userStore.user.id" />
 				</div>
 				<div class="catalog__products" v-else>
 					Продукты не найдены
@@ -66,9 +78,10 @@
 </template>
 
 <script>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { useProductStore } from '@/store/ProductStore'
 import { useCategoryStore } from '@/store/CategoryStore'
+import { useUserStore } from '@/store/UserStore'
 import { useRoute } from 'vue-router'
 
 import Filters from '@/components/CatalogPage/Filters.vue'
@@ -85,17 +98,32 @@ export default {
 		CardProduct,
 		Subcategories,
 	},
-	data() {
-		return {
-			options: [
-				{ name: 'Самые популярные', value: 1 },
-				{ name: 'Option 2', value: 2 },
-				{ name: 'Option 3', value: 3 },
-				{ name: 'Option 4', value: 4 },
-			]
-		}
-	},
+	// data() {
+	// 	return {
+	// 		options: [
+	// 			{ name: 'Самые популярные', value: 1 },
+	// 			{ name: 'Самые дешевые', value: 2 },
+	// 			{ name: 'Option 3', value: 3 },
+	// 			{ name: 'Option 4', value: 4 },
+	// 		]
+	// 	}
+	// },
+	// data() {
+	// 	return {
+	// 		productsPerPage: 2,
+	// 	};
+	// },
+	// methods: {
+	// 	setProductsPerPage(value) {
+	// 		this.productsPerPage = value;
+	// 	},
+	// },
 
+	// computed: {
+	// 	filteredProducts() {
+	// 		return this.productStore.products.slice(0, this.productsPerPage);
+	// 	},
+	// },
 	props: {
 		id: {
 			type: String,
@@ -107,15 +135,39 @@ export default {
 		const route = useRoute()
 		const productStore = useProductStore()
 		const categoryStore = useCategoryStore()
+		const userStore = useUserStore()
+		const productsPerPage = ref(2);
+
+		function setProductsPerPage(value) {
+			const categoryId = route.params.id
+			productsPerPage.value = value;
+			console.log('Setting products per page to:', value)
+			// productStore.getProductByCategory(categoryId, { perPage: 2 })
+		}
 
 		onMounted(() => {
+			userStore.getUser()
 			const categoryId = route.params.id
 			categoryStore.getSubcategories(categoryId)
 			productStore.getProductByCategory(categoryId)
 		})
+
+		watch(() => route.params.id, (newId) => {
+			productStore.getProductByCategory(newId);
+			categoryStore.getSubcategories(newId)
+		});
+
+		// watch(() => route.params.id, (newId) => {
+		// 	productStore.getProductByCategory(newId, { perPage: productsPerPage.value })
+		// 	categoryStore.getSubcategories(newId)
+		// })
+
 		return {
 			productStore,
 			categoryStore,
+			userStore,
+			setProductsPerPage,
+			productsPerPage,
 		}
 	},
 }
@@ -251,6 +303,11 @@ export default {
 				background: $gray-text;
 			}
 		}
+	}
+
+	// .catalog-controls__btn-per-page active
+	&__btn-per-page--active {
+		color: $blue-main;
 	}
 
 	// .catalog-controls__filter-view-mode

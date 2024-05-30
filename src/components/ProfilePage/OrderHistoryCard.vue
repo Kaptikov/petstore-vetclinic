@@ -1,19 +1,26 @@
 <template>
   <div class="order-history__item">
     <div class="order-history__item-top">
-      <router-link to="/order/" class="order-history__item-title">Заказ № 1745745734</router-link>
-      <div class="order-history__item-date">от 02.02.2024</div>
+      <!-- <router-link to="/order/" class="order-history__item-title">Заказ № 1745745734</router-link> -->
+      <PopupMenuOrder :order="order" />
+      <div class="order-history__item-date"> от {{ order.orderDate }}</div>
     </div>
 
     <div class="order-history__item-bottom">
-      <div class="order-history__item-status">Оплачен. Заказ выполнен</div>
-      <div class="order-history__item-price">3 446 ₽</div>
+      <div class="order-history__item-status">{{ order.status }}</div>
+      <div class="order-history__item-price">{{ order.totalPrice }} ₽</div>
     </div>
   </div>
 </template>
 <script>
+import PopupMenuOrder from '@/components/ProfilePage/PopupMenuOrder.vue'
 export default {
-
+  components: {
+    PopupMenuOrder
+  },
+  props: {
+    order: {}
+  }
 }
 </script>
 <style lang="scss">

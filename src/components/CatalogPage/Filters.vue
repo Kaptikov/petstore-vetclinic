@@ -33,12 +33,16 @@
 					<div class="filters__text">Ценовой диапазон</div>
 					<form class="filters__form">
 						<div class="filters__range filters-range">
-							<input class="filters-range__input" type="range" min="0" max="100" v-model="rangeValues.min">
-							<input class="filters-range__input" type="range" min="0" max="100" v-model="rangeValues.max">
+							<input class="filters-range__input" type="range" value="0" min="0" max="99999" v-model="min"
+								@input="filterFromPrice(min, max)">
+							<input class="filters-range__input" type="range" value="99999" min="0" max="99999" v-model="max"
+								@input="filterFromPrice(min, max)">
 						</div>
 						<div class="filters-range__text">
-							<input class="filters-range__input-text" type="number" placeholder="100" v-model="rangeValues.min" />
-							<input class="filters-range__input-text" type="number" placeholder="100" v-model="rangeValues.max" />
+							<input class="filters-range__input-text" type="text" placeholder="100" v-model="min"
+								@input="filterFromPrice(min, max)" />
+							<input class="filters-range__input-text" type="text" placeholder="100" v-model="max"
+								@input="filterFromPrice(min, max)" />
 						</div>
 						<!-- <p class="filters-range__text">Диапазон: {{ rangeValues.min }} - {{ rangeValues.max }}</p> -->
 					</form>
@@ -142,16 +146,11 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed, } from 'vue'
+import { useRoute } from 'vue-router'
+import { useProductStore } from '@/store/ProductStore.js';
 
 export default {
-	setup() {
-		const show = ref(false)
-
-		return {
-			show,
-		}
-	},
 	data() {
 		return {
 			items: [
@@ -161,16 +160,39 @@ export default {
 			],
 			rangeValues: {
 				min: 0,
-				max: 100
+				max: 99999
 			}
 		};
-
+	},
+	props: {
+		products: {}
 	},
 	methods: {
 		toggleFilters(category) {
 			category.showsubcategory = !category.showsubcategory
 		},
 	},
+	setup() {
+		const show = ref(false)
+		const min = ref(1);
+		const max = ref(99999);
+		const route = useRoute()
+		// const categoryId = route.params.id
+		const productStore = useProductStore()
+
+		function filterFromPrice(min, max) {
+			const categoryId = route.params.id
+			productStore.getFilteredProducts(categoryId, min, max);
+		}
+
+		return {
+			productStore,
+			show,
+			filterFromPrice,
+			min,
+			max
+		}
+	}
 }
 
 </script>

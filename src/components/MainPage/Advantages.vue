@@ -41,7 +41,7 @@ export default {
 
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .advantages {
 	padding-top: 45px;
 	padding-bottom: 110px;

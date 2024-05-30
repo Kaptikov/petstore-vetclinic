@@ -10,7 +10,8 @@
 				</router-link>
 			</div>
 			<transition name="slide-fade">
-				<category-dropdown-menu v-if="categoryStore.categories.length > 0" :subcategory="categoryStore.subcategories"
+				<category-dropdown-menu v-if="showDropdown && categoryStore.categories.length > 0"
+					@mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave" :subcategory="categoryStore.subcategories"
 					:subsubcategory="categoryStore.subsubcategories" />
 			</transition>
 		</div>
@@ -28,7 +29,15 @@ export default {
 		CategoryCard,
 		CategoryDropdownMenu
 	},
+	data() {
+		return {
+			// showDropdown: false,
+			// dropdownMouseOver: false,
+		}
+	},
 	setup() {
+		const showDropdown = ref(false)
+		const dropdownMouseOver = ref(false)
 		const categoryStore = useCategoryStore()
 		const parentId = ref(null)
 		parentId.value = 2
@@ -36,10 +45,23 @@ export default {
 			parentId.value = categoryId
 			console.log("parentId", parentId);
 			categoryStore.getSubcategories(parentId.value);
+			dropdownMouseOver.value = true;
+			showDropdown.value = true;
 			// categoryStore.getSubSubcategories(parentId.value);
+		}
+
+		const handleMouseEnter = () => {
+			dropdownMouseOver.value = true;
+			showDropdown.value = true;
 		}
 		const handleMouseLeave = () => {
 			parentId.value = null
+			dropdownMouseOver.value = false;
+			setTimeout(() => {
+				if (!dropdownMouseOver.value) {
+					showDropdown.value = false;
+				}
+			}, 200);
 		}
 
 		onMounted(() => {
@@ -52,7 +74,10 @@ export default {
 			categoryStore,
 			parentId,
 			handleMouseOver,
-			handleMouseLeave
+			handleMouseLeave,
+			handleMouseEnter,
+			showDropdown,
+			dropdownMouseOver,
 		}
 	},
 }

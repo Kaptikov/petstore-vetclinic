@@ -6,7 +6,7 @@
         <AsideNavigation :user="userStore.user" />
         <div class="profile-page__wrapper" v-if="userStore.user && userStore.user.id">
           <PersonalData :user="userStore.user" />
-          <OrderHistory :user="userStore.user" />
+          <OrderHistory :user="userStore.user" :id="userStore.user.id" />
           <Animals :id="userStore.user.id" />
         </div>
       </template>

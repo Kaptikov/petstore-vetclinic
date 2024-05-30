@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
 import { useUserStore } from '@/store/UserStore.js'
+import { useCartStore } from '@/store/CartStore.js'
+import { useFavouriteStore } from '@/store/FavouriteStore.js'
 
 export const useLoginStore = defineStore('loginStore', {
   state: () => ({
@@ -36,9 +38,13 @@ export const useLoginStore = defineStore('loginStore', {
     async logoutUser() {
       try {
         // const userStore = useUserStore()
+        const cartStore = useCartStore()
+        const favouriteStore = useFavouriteStore()
         this.token = null
         localStorage.removeItem('token')
         // userStore.user = null
+        // cartStore.cartItems = null
+        // favouriteStore.favouriteItems = null
         // await userStore.getUser()
         // console.log(this.user)
         return true

@@ -1,6 +1,9 @@
 <template>
-  <div class="catalog__subcategories subcategories" v-for=" subcategory of subcategory" :key="subcategory.id">
-    <button class="subcategories__item">{{ subcategory.name }}</button>
+  <div class="catalog__subcategories subcategories">
+
+    <button class="subcategories__item" v-for="subcategory of subcategory" :key="subcategory.id"
+      @click="$router.push({ name: 'catalog', params: { id: subcategory.id } })">{{ subcategory.name
+      }}</button>
   </div>
 </template>
 <script>

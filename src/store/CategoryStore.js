@@ -23,7 +23,9 @@ export const useCategoryStore = defineStore('categoryStore', {
       try {
         const response = await axios.get('/api/Category/categories')
         this.categories = response.data
+        this.category = response.data
         console.log('categories', this.categories)
+        console.log('categories', this.category)
       } catch (error) {
         console.log(error)
       }
