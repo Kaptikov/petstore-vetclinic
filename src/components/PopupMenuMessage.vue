@@ -5,29 +5,10 @@
   <transition name="popup-fade">
     <div class="header__popup-menu header-popup" v-if="isOpen">
       <div class="header-popup__content">
-        <h4 class="header-popup__title">Запись на прием</h4>
-        <p class="header-popup__text">Оставьте свои контакты и мы обсудим все детали!</p>
-        <form class="header-popup__form">
-          <div class="header-popup__item">
-            <label class="header-popup__label" for="name">Имя*</label>
-            <input class="header-popup__input" type="text" id="name" v-model="applicationStore.applications.name"
-              required />
-
-            <label class="header-popup__label" for="phone">Телефон*</label>
-            <input class="header-popup__input" type="tel" id="phone" placeholder="+7 (___) ___-__-__"
-              v-model="applicationStore.applications.phone" required />
-          </div>
-          <button class="header-popup__btn header-popup__btn--save" type="submit"
-            @click.prevent="btnAddApplication(applicationStore.applications.name, applicationStore.applications.phone)">
-            Оставить заявку
-          </button>
-        </form>
-        <div class="header-popup__privocy-policy">
-          Нажимая на кнопку “Заказать расчёт” я соглашаюсь на
-          <a href="" class="header-popup__link">обработку персонал ьных данных</a>
-          и соглашаюсь с
-          <a href="" class="header-popup__link">политикой конфиденциальности</a>
-        </div>
+        <h4 class="header-popup__title">Заявка отправлена</h4>
+        <button class="header-popup__btn header-popup__btn--save" type="submit" @click.prevent="closePopup">>
+          Понятно
+        </button>
         <button class="header-popup__btn header-popup__btn--cancel" type="button" @click="closePopup">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -36,24 +17,6 @@
           </svg>
         </button>
       </div>
-
-      <transition name="popup-fade">
-        <div class="header-popup__content">
-          <h4 class="header-popup__title">Заявка отправлена</h4>
-          <p class="header-popup__text">Оставьте свои контакты и мы обсудим все детали!</p>
-          <button class="header-popup__btn header-popup__btn--save" type="submit" @click.prevent="closePopup">>
-            Понятно
-          </button>
-
-          <button class="header-popup__btn header-popup__btn--cancel" type="button" @click="closePopup">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M8.64395 6.99989L13.6606 1.99489C13.8803 1.7752 14.0037 1.47724 14.0037 1.16656C14.0037 0.855872 13.8803 0.557912 13.6606 0.338224C13.4409 0.118537 13.143 -0.00488281 12.8323 -0.00488281C12.5216 -0.00488281 12.2236 0.118537 12.004 0.338224L6.99895 5.35489L1.99395 0.338224C1.77426 0.118537 1.4763 -0.00488281 1.16562 -0.00488281C0.854934 -0.00488281 0.556973 0.118537 0.337286 0.338224C0.117598 0.557912 -0.00582146 0.855872 -0.00582147 1.16656C-0.00582147 1.47724 0.117598 1.7752 0.337286 1.99489L5.35395 6.99989L0.337286 12.0049C0.227936 12.1133 0.141143 12.2424 0.0819125 12.3846C0.0226824 12.5267 -0.0078125 12.6792 -0.0078125 12.8332C-0.0078125 12.9872 0.0226824 13.1397 0.0819125 13.2819C0.141143 13.4241 0.227936 13.5531 0.337286 13.6616C0.445742 13.7709 0.574777 13.8577 0.716946 13.9169C0.859115 13.9762 1.01161 14.0067 1.16562 14.0067C1.31963 14.0067 1.47212 13.9762 1.61429 13.9169C1.75646 13.8577 1.8855 13.7709 1.99395 13.6616L6.99895 8.64489L12.004 13.6616C12.1124 13.7709 12.2414 13.8577 12.3836 13.9169C12.5258 13.9762 12.6783 14.0067 12.8323 14.0067C12.9863 14.0067 13.1388 13.9762 13.281 13.9169C13.4231 13.8577 13.5522 13.7709 13.6606 13.6616C13.77 13.5531 13.8568 13.4241 13.916 13.2819C13.9752 13.1397 14.0057 12.9872 14.0057 12.8332C14.0057 12.6792 13.9752 12.5267 13.916 12.3846C13.8568 12.2424 13.77 12.1133 13.6606 12.0049L8.64395 6.99989Z"
-                fill="currentColor" />
-            </svg>
-          </button>
-        </div>
-      </transition>
     </div>
   </transition>
 
@@ -61,8 +24,6 @@
 
 <script>
 import { onMounted, ref } from 'vue';
-import { useUserStore } from '@/store/UserStore.js';
-import { useApplicationStore } from '@/store/ApplicationStore.js';
 
 export default {
   props: {
@@ -75,51 +36,22 @@ export default {
     }
   },
   setup(props) {
-    const userStore = useUserStore();
-    const applicationStore = useApplicationStore();
     const isOpen = ref(false);
-    // const editedUser = ref({ ...props.user });
-    // console.log(editedUser);
 
-    onMounted(() => {
-
-      // userStore.getUser();
-    });
 
     const openPopup = () => {
-      // userStore.getUser();
-      // editedUser.value = { ...props.user };
       isOpen.value = true;
-      // console.log(editedUser);
     };
 
     const closePopup = () => {
       isOpen.value = false;
-      applicationStore.applications.name = '';
-      applicationStore.applications.phone = '';
     };
 
-    function btnAddApplication(name, phone) {
-      applicationStore.addApplication(name, phone)
-      closePopup()
-    }
-
-    // const saveEdit = async () => {
-    //   userStore.getUser();
-    // };
-
-    // onMounted(() => {
-    //   applicationStore.getApplications();
-    // })
 
     return {
       isOpen,
-      userStore,
-      applicationStore,
-      btnAddApplication,
       openPopup,
       closePopup,
-      // saveEdit,
     };
   },
 };
