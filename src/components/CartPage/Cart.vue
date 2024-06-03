@@ -89,4 +89,22 @@ export default {
 		max-width: 756px;
 	}
 }
+
+@media (max-width: 1024px) {
+	.cart {
+
+		// .cart__title
+		&__title {}
+
+		// .cart__wrapper
+		&__wrapper {
+			flex-direction: column;
+		}
+
+		// .cart__items
+		&__items {
+			max-width: 100%;
+		}
+	}
+}
 </style>

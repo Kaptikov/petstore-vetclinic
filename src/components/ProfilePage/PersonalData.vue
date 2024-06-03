@@ -71,12 +71,12 @@ import { onMounted } from 'vue';
 import { useUserStore } from '@/store/UserStore.js';
 // import { useLoginStore } from '@/store/LoginStore.js';
 import PopupMenuUser from '@/Components/ProfilePage/PopupMenuUser.vue';
-import PopupMenu from '@/Components/ProfilePage/PopupMenu.vue';
+// import PopupMenu from '@/Components/ProfilePage/PopupMenu.vue';
 
 export default {
   components: {
     PopupMenuUser,
-    PopupMenu,
+    // PopupMenu,
   },
   data() {
     return {

@@ -345,7 +345,7 @@ export default {
   &__container {
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: clamp(0.75rem, -1.381rem + 6.13vw, 1.563rem);
   }
 
   // .header__top
@@ -359,6 +359,16 @@ export default {
   // .header__logo
   &__logo {
     position: relative;
+    width: clamp(7.25rem, -6.645rem + 28.95vw, 11.375rem);
+    height: clamp(1.563rem, -1.385rem + 6.14vw, 2.438rem);
+
+    & img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
   }
 
   // .header__text
@@ -513,8 +523,9 @@ export default {
 
   // .header-socials__phone
   &__phone {
-    font-size: 16px;
+    font-size: clamp(14px, 0.547rem + 0.94vw, 16px);
     line-height: 120%;
+    white-space: nowrap;
   }
 
   // .header-socials__viber
@@ -993,10 +1004,61 @@ export default {
 }
 
 @media (max-width: 768px) {
-  .header {}
+  .header {
+    // position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: #EDF1FB;
+    }
+
+    &__container {
+      flex-direction: row;
+      justify-content: space-between;
+      // gap: clamp(0.75rem, -1.381rem + 6.13vw, 1.563rem);
+    }
+
+    &__top {
+      width: 100%;
+    }
+
+    &__bottom {
+      padding: 0;
+    }
+  }
 
   .header-menu {
     &__list {
+      display: none;
+    }
+
+    &__burger {
+      width: 34px;
+      height: 34px;
+      padding: 11px 8px;
+      border-radius: 8px;
+    }
+  }
+
+  .header-second {
+    &::after {
+
+      background: #9BB9FF;
+    }
+  }
+}
+
+@media (max-width: 556px) {
+  .header-socials {
+    margin-left: 27px;
+
+    &__viber,
+    &__vk {
       display: none;
     }
   }

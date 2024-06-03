@@ -218,7 +218,7 @@ export default {
 	// .catalog__products
 	&__products {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(250px, 282px));
 		gap: 20px;
 		margin-top: 19px;
 	}

@@ -116,4 +116,10 @@ export default {
     }
   }
 }
+
+@media (max-width: 1024px) {
+  .cart__aside {
+    max-width: 100%;
+  }
+}
 </style>

@@ -44,4 +44,51 @@ export default {
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.product-categories__dropdown-menu {
+
+  // .product-categories__dropdown-menu__column
+  &__column {}
+
+  // .product-categories__dropdown-menu__label
+  &__label {
+    display: block;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 120%;
+    margin-bottom: 16px;
+  }
+
+  // .product-categories__dropdown-menu__list
+  &__list {}
+
+  // .product-categories__dropdown-menu__item
+  &__item {
+    display: block;
+    font-size: 16px;
+    margin-left: -20px;
+
+    &:not(:last-child) {
+      margin-bottom: 18px;
+    }
+  }
+
+  // .product-categories__dropdown-menu__link
+  &__link {
+    padding: 9px 20px;
+    border-radius: 76px;
+
+    opacity: 0.8;
+    transition: 0.2s ease-in-out;
+
+    &:hover {
+      background: #f7f8fd;
+      border-radius: 76px;
+      opacity: 1;
+      color: $black-text;
+      transition: 0.2s ease;
+    }
+
+  }
+}
+</style>

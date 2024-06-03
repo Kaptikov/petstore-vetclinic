@@ -128,13 +128,14 @@ export default {
 	},
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .catalog-controls {
 
 	// .catalog-controls__select
 	&__select {
 		position: relative;
 		flex: 0 1 18.7851%;
+
 	}
 }
 

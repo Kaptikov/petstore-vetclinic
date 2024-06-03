@@ -37,7 +37,7 @@
         </button>
       </div>
 
-      <transition name="popup-fade">
+      <!-- <transition name="popup-fade">
         <div class="header-popup__content">
           <h4 class="header-popup__title">Заявка отправлена</h4>
           <p class="header-popup__text">Оставьте свои контакты и мы обсудим все детали!</p>
@@ -53,7 +53,7 @@
             </svg>
           </button>
         </div>
-      </transition>
+      </transition> -->
     </div>
   </transition>
 
@@ -166,7 +166,7 @@ export default {
 }
 
 // .btn-header-popup__
-.btn-header-popup__ {
+.btn-header-popup {
   z-index: 3;
 }
 
@@ -302,6 +302,13 @@ export default {
       // outline: 1px solid $red;
       color: $red;
     }
+  }
+
+}
+
+@media (max-width: 768px) {
+  .header__btn {
+    display: none;
   }
 
 }

@@ -8,6 +8,7 @@
           <PersonalData :user="userStore.user" />
           <OrderHistory :user="userStore.user" :id="userStore.user.id" />
           <Animals :id="userStore.user.id" />
+          <AppointmentsHistory :id="userStore.user.id" />
         </div>
       </template>
       <!-- <template v-else-if="isLoading">
@@ -30,6 +31,7 @@ import AsideNavigation from '@/components/ProfilePage/AsideNavigation.vue'
 import PersonalData from '@/components/ProfilePage/PersonalData.vue'
 import OrderHistory from '@/components/ProfilePage/OrderHistory.vue'
 import Animals from '@/components/ProfilePage/Animals.vue'
+import AppointmentsHistory from '@/components/ProfilePage/AppointmentsHistory.vue'
 
 import Loader from '@/components/Loader.vue';
 
@@ -45,6 +47,7 @@ export default {
     PersonalData,
     OrderHistory,
     Animals,
+    AppointmentsHistory,
     Loader,
     Footer
   },

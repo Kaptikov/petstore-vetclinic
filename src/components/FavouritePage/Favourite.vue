@@ -3,7 +3,7 @@
     <div class="favourite__container _container">
       <template v-if="favouriteStore.favouriteItems.length > 0">
         <div class="favourite__title">Избранное</div>
-        <div class="favourite__wrapper">
+        <div class="favourite__items">
           <FavouriteProduct v-for="favouriteItem in favouriteStore.favouriteItems" :key="favouriteItem.id"
             :favouriteItem="favouriteItem" :id="id" />
         </div>
@@ -59,6 +59,26 @@ export default {
     font-size: 30px;
     line-height: 36px;
     margin-bottom: 30px;
+  }
+
+  &__items {
+    display: grid;
+    grid-template-columns: 1fr;
+
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .favourite {
+
+    // padding-top: 30px;
+    &__items {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 283px));
+      justify-content: center;
+      gap: 20px;
+    }
+
   }
 }
 </style>

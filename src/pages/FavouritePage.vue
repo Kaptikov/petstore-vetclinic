@@ -1,6 +1,6 @@
 <template>
   <Header />
-  <main class="page catalog__page">
+  <main class="page favourite__page">
     <template v-if="userStore.user && userStore.user.id">
       <Favourite :id="userStore.user.id" />
     </template>
@@ -44,4 +44,13 @@ export default {
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.favourite {
+
+  &__page {
+    padding-top: clamp(73px, 1.691rem + 12.76vw, 183px);
+    padding-bottom: clamp(4.375rem, 1.138rem + 14.39vw, 12.125rem);
+    background: $white-bg;
+  }
+}
+</style>
