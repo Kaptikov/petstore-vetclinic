@@ -42,6 +42,24 @@ export const useAnimalStore = defineStore('animalStore', {
       }
     },
 
+    async addAnimal(name, description, type, gender, breed, age, userId) {
+      try {
+        const response = await axios.post(`/api/Animal/user/${userId}`, {
+          name,
+          description,
+          type,
+          gender,
+          breed,
+          age,
+          userId,
+        })
+        this.animals = response.data
+        console.log('CartItem added', this.animalss)
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
     async createAnimal(
       id,
       name,
@@ -71,10 +89,12 @@ export const useAnimalStore = defineStore('animalStore', {
       }
     },
 
-    async deleteAnimal(id) {
+    async deleteAnimal(id, userId) {
       try {
-        const response = await axios.delete(`/api/Animal/${id}`)
-        response.data
+        const response = await axios.delete(
+          `/api/Animal/animal/${id}/user/${userId}`
+        )
+        this.animals = response.data
         console.log('Animal deleted', this.animals)
       } catch (error) {
         console.log(error)

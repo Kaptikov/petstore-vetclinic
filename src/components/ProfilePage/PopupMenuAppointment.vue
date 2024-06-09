@@ -12,45 +12,44 @@
           <div class="аppointment-history-popup__selects">
             <SelectAppointmentDoctors :doctors="scheduleStore.doctors" :schedules="scheduleStore.schedules"
               :selectedDoctorId="selectedDoctorId" />
-            <SelectAppointmentDate :scheduleDates="scheduleStore.scheduleDates" />
-            <!-- <SelectAppointmentDate /> -->
-            <template v-if="scheduleStore.schedules && scheduleStore.schedules.length > 0">
-              <div class="аppointment-history-popup__buttons-date">
-                <!-- <button v-for="schedule of scheduleStore.schedules" :key="schedule.id"
-                  class="аppointment-history-popup__btn-date" type="button" @click="btnSelectDate(schedule)">
-                  {{ schedule.startTime }}
-                </button> -->
-              </div>
+            <template v-if="scheduleStore.scheduleDates">
+              <SelectAppointmentDate :scheduleDates="scheduleStore.scheduleDates" />
             </template>
             <template v-if="scheduleStore.scheduleDates">
               <div class="аppointment-history-popup__buttons-time">
                 <button v-for="scheduleTime of scheduleStore.scheduleTimes" :key="scheduleTime.id"
-                  class="аppointment-history-popup__btn-date" type="button"
-                  @click="btnSelectTime(scheduleTime.startTime)">
+                  class="аppointment-history-popup__btn-time"
+                  :class="{ 'аppointment-history-popup__btn-time--active': scheduleTime.startTime === selectedTime }"
+                  type="button" @click="btnSelectTime(scheduleTime.startTime)">
                   {{ scheduleTime.startTime }}
                 </button>
               </div>
             </template>
-            <SelectAppointmentTime />
+            <!-- <SelectAppointmentTime /> -->
           </div>
           <div class="аppointment-history-popup__items">
             <div class="аppointment-history-popup__item">
               <label class="аppointment-history-popup__label" for="name">Имя*</label>
               <input class="аppointment-history-popup__input" type="text" id="name" required
                 v-model="appointmentStore.appointments.name" />
-
+            </div>
+            <div class="аppointment-history-popup__item">
               <label class="аppointment-history-popup__label" for="lastname">Фамилия*</label>
               <input class="аppointment-history-popup__input" type="text" id="lastname" required />
-
+            </div>
+            <div class="аppointment-history-popup__item">
               <label class="аppointment-history-popup__label" for="phone">Выберите питомца</label>
               <SelectAppointmentAnimals :animals="animalStore.animals" :selectedAnimal="scheduleStore.selectedAnimal" />
-
+            </div>
+            <div class="аppointment-history-popup__item">
               <label class="аppointment-history-popup__label" for="phone">Телефон*</label>
               <input class="аppointment-history-popup__input" type="tel" id="phone" placeholder="+7 (___) ___-__-__"
                 required v-model="appointmentStore.appointments.phone" />
+            </div>
+            <!-- <div class="аppointment-history-popup__item">
               <label class="аppointment-history-popup__label" for="checkbox">Первый раз в клинике</label>
               <input class="аppointment-history-popup__input" type="checkbox" id="checkbox" />
-            </div>
+            </div> -->
           </div>
           <button class="аppointment-history-popup__btn аppointment-history-popup__btn--save" type="submit"
             @click.prevent="btnAddAppointment(appointmentStore.appointments.name, appointmentStore.appointments.phone, id, scheduleStore.selectedAnimal, scheduleStore.selectedDoctorId, scheduleStore.selectedDate, scheduleStore.selectedTime)">
@@ -97,6 +96,13 @@ export default {
     SelectAppointmentTime,
     SelectAppointmentDoctors
   },
+
+  methods: {
+    selectTime(time) {
+      this.selectedTime = time;
+      // Rest of your code...
+    },
+  },
   props: {
     title: {},
     user: {},
@@ -118,6 +124,7 @@ export default {
     const scheduleStore = useScheduleStore();
     const appointmentStore = useAppointmentStore();
     const isOpen = ref(false);
+    const selectedTime = ref(null)
     // const editedUser = ref({ ...props.user });
     // console.log(editedUser);
 
@@ -140,10 +147,12 @@ export default {
     }
 
     function btnSelectDate(date) {
+
       scheduleStore.getTimeForDate(props.selectedDoctorId, date)
     }
 
     function btnSelectTime(scheduleTime) {
+      selectedTime.value = scheduleTime;
       scheduleStore.selectedTime = scheduleTime
       console.log(scheduleStore.selectedTime);
     }
@@ -176,6 +185,7 @@ export default {
       appointmentStore,
       animalStore,
       scheduleStore,
+      selectedTime,
       btnSelectDate,
       btnSelectTime,
       // applicationStore,
@@ -259,6 +269,22 @@ export default {
   overflow-y: auto;
   z-index: 100;
 
+  &__selects {
+    position: relative;
+    margin-bottom: 30px;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -20px;
+      display: block;
+      width: 100%;
+      height: 1px;
+      background-color: $gray-border;
+      margin-top: 20px;
+    }
+  }
+
   // .аppointment-history-popup__content
   &__content {
     position: relative;
@@ -298,7 +324,7 @@ export default {
 
   }
 
-  &__buttons-date {
+  &__buttons-time {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -371,7 +397,7 @@ export default {
     transition: background 0.2s ease, color 0.2s ease;
   }
 
-  &__btn-date {
+  &__btn-time {
     padding: 10px 15px;
     max-width: fit-content;
     color: $white;
@@ -386,6 +412,10 @@ export default {
     &:hover {
       background: $blue-second;
     }
+  }
+
+  &__btn-time--active {
+    background: $blue-second;
   }
 
   // .аppointment-history-popup__btn--save

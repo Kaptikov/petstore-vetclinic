@@ -5,6 +5,7 @@ import { useLoginStore } from '@/store/LoginStore.js'
 export const useUserStore = defineStore('userStore', {
   state: () => ({
     user: {},
+    isAdmin: false,
     // animals: {},
   }),
   actions: {
@@ -30,6 +31,12 @@ export const useUserStore = defineStore('userStore', {
         if (response.status === 200) {
           this.user = response.data
           // console.log(this.user)
+          if (this.user.roles.name === 'Admin') {
+            this.isAdmin = true
+          } else {
+            this.isAdmin = false
+          }
+          console.log('isAdmin', this.isAdmin)
         } else {
           console.error(
             'Failed to fetch user data',

@@ -1,5 +1,5 @@
 <template>
-  <div class="page sugnup-page">
+  <div class="page signup-page">
     <SignUpForm />
   </div>
 </template>
@@ -11,4 +11,9 @@ export default {
   }
 }
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+.signup-page {
+  flex: 0;
+  margin: auto 0;
+}
+</style>

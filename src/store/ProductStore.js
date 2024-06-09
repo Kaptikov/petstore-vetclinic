@@ -7,6 +7,7 @@ export const useProductStore = defineStore('productStore', {
     allProducts: [],
     imgUrls: [],
     searchProducts: [],
+    product: {},
     options: [
       { name: 'Выберите параметр', value: 0 },
       { name: 'Самые дешевые', value: 1 },
@@ -21,9 +22,9 @@ export const useProductStore = defineStore('productStore', {
       axios
         .get(`/api/Product/${id}`)
         .then(response => {
-          this.allProducts = response.data
+          this.product = response.data
           // this.products = response.data
-          // console.log(this.products)
+          console.log(this.product)
         })
         .catch(error => {
           console.log(error)
@@ -128,6 +129,57 @@ export const useProductStore = defineStore('productStore', {
         .catch(error => {
           console.log(error)
         })
+    },
+
+    async addReview(userId, productId, description, date) {
+      try {
+        const response = await axios.post(
+          `/api/Product/user/${userId}/product/${productId}`,
+          {
+            userId,
+            productId,
+            description,
+            date,
+          }
+        )
+        this.product = response.data
+        console.log('product added', this.product)
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
+    async deleteReview(id, userId) {
+      try {
+        const response = await axios.delete(
+          `/api/Product/review/${id}/user/${userId}`
+        )
+        //  this.cartItems = this.cartItems.filter(cartItem => cartItem.id !== id)
+        this.product = response.data
+        console.log('review deleted', this.product)
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
+    async deleteAnyReview(id) {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        console.error('Token is not available')
+        return
+      }
+      try {
+        const response = await axios.delete(`/api/Product/review/${id}/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        //  this.cartItems = this.cartItems.filter(cartItem => cartItem.id !== id)
+        this.product = response.data
+        console.log('review deleted', this.product)
+      } catch (error) {
+        console.log(error)
+      }
     },
   },
 })

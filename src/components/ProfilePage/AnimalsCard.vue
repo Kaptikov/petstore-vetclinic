@@ -48,7 +48,7 @@
         </div>
       </div>
       <PopupMenuAnimals :animals="animals" />
-      <ButtonDeleteAnimal :animals="animals" />
+      <ButtonDeleteAnimal :animals="animals" :id="id" />
       <!-- <form>
         <input type="text" name="type" v-model="name" :disabled="!isEditing" class="animals__input animals__input-name">
         <label for="type" class="animals__label">тип</label>
@@ -76,7 +76,8 @@ export default {
     ButtonDeleteAnimal,
   },
   props: {
-    animals: {}
+    animals: {},
+    id: {}
   },
   setup() {
 

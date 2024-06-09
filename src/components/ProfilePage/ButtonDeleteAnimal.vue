@@ -1,5 +1,5 @@
 <template>
-  <button class="animals__btn-delete" @click="deleteAnimal">
+  <button class="animals__btn-delete" @click="deleteAnimal(animals.id, id)">
     Удалить
   </button>
 </template>
@@ -8,19 +8,24 @@ import { useAnimalStore } from '@/store/AnimalStore.js';
 export default {
   props: {
     animals: {},
+    id: {}
   },
   setup(props) {
     const animalStore = useAnimalStore();
-    const deleteAnimal = async () => {
-      try {
-        console.log(props.animals.id);
-        await animalStore.deleteAnimal(props.animals.id);
-        animalStore.getAnimals(props.animals.userId);
-        console.log('Animal deleted');
-      } catch (error) {
-        console.log(error);
-      }
-    };
+
+    function deleteAnimal(id, userId) {
+      animalStore.deleteAnimal(id, userId)
+    }
+    // const deleteAnimal = async () => {
+    //   try {
+    //     console.log(props.animals.id);
+    //     await animalStore.deleteAnimal(props.animals.id);
+    //     animalStore.getAnimals(props.animals.userId);
+    //     console.log('Animal deleted');
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
     return {
       animalStore,
       deleteAnimal,
@@ -28,4 +33,15 @@ export default {
   }
 }
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+.animals__btn-delete {
+  margin-top: 20px;
+  max-width: max-content;
+  color: $red;
+  transition: color 0.1s ease-in-out;
+
+  &:hover {
+    color: $red-second;
+  }
+}
+</style>

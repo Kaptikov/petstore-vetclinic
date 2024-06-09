@@ -10,15 +10,14 @@
         <form class="header-popup__form">
           <div class="header-popup__item">
             <label class="header-popup__label" for="name">Имя*</label>
-            <input class="header-popup__input" type="text" id="name" v-model="applicationStore.applications.name"
-              required />
+            <input class="header-popup__input" type="text" id="name" v-model="requestStore.requests.name" required />
 
             <label class="header-popup__label" for="phone">Телефон*</label>
             <input class="header-popup__input" type="tel" id="phone" placeholder="+7 (___) ___-__-__"
-              v-model="applicationStore.applications.phone" required />
+              v-model="requestStore.requests.phone" required />
           </div>
           <button class="header-popup__btn header-popup__btn--save" type="submit"
-            @click.prevent="btnAddApplication(applicationStore.applications.name, applicationStore.applications.phone)">
+            @click.prevent="btnAddRequest(requestStore.requests.name, requestStore.requests.phone)">
             Оставить заявку
           </button>
         </form>
@@ -62,7 +61,7 @@
 <script>
 import { onMounted, ref } from 'vue';
 import { useUserStore } from '@/store/UserStore.js';
-import { useApplicationStore } from '@/store/ApplicationStore.js';
+import { useRequestStore } from '@/store/RequestStore.js';
 
 export default {
   props: {
@@ -76,7 +75,7 @@ export default {
   },
   setup(props) {
     const userStore = useUserStore();
-    const applicationStore = useApplicationStore();
+    const requestStore = useRequestStore();
     const isOpen = ref(false);
     // const editedUser = ref({ ...props.user });
     // console.log(editedUser);
@@ -95,12 +94,12 @@ export default {
 
     const closePopup = () => {
       isOpen.value = false;
-      applicationStore.applications.name = '';
-      applicationStore.applications.phone = '';
+      requestStore.requests.name = '';
+      requestStore.requests.phone = '';
     };
 
-    function btnAddApplication(name, phone) {
-      applicationStore.addApplication(name, phone)
+    function btnAddRequest(name, phone) {
+      requestStore.addRequest(name, phone)
       closePopup()
     }
 
@@ -109,14 +108,14 @@ export default {
     // };
 
     // onMounted(() => {
-    //   applicationStore.getApplications();
+    //   requestStore.getRequests();
     // })
 
     return {
       isOpen,
       userStore,
-      applicationStore,
-      btnAddApplication,
+      requestStore,
+      btnAddRequest,
       openPopup,
       closePopup,
       // saveEdit,

@@ -12,6 +12,7 @@ export const useAppointmentStore = defineStore('appointmentStore', {
         .get(`/api/Appointment/user/${id}`)
         .then(response => {
           this.appointments = response.data
+          console.log('appointments', this.appointments)
         })
         .catch(error => {
           console.log(error)

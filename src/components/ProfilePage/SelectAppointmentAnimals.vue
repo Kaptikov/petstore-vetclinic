@@ -94,7 +94,7 @@ export default {
 	&__select {
 		position: relative;
 		width: 100%;
-		margin-bottom: 20px;
+		// margin-bottom: 20px;
 		// flex: 0 1 18.7851%;
 	}
 }

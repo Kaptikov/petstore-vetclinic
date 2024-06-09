@@ -31,7 +31,8 @@
           <label class="animals__popup-label" for="age">Возраст</label>
           <input class="animals__popup-input" type="number" id="age" v-model="age" value="0" />
         </div>
-        <button class="animals__popup-btn animals__popup-btn--save" type="submit">Создать</button>
+        <button class="animals__popup-btn animals__popup-btn--save" type="submit"
+          @click="btnAddAnimal(name, description, type, gender, breed, age, user.id)">Создать</button>
         <button class=" animals__popup-btn animals__popup-btn--cancel" type=" button"
           @click="closePopup">Отмена</button>
       </form>
@@ -61,29 +62,29 @@ export default {
   },
 
   methods: {
-    async createAnimal() {
-      console.log('User data:', {
-        name: this.name,
-        description: this.description,
-        type: this.type,
-        gender: this.gender,
-        breed: this.breed,
-        age: this.age,
-        userId: this.user.id
-      })
-      const animalStore = useAnimalStore()
-      await animalStore.createAnimal({
-        name: this.name,
-        description: this.description,
-        type: this.type,
-        gender: this.gender,
-        breed: this.breed,
-        age: this.age,
-        userId: this.user.id
-      })
-      animalStore.getAnimals(this.user.id)
-      this.closePopup()
-    },
+    // async createAnimal() {
+    //   console.log('User data:', {
+    //     name: this.name,
+    //     description: this.description,
+    //     type: this.type,
+    //     gender: this.gender,
+    //     breed: this.breed,
+    //     age: this.age,
+    //     userId: this.user.id
+    //   })
+    //   const animalStore = useAnimalStore()
+    //   await animalStore.createAnimal({
+    //     name: this.name,
+    //     description: this.description,
+    //     type: this.type,
+    //     gender: this.gender,
+    //     breed: this.breed,
+    //     age: this.age,
+    //     userId: this.user.id
+    //   })
+    //   animalStore.getAnimals(this.user.id)
+    //   this.closePopup()
+    // },
   },
 
   setup(props) {
@@ -97,10 +98,16 @@ export default {
       isOpen.value = false;
     };
 
+    function btnAddAnimal(name, description, type, gender, breed, age, userId) {
+      animalStore.addAnimal(name, description, type, gender, breed, age, userId)
+    }
+
     return {
       isOpen,
       openPopup,
       closePopup,
+      btnAddAnimal,
+      animalStore,
       // createAnimal,
     };
   },

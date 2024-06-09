@@ -7,6 +7,9 @@ import VetclinicPage from '../pages/VetclinicPage.vue'
 import ProfilePage from '../pages/ProfilePage.vue'
 import LoginPage from '../pages/LoginPage.vue'
 import SignUpPage from '../pages/SignUpPage.vue'
+import AdminPage from '../pages/AdminPage.vue'
+
+import { useUserStore } from '@/store/UserStore.js'
 
 import { createRouter, createWebHistory } from 'vue-router'
 
@@ -42,6 +45,14 @@ const routes = [
     component: VetclinicPage,
   },
   {
+    path: '/admin/',
+    name: 'adminPage',
+    component: AdminPage,
+    meta: {
+      requiresAdmin: true,
+    },
+  },
+  {
     path: '/profile/',
     name: 'profilePage',
     component: ProfilePage,
@@ -61,6 +72,22 @@ const routes = [
 const router = createRouter({
   routes,
   history: createWebHistory(import.meta.BASE_URL),
+})
+
+router.beforeEach(async (to, from, next) => {
+  const userStore = useUserStore() // Получение экземпляра хранилища пользователей
+
+  if (to.meta.requiresAdmin) {
+    // Проверка, требуется ли роль администратора для доступа к пути
+    if (userStore.isAdmin) {
+      // Проверка, имеет ли пользователь роль администратора
+      next() // Доступ разрешен
+    } else {
+      next({ name: 'main' }) // Доступ запрещен, перенаправление на главную
+    }
+  } else {
+    next() // Доступ разрешен
+  }
 })
 
 export default router

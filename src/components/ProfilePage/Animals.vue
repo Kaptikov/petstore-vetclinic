@@ -4,7 +4,7 @@
 		<div class="animals__wrapper">
 			<PopupMenuAnimalsCreate :user="userStore.user" />
 			<div class="animals__cards" v-if="animalStore.animals.length > 0">
-				<AnimalsCard v-for="animals in animalStore.animals" :key="animals.id" :animals="animals" />
+				<AnimalsCard v-for="animals in animalStore.animals" :key="animals.id" :animals="animals" :id="id" />
 			</div>
 		</div>
 	</div>

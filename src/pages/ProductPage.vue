@@ -4,10 +4,9 @@
     <div class="product-card">
       <div class="product-card__container _container">
         <template v-if="productStore.products">
-          <ProductCardTop :product="productStore.allProducts" />
-          <div>
-          </div>
-          <ProductCardBottom :product="productStore.allProducts" />
+          <ProductCardTop :product="productStore.product" />
+          <ProductCardBottom :product="productStore.product" />
+          <ProductReviews :product="productStore.product" :id="userStore.user.id" :isAdmin="userStore.isAdmin" />
         </template>
         <template v-else>
           <h4>Продукт не найден</h4>
@@ -27,8 +26,11 @@ import Footer from '@/components/Footer.vue'
 
 import ProductCardTop from '@/components/ProductPage/ProductCardTop.vue'
 import ProductCardBottom from '@/components/ProductPage/ProductCardBottom.vue'
+import ProductReviews from '@/components/ProductPage/ProductReviews.vue'
+
 
 import { useProductStore } from '@/store/ProductStore'
+import { useUserStore } from '@/store/UserStore'
 
 export default {
   components: {
@@ -36,11 +38,13 @@ export default {
     Footer,
     ProductCardTop,
     ProductCardBottom,
+    ProductReviews,
   },
   props: {
 
   },
   setup() {
+    const userStore = useUserStore()
     const productStore = useProductStore()
     const route = useRoute()
 
@@ -53,6 +57,7 @@ export default {
       productStore.getProduct(newId)
     });
     return {
+      userStore,
       productStore,
     }
   },
