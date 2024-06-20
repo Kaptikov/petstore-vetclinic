@@ -1,5 +1,5 @@
 <template>
-  <Header isMainPage />
+  <Header isMainPage :id="userStore.user.id" />
   <main class="page main__page">
     <MainBlock />
     <ProductCategories />
@@ -9,10 +9,10 @@
     <!-- <Promotions /> -->
     <Locations />
     <News />
-    <!-- <Appointment /> -->
-    <PopupMenu />
+    <Appointment />
+    <!-- <PopupMenu /> -->
   </main>
-  <BottomMenu />
+  <BottomMenu :id="userStore.user.id" />
   <Footer />
 </template>
 
@@ -30,12 +30,16 @@ import Appointment from '@/components/MainPage/Appointment.vue'
 import PopupMenu from '@/components/PopupMenu.vue'
 import BottomMenu from '@/components/BottomMenu.vue'
 import Footer from '@/components/Footer.vue'
+
+import { onMounted } from 'vue'
+import { useUserStore } from '@/store/UserStore.js';
+
 export default {
   components: {
     Header,
     MainBlock,
     ProductCategories,
-    PopularProducts,
+    // PopularProducts,
     OurBrands,
     Advantages,
     Promotions,
@@ -47,6 +51,17 @@ export default {
     Footer,
   },
 
+  setup() {
+    const userStore = useUserStore()
+
+    onMounted(() => {
+      userStore.getUser();
+    })
+
+    return {
+      userStore
+    }
+  }
 }
 </script>
 

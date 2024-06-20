@@ -5,51 +5,33 @@
 				Популярные товары
 			</h3>
 			<div class="popular-products__wrapper">
-				<div class="popular-products__tabs">
+				<!-- <div class="popular-products__tabs">
 					<button class="popular-products__tab" v-for="(tab, index) in tabs" :key="index" @click="activeTab = index"
 						:class="{ 'active': activeTab === index }">
 						{{ tab.title }}
 					</button>
-				</div>
+				</div> -->
 				<div class="popular-products__content">
 					<div v-for="(tab, index) in tabs" :key="index" v-show="activeTab === index">
 						<!-- {{ tab.content }} -->
 						<swiper :slidesPerView="4" :spaceBetween="20" :loop="true" :navigation="true" :modules="modules"
 							:breakpoints="{
-						996: {
-							slidesPerView: 4,
-							spaceBetween: 20
-						},
-						767: {
-							slidesPerView: 3,
-							spaceBetween: 10
-						},
-						320: {
-							spaceBetween: 10,
-							slidesPerView: 2
-						}
-					}" class="popular-products__swiper swiper">
-							<swiper-slide class="popular-products__slide">
+								996: {
+									slidesPerView: 4,
+									spaceBetween: 20
+								},
+								767: {
+									slidesPerView: 3,
+									spaceBetween: 10
+								},
+								320: {
+									spaceBetween: 10,
+									slidesPerView: 2
+								}
+							}" class="popular-products__swiper swiper">
+							<!-- <swiper-slide class="popular-products__slide">
 								<CardProduct />
-							</swiper-slide>
-							<swiper-slide class="popular-products__slide">
-								<CardProduct />
-							</swiper-slide>
-							<swiper-slide class="popular-products__slide">
-								<CardProduct />
-							</swiper-slide>
-							<swiper-slide class="popular-products__slide">
-								<CardProduct />
-							</swiper-slide>
-							<swiper-slide class="popular-products__slide">
-								<CardProduct />
-							</swiper-slide>
-							<swiper-slide class="popular-products__slide">
-								<CardProduct />
-							</swiper-slide>
-							<swiper-slide class="popular-products__slide">
-								<CardProduct />
-							</swiper-slide>
+							</swiper-slide> -->
 						</swiper>
 					</div>
 				</div>

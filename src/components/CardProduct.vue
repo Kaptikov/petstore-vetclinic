@@ -21,28 +21,27 @@
 				</button>
 			</div>
 			<div class="card-product__buttons" :class="{ 'promotion__card-product__buttons': isPromotion }">
-				<div class="card-product__quantity" :class="{ 'promotion__card-product__quantity': isPromotion }">
-					<template v-if="!isCart">
+				<template v-if="!isCart">
+					<div class="card-product__quantity" :class="{ 'promotion__card-product__quantity': isPromotion }">
 						<button class="card-product__quantity-button card-product__quantity-button--minus"
 							@click="decrementQuantity"></button>
 						<input class="card-product__quantity-input" type="text" value="1" v-model="quantity" />
 						<button class="card-product__quantity-button card-product__quantity-button--plus"
 							@click="incrementQuantity"></button>
-					</template>
-
-					<template v-else>
+						<!-- <template v-else>
 						<button class="card-product__quantity-button card-product__quantity-button--minus"
 							@click="decrementQuantity(product.id, cartStore.cartItems.quantity)"></button>
 						<input class="card-product__quantity-input" type="text" v-model="cartStore.cartItems.quantity" />
 						<button class="card-product__quantity-button card-product__quantity-button--plus"
 							@click="incrementQuantity(product.id, cartStore.cartItems.quantity)"></button>
-					</template>
-				</div>
+					</template> -->
+					</div>
+				</template>
 				<button class="card-product__button" :class="{ 'promotion__card-product__button': isPromotion }"
 					@click="btnAddToCart(product.id, quantity, id)" v-if="!isCart">В корзину <img
 						src="@/assets/img/shopping-cart.svg" alt=""></button>
-				<button class="card-product__button" :class="{ 'promotion__card-product__button': isPromotion }"
-					@click="btnDeleteFromCart(product.id, id)" v-else>
+				<button class="card-product__button card-product__button--delete"
+					:class="{ 'promotion__card-product__button': isPromotion }" @click="btnDeleteFromCart(product.id, id)" v-else>
 					В
 					корзине <img src="@/assets/img/shopping-cart.svg" alt="">
 				</button>
@@ -125,11 +124,21 @@ export default {
 		const quantity = ref(1);
 
 		function btnAddToCart(productId, quantity, userId) {
-			cartStore.addCartItem(productId, quantity, userId)
+			if (userId) {
+				cartStore.addCartItem(productId, quantity, userId)
+			}
+			else {
+				console.log("Авторизуйтесь");
+			}
 		}
 
 		function btnAddToFavourite(productId, userId) {
-			favouriteStore.addFavouriteItem(productId, userId)
+			if (userId) {
+				favouriteStore.addFavouriteItem(productId, userId)
+			}
+			else {
+				console.log("Авторизуйтесь");
+			}
 		}
 
 		function btnDeleteFromCart(id, userId) {
@@ -192,8 +201,11 @@ export default {
 		// })
 		// console.log(isCart);
 		onMounted(() => {
-			cartStore.getCartItems(userStore.user.id);
-			favouriteStore.getFavouriteItems(userStore.user.id);
+			if (props.id) {
+				cartStore.getCartItems(userStore.user.id);
+
+				favouriteStore.getFavouriteItems(userStore.user.id);
+			}
 		})
 
 		return {
@@ -221,21 +233,24 @@ export default {
 	flex-direction: column;
 	background: $white;
 	border-radius: 15px;
+	height: 100%;
 
 	// .card-product__image
 	&__image {
-		// // position: relative;
+		position: relative;
 		width: 62.54%;
-		// padding-bottom: 100%;
+		padding-bottom: 100%;
 		margin: 0 auto;
+		// height: 283px;
+		// max-height: 283px;
 
 		& img {
-			// position: absolute;
-			// top: 0;
-			// left: auto;
-			// right: auto;
+			position: absolute;
+			top: 0;
+			left: auto;
+			right: auto;
 			width: 100%;
-			height: auto;
+			height: 100%;
 			object-fit: cover;
 			border-radius: 20px;
 		}
@@ -246,6 +261,7 @@ export default {
 		display: flex;
 		flex-direction: column;
 		flex: 1 1 auto;
+		flex-grow: 1;
 		padding: 15px;
 	}
 
@@ -336,7 +352,7 @@ export default {
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
-
+		margin-top: auto;
 	}
 
 	// .card-product__quantity
@@ -451,6 +467,17 @@ export default {
 		&:hover {
 			background: $blue-second;
 		}
+	}
+
+	// .card-product__button--delete
+	&__button--delete {
+		width: 100%;
+
+		&:hover {
+			background: $red;
+		}
+
+		// background: $blue-second;
 	}
 
 	// .card-product__favourite

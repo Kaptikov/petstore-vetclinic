@@ -85,4 +85,12 @@ export default {
 		}
 	}
 }
+
+@media (max-width: 768px) {
+	.banner {
+		&__img-car {
+			display: none;
+		}
+	}
+}
 </style>

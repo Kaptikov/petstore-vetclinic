@@ -1,8 +1,8 @@
 <template>
   <section class="product-card__top">
     <div class="product-card__left">
-      <swiper :direction="'vertical'" :spaceBetween="10" :navigation="false" :thumbs="{ swiper: thumbsSwiper }"
-        :modules="modules" class="product-card__swiper-first">
+      <swiper :direction="'vertical'" :spaceBetween="10" :navigation="false" :effect="'fade'"
+        :thumbs="{ swiper: thumbsSwiper }" :modules="modules" class="product-card__swiper-first">
         <swiper-slide class="product-card__swiper-slide product-card__swiper-slide-first" v-for="productImg in getProductImgForProduct(
           product.id
         )" :key="productImg.id">
@@ -19,6 +19,21 @@
           <img :src="productImg.imgUrl" alt="Изображение товара" class="card-catalog__img" />
         </swiper-slide>
       </swiper>
+      <button class="product-card__favourite" @click="btnAddToFavourite(product.id, userId)" v-if="!isFavourite">
+        <svg width="24" height="24" viewBox="0 0 24 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M20.844 2.60987C20.3333 2.09888 19.7268 1.69352 19.0594 1.41696C18.3919 1.14039 17.6765 0.998047 16.954 0.998047C16.2315 0.998047 15.5161 1.14039 14.8487 1.41696C14.1812 1.69352 13.5748 2.09888 13.064 2.60987L12.004 3.66987L10.944 2.60987C9.91233 1.57818 8.51306 0.998582 7.05403 0.998582C5.59499 0.998582 4.19572 1.57818 3.16403 2.60987C2.13233 3.64156 1.55273 5.04084 1.55273 6.49987C1.55273 7.95891 2.13233 9.35818 3.16403 10.3899L4.22402 11.4499L12.004 19.2299L19.784 11.4499L20.844 10.3899C21.355 9.87912 21.7604 9.27269 22.0369 8.60523C22.3135 7.93777 22.4559 7.22236 22.4559 6.49987C22.4559 5.77738 22.3135 5.06198 22.0369 4.39452C21.7604 3.72706 21.355 3.12063 20.844 2.60987V2.60987Z"
+            stroke="#606C8C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+      <button class="product-card__favourite product-card__favourite--active"
+        @click="btnDeleteFromFavourite(product.id, userId)" v-if="isFavourite">
+        <svg width="24" height="24" viewBox="0 0 24 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M20.844 2.60987C20.3333 2.09888 19.7268 1.69352 19.0594 1.41696C18.3919 1.14039 17.6765 0.998047 16.954 0.998047C16.2315 0.998047 15.5161 1.14039 14.8487 1.41696C14.1812 1.69352 13.5748 2.09888 13.064 2.60987L12.004 3.66987L10.944 2.60987C9.91233 1.57818 8.51306 0.998582 7.05403 0.998582C5.59499 0.998582 4.19572 1.57818 3.16403 2.60987C2.13233 3.64156 1.55273 5.04084 1.55273 6.49987C1.55273 7.95891 2.13233 9.35818 3.16403 10.3899L4.22402 11.4499L12.004 19.2299L19.784 11.4499L20.844 10.3899C21.355 9.87912 21.7604 9.27269 22.0369 8.60523C22.3135 7.93777 22.4559 7.22236 22.4559 6.49987C22.4559 5.77738 22.3135 5.06198 22.0369 4.39452C21.7604 3.72706 21.355 3.12063 20.844 2.60987V2.60987Z"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
     </div>
     <div class="product-card__right">
       <div class="product-card__tag">{{ product.name }}</div>
@@ -37,61 +52,60 @@
       </div>
       <div class="product-card__characteristics characteristics">
         <div class="characteristics__title">Характеристики</div>
-        <div class="characteristics__item">
-          <dt class="characteristics__term">Бренд</dt>
-          <dd class="characteristics__val">FLORIDA</dd>
+        <div class="characteristics__item" v-for="characteristic in product.productCharacteristic"
+          :key="characteristic">
+          <dt class="characteristics__term"> {{ characteristic.name }}</dt>
+          <dd class="characteristics__val"> {{ characteristic.productCharacteristicsValue.name }}</dd>
         </div>
-        <div class="characteristics__item">
-          <dt class="characteristics__term">Класс корма</dt>
-          <dd class="characteristics__val">Топ</dd>
-        </div>
-        <div class="characteristics__item">
-          <dt class="characteristics__term">Возраст</dt>
-          <dd class="characteristics__val">1-5 лет</dd>
-        </div>
-        <div class="characteristics__item">
-          <dt class="characteristics__term">Страна производства</dt>
-          <dd class="characteristics__val">Китай</dd>
-        </div>
-        <div class="characteristics__item">
-          <dt class="characteristics__term">Особенности</dt>
-          <dd class="characteristics__val">Для стерилизаванных</dd>
-        </div>
-
       </div>
       <div class="product-card__btns">
-        <div class="product-card__quantity">
-          <button class="product-card__quantity-button product-card__quantity-button--minus"></button>
-          <input class="product-card__quantity-input" type="text" value="1" />
-          <button class="product-card__quantity-button product-card__quantity-button--plus"></button>
-        </div>
-        <button class="product-card__btn">
+        <template v-if="!isCart">
+          <div class="product-card__quantity">
+            <button class="product-card__quantity-button product-card__quantity-button--minus"
+              @click="decrementQuantity"></button>
+            <input class="product-card__quantity-input" type="text" value="1" v-model="quantity" />
+            <button class="product-card__quantity-button product-card__quantity-button--plus"
+              @click="incrementQuantity"></button>
+          </div>
+        </template>
+        <button class="product-card__btn" @click="btnAddToCart(product.id, quantity, userId)" v-if="!isCart">
           В корзину
           <img src="@/assets/img/shopping-cart.svg" alt="">
+        </button>
+        <button class="product-card__btn product-card__btn--delete" @click="btnDeleteFromCart(product.id, userId)"
+          v-else>
+          В корзине <img src="@/assets/img/shopping-cart.svg" alt="">
         </button>
       </div>
     </div>
   </section>
 </template>
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 
 import { useProductImgStore } from '@/store/ProductImgStore'
+import { useCartStore } from '@/store/CartStore.js'
+import { useUserStore } from '@/store/UserStore.js'
+import { useFavouriteStore } from '@/store/FavouriteStore.js'
 
 // Import Swiper styles
 import 'swiper/css'
 
+import 'swiper/css/effect-fade';
 import 'swiper/css/free-mode'
 import 'swiper/css/navigation'
 import 'swiper/css/thumbs'
 
-import { FreeMode, Navigation, Thumbs } from 'swiper/modules'
+import { EffectFade, FreeMode, Navigation, Thumbs } from 'swiper/modules'
 export default {
   props: {
     id: {
       type: String,
       default: '',
+    },
+    userId: {
+
     },
     product: {
       type: Object,
@@ -114,12 +128,81 @@ export default {
     const setThumbsSwiper = swiper => {
       thumbsSwiper.value = swiper
     }
+    const cartStore = useCartStore();
+    const favouriteStore = useFavouriteStore();
+    const userStore = useUserStore();
+    const quantity = ref(1);
 
     const getProductImgForProduct = productId => {
       return productImgStore.productImgs.filter(
         propoductImg => propoductImg.productId === productId
       )
     }
+
+    function btnAddToCart(productId, quantity, userId) {
+      if (userId) {
+        cartStore.addCartItem(productId, quantity, userId)
+      }
+      else {
+        console.log("Авторизуйтесь");
+      }
+    }
+
+    function btnAddToFavourite(productId, userId) {
+      if (userId) {
+        favouriteStore.addFavouriteItem(productId, userId)
+      }
+      else {
+        console.log("Авторизуйтесь");
+      }
+    }
+
+    function btnDeleteFromCart(id, userId) {
+      const cartItem = cartStore.cartItems.find(cartItem => cartItem.productId === id);
+      console.log(id);
+      cartStore.deleteCartItem(cartItem.id, userId)
+    }
+
+    function btnDeleteFromFavourite(id, userId) {
+      const favouriteItem = favouriteStore.favouriteItems.find(favouriteItem => favouriteItem.productId === id);
+      console.log(id);
+      favouriteStore.deleteFavouriteItem(favouriteItem.id, userId)
+    }
+
+    function incrementQuantity(id) {
+      quantity.value++
+      // if (isCart) {
+      // 	console.log(123);
+      // 	const cartItem = cartStore.cartItems.find(cartItem => cartItem.productId === id);
+      // 	cartStore.updateCartItem(cartItem.id, quantity)
+      // }
+    }
+
+    function decrementQuantity(id, quantity) {
+      if (quantity > 1) {
+        quantity--
+        if (condition) {
+
+        }
+        //cartStore.updateCartItem(id, quantity)
+      }
+    }
+
+    const isCart = computed(() => {
+      return (
+        cartStore.cartItems.find(
+          cartItem => cartItem.productId === props.product.id
+        ) !== undefined
+      )
+    })
+
+    const isFavourite = computed(() => {
+      return (
+        favouriteStore.favouriteItems.find(
+          favouriteItem => favouriteItem.productId === props.product.id
+        ) !== undefined
+      )
+    })
 
 
     onMounted(() => {
@@ -130,7 +213,17 @@ export default {
       productImgStore,
       thumbsSwiper,
       setThumbsSwiper,
-      modules: [FreeMode, Navigation, Thumbs],
+      btnAddToCart,
+      btnAddToFavourite,
+      btnDeleteFromCart,
+      btnDeleteFromFavourite,
+      incrementQuantity,
+      decrementQuantity,
+      isCart,
+      isFavourite,
+      quantity,
+      userStore,
+      modules: [EffectFade, FreeMode, Navigation, Thumbs],
     }
   },
 
@@ -141,7 +234,57 @@ export default {
   },
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+.swiper-button-prev,
+.swiper-button-next {
+  border: 1px solid $gray-border;
+  border-radius: 50%;
+  width: 28px !important;
+  height: 28px !important;
+  // padding: ;
+  // color: $blue-main;
+  // background-color: $white-bg;
+  transition: background 0.2s ease-in-out, border 0.2s ease-in-out;
+
+  &::after {
+    font-size: 0;
+    content: url('/src/assets/img/arrow-swiper.svg') !important;
+  }
+
+  &:hover {
+    background: $blue-main;
+    border: 1px solid $blue-main;
+
+    &::after {
+      font-size: 0;
+      content: url('/src/assets/img/arrow-swiper2.svg') !important;
+    }
+  }
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  top: 50% !important;
+  transform: translateY(30%) !important;
+  right: 0;
+  z-index: 5;
+}
+
+.swiper-button-prev {
+  right: 0 !important;
+  left: 0 !important;
+
+  &::after {
+    transform: translate(-50%, -50%);
+  }
+}
+
+.swiper-button-next {
+  &::after {
+    transform: rotate(180deg) translate(50%, 50%);
+  }
+}
+
 .product-card {
 
   // .product-card__top
@@ -153,6 +296,7 @@ export default {
 
   // .product-card__left
   &__left {
+    position: relative;
     display: flex;
     flex-direction: column;
 
@@ -208,6 +352,44 @@ export default {
       width: 100%;
       height: 100%;
       object-fit: contain;
+    }
+  }
+
+  // .product-card__favourite
+  &__favourite {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    // max-width: max-content;
+    z-index: 1;
+
+    width: 24px;
+    height: 24px;
+
+    & path {
+      transition: stroke 0.1s ease-in-out;
+    }
+
+
+    &:hover path {
+      // fill: $blue-main;
+      stroke: $blue-main;
+    }
+  }
+
+  // .product-card__favourite--active
+  &__favourite--active {
+    & path {
+      fill: $blue-main;
+      stroke: $blue-main;
+      transition: 0.15s ease-in-out;
+    }
+
+    &:hover {
+
+      & path {
+        fill: transparent;
+      }
     }
   }
 
@@ -433,6 +615,13 @@ export default {
 
     &:hover {
       background: $blue-second;
+    }
+  }
+
+  // .product-card__btn--delete
+  &__btn--delete {
+    &:hover {
+      background: $red;
     }
   }
 }

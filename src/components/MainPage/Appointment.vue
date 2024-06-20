@@ -3,7 +3,7 @@
 		<div class="appointment__container _container">
 			<div class="appointment__wrapper">
 				<div class="appointment__title">
-					Записывемся на ноготочки!
+					Оствьте заявку на прием!
 				</div>
 				<div class="appointment__description">
 					Полный комплекс процедур для красоты и здоровья вашего питомца
@@ -11,7 +11,7 @@
 				<form class="appointment__form">
 					<input type="tel" placeholder="+7 ___ ___-__-__" class="appointment__input">
 					<!-- <input type="submit" value="Записаться на прием" class="appointment__btn"> -->
-					<button class="appointment__btn" type="submit">Записаться на прием</button>
+					<button class="appointment__btn" type="submit">Оствить заявку на прием</button>
 				</form>
 			</div>
 			<div class="appointment__img-spiral">

@@ -8,6 +8,8 @@ import ProfilePage from '../pages/ProfilePage.vue'
 import LoginPage from '../pages/LoginPage.vue'
 import SignUpPage from '../pages/SignUpPage.vue'
 import AdminPage from '../pages/AdminPage.vue'
+import AdminOrdersPage from '../pages/AdminOrdersPage.vue'
+import AdminRequestsPage from '../pages/AdminRequestsPage.vue'
 
 import { useUserStore } from '@/store/UserStore.js'
 
@@ -48,6 +50,22 @@ const routes = [
     path: '/admin/',
     name: 'adminPage',
     component: AdminPage,
+    meta: {
+      requiresAdmin: true,
+    },
+  },
+  {
+    path: '/admin/orders/',
+    name: 'adminOrdersPage',
+    component: AdminOrdersPage,
+    meta: {
+      requiresAdmin: true,
+    },
+  },
+  {
+    path: '/admin/requests/',
+    name: 'adminRequestsPage',
+    component: AdminRequestsPage,
     meta: {
       requiresAdmin: true,
     },

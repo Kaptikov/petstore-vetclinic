@@ -98,4 +98,10 @@ export default {
     }
   }
 }
+
+@media (max-width: 1200px) {
+  .aside-navigation {
+    display: none;
+  }
+}
 </style>

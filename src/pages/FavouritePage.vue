@@ -7,7 +7,7 @@
     <template v-else>
       <div class="favourite__container _container">
         <div class="favourite__title">
-          Войдите в профиль, чтобы просмотреть корзину
+          Войдите в профиль, чтобы просмотреть избранное
         </div>
       </div>
     </template>
@@ -48,9 +48,16 @@ export default {
 .favourite {
 
   &__page {
-    padding-top: clamp(73px, 1.691rem + 12.76vw, 183px);
+    padding-top: clamp(7.5rem, 4.688rem + 14.06vw, 11.438rem);
     padding-bottom: clamp(4.375rem, 1.138rem + 14.39vw, 12.125rem);
     background: $white-bg;
+  }
+
+  &__title {
+    font-weight: 700;
+    font-size: clamp(2.25rem, 1.886rem + 1.82vw, 3.25rem);
+    line-height: 110%;
+    // text-align: center;
   }
 }
 </style>

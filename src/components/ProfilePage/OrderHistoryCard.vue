@@ -1,9 +1,8 @@
 <template>
   <div class="order-history__item">
     <div class="order-history__item-top">
-      <!-- <router-link to="/order/" class="order-history__item-title">Заказ № 1745745734</router-link> -->
       <PopupMenuOrder :order="order" />
-      <div class="order-history__item-date"> от {{ order.orderDate }}</div>
+      <div class="order-history__item-date"> от {{ formattedDate(order.orderDate) }}</div>
     </div>
 
     <div class="order-history__item-bottom">
@@ -20,7 +19,13 @@ export default {
   },
   props: {
     order: {}
-  }
+  },
+  methods: {
+    formattedDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString();
+    }
+  },
 }
 </script>
 <style lang="scss">

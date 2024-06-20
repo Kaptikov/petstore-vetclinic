@@ -1,5 +1,5 @@
 <template>
-  <Header />
+  <Header :id="userStore.user.id" />
   <main class="page profile-page">
     <div class="profile-page__container _container">
       <template v-if="isLoggedIn">
@@ -15,8 +15,10 @@
         <Loader />
       </template> -->
       <template v-else>
-        <h3 class=" profile-page__title">Войдите в систему</h3>
-        <router-link to="/login/" class="profile-page__link">Вход</router-link>
+        <div class="profile-page__wrapper-second">
+          <h3 class="profile-page__title profile-page__title--second">Войдите в систему</h3>
+          <router-link to="/login/" class="profile-page__link">Вход</router-link>
+        </div>
       </template>
     </div>
   </main>
@@ -34,7 +36,6 @@ import Animals from '@/components/ProfilePage/Animals.vue'
 import AppointmentsHistory from '@/components/ProfilePage/AppointmentsHistory.vue'
 
 import Loader from '@/components/Loader.vue';
-
 
 import { useLoginStore } from '@/store/LoginStore.js'
 import { useUserStore } from '@/store/UserStore.js';
@@ -89,6 +90,12 @@ export default {
 <style lang="scss">
 // .profile-page
 .profile-page {
+  &__page {
+    padding-top: clamp(7.5rem, 4.688rem + 14.06vw, 11.438rem);
+    padding-bottom: clamp(4.375rem, 1.138rem + 14.39vw, 12.125rem);
+    background: $white-bg;
+  }
+
   background: $white-bg;
 
   // .profile-page__container
@@ -96,6 +103,7 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    // align-items: center;
     margin-top: 170px;
     margin-bottom: 100px;
   }
@@ -109,14 +117,31 @@ export default {
     gap: 50px;
   }
 
+  // .profile-page__wrapper-second
+  &__wrapper-second {
+    display: flex;
+    flex-direction: column;
+    // justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   // .profile-page__title
   &__title {
     font-weight: 700;
-    font-size: 30px;
-    line-height: 133%;
-    margin-bottom: 30px;
-    color: #000;
+    font-size: clamp(2.25rem, 1.886rem + 1.82vw, 3.25rem);
+    line-height: 110%;
+    // text-align: center;
+    margin-bottom: 50px;
   }
+
+  // .profile-page__title--second
+  &__title--second {
+    text-align: center;
+  }
+
 
   // .profile-page__link
   &__link {
@@ -133,6 +158,14 @@ export default {
       color: $white;
       background: $blue-second;
       transition: background 0.2s ease-in-out;
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .profile-page {
+    &__wrapper {
+      max-width: 100%;
     }
   }
 }

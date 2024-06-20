@@ -52,13 +52,13 @@ export default {
 
 <style lang="scss">
 .favourite {
-  padding-top: 60px;
+  // padding-top: 60px;
 
   &__title {
     font-weight: 700;
-    font-size: 30px;
-    line-height: 36px;
-    margin-bottom: 30px;
+    font-size: clamp(2.625rem, 2.179rem + 2.23vw, 3.25rem);
+    line-height: 110%;
+    margin-bottom: 59px;
   }
 
   &__items {

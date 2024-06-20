@@ -1,7 +1,7 @@
 <template>
   <div class="cart__product cart-product">
     <div class="cart-product__img">
-      <img src="@/assets/img/product-1.png" alt="">
+      <img :src="cartItem.products.imgUrl" alt="Товар">
       <div class="cart-product__discount" v-if="cartItem.products.discount">
         -{{ cartItem.products.discount }}%
       </div>
@@ -9,7 +9,9 @@
     <div class="cart-product__wrapper">
       <div class="cart-product__top">
         <div class="cart-product__info">
-          <div class="cart-product__title">{{ cartItem.products.name }}</div>
+          <!-- <div class="cart-product__title">{{ cartItem.products.name }}</div> -->
+          <router-link :to="`/product/${cartItem.products.id}`" class="cart-product__title">{{
+            cartItem.products.name }}</router-link>
           <div class="cart-product__subtitle">{{ cartItem.products.description }}</div>
           <div class="cart-product__weights">
             <button class="cart-product__weight">
@@ -487,6 +489,21 @@ export default {
     //   // display: none;
     //   order: 3;
     // }
+  }
+}
+
+@media (max-width: 556px) {
+  .cart__product {}
+
+  .cart-product {
+    flex-direction: column;
+    max-width: 300px;
+
+    &__img {
+      margin: 0 auto;
+    }
+
+    &__discount {}
   }
 }
 </style>

@@ -1,10 +1,10 @@
 <template>
-  <Header />
+  <Header :id="userStore.user.id" />
   <main class="page product__page">
     <div class="product-card">
       <div class="product-card__container _container">
-        <template v-if="productStore.products">
-          <ProductCardTop :product="productStore.product" />
+        <template v-if="productStore.product">
+          <ProductCardTop :product="productStore.product" :userId="userStore.user.id" />
           <ProductCardBottom :product="productStore.product" />
           <ProductReviews :product="productStore.product" :id="userStore.user.id" :isAdmin="userStore.isAdmin" />
         </template>
@@ -13,7 +13,6 @@
         </template>
       </div>
     </div>
-
   </main>
   <Footer />
 </template>

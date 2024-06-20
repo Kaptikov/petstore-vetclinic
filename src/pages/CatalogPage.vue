@@ -5,6 +5,7 @@
     <Appointment />
     <Recommendations />
   </main>
+  <BottomMenu :id="userStore.user.id" />
   <Footer />
 </template>
 
@@ -18,6 +19,8 @@ import Footer from '@/components/Footer.vue'
 import Catalog from '@/components/CatalogPage/Catalog.vue'
 import Appointment from '@/components/Appointment.vue'
 import Recommendations from '@/components/CatalogPage/Recommendations.vue'
+import BottomMenu from '@/components/BottomMenu.vue'
+import { onMounted } from 'vue'
 
 
 export default {
@@ -27,6 +30,7 @@ export default {
     Catalog,
     Appointment,
     Recommendations,
+    BottomMenu,
   },
 
 
@@ -39,13 +43,14 @@ export default {
 
   setup(props) {
     // const productStore = useProductStore()
-    // const userStore = useUserStore()
-    // onMounted(() => {
-    //   // productStore.getProduct(props.id)
-    //   // userStore.getUser()
-    // })
+    const userStore = useUserStore()
+    onMounted(() => {
+      // productStore.getProduct(props.id)
+      userStore.getUser()
+    })
     return {
       // productStore,
+      userStore,
     }
   },
 }

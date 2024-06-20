@@ -1,6 +1,7 @@
 <template>
   <div class="cart__aside">
     <div class="cart__aside-quantity">Товаров: {{ cartItemsLength }}</div>
+    <div class="cart__aside-delivery">Способ доставки: Самовывоз</div>
     <div class="cart__aside-total">
       <div class="cart__aside-title">Итого</div>
       <div class="cart__aside-price">{{ finalPrice }} руб.</div>
@@ -58,7 +59,15 @@ export default {
 
   // .cart__aside-quantity
   &__aside-quantity {
-    font-weight: 600;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 100%;
+    margin-bottom: 20px;
+  }
+
+  // .cart__aside-delivery
+  &__aside-delivery {
+    font-weight: 400;
     font-size: 18px;
     line-height: 100%;
     margin-bottom: 20px;

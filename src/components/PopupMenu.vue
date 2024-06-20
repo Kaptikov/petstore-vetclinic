@@ -13,11 +13,17 @@
             <input class="header-popup__input" type="text" id="name" v-model="requestStore.requests.name" required />
 
             <label class="header-popup__label" for="phone">Телефон*</label>
-            <input class="header-popup__input" type="tel" id="phone" placeholder="+7 (___) ___-__-__"
-              v-model="requestStore.requests.phone" required />
+            <!-- <input class="header-popup__input" type="tel" id="phone" placeholder="+7 (___) ___-__-__"
+              v-model="requestStore.requests.phone" required /> -->
+            <input class="header-popup__input" type="tel" id="phone" :placeholder="maskPhone"
+              v-model="requestStore.requests.phone" @input="formatPhone" required />
+
+            <label class="header-popup__label" for="name">Описание</label>
+            <textarea class="header-popup__input" type="text" id="name" v-model="requestStore.requests.description"
+              required />
           </div>
           <button class="header-popup__btn header-popup__btn--save" type="submit"
-            @click.prevent="btnAddRequest(requestStore.requests.name, requestStore.requests.phone)">
+            @click.prevent="btnAddRequest(requestStore.requests.name, requestStore.requests.phone, requestStore.requests.description)">
             Оставить заявку
           </button>
         </form>
@@ -77,6 +83,12 @@ export default {
     const userStore = useUserStore();
     const requestStore = useRequestStore();
     const isOpen = ref(false);
+    const maskPhone = "+7 (___) ___ - __ - __";
+    const formatPhone = (event) => {
+      let input = event.target.value.replace(/\D/g, '').slice(0, 11);
+      let maskedPhone = '+7 (' + input.slice(1, 4) + ') ' + input.slice(4, 7) + '-' + input.slice(7, 9) + '-' + input.slice(9, 11);
+      requestStore.requests.phone = maskedPhone;
+    }
     // const editedUser = ref({ ...props.user });
     // console.log(editedUser);
 
@@ -89,6 +101,7 @@ export default {
       // userStore.getUser();
       // editedUser.value = { ...props.user };
       isOpen.value = true;
+      document.body.classList.add('popup-menu--open');
       // console.log(editedUser);
     };
 
@@ -96,10 +109,12 @@ export default {
       isOpen.value = false;
       requestStore.requests.name = '';
       requestStore.requests.phone = '';
+      requestStore.requests.description = '';
+      document.body.classList.remove('popup-menu--open');
     };
 
-    function btnAddRequest(name, phone) {
-      requestStore.addRequest(name, phone)
+    function btnAddRequest(name, phone, description) {
+      requestStore.addRequest(name, phone, description)
       closePopup()
     }
 
@@ -118,6 +133,8 @@ export default {
       btnAddRequest,
       openPopup,
       closePopup,
+      maskPhone,
+      formatPhone
       // saveEdit,
     };
   },
@@ -164,6 +181,14 @@ export default {
   overflow: hidden;
 }
 
+.popup-menu--open {
+  overflow: hidden;
+}
+
+body .popup-menu--open {
+  overflow: hidden;
+}
+
 // .btn-header-popup__
 .btn-header-popup {
   z-index: 3;
@@ -176,7 +201,7 @@ export default {
   width: 100%;
   height: 100vh;
   display: flex;
-  justify-content: center;
+  // justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
   overflow-y: auto;
@@ -187,6 +212,7 @@ export default {
     position: relative;
     display: flex;
     flex-direction: column;
+    margin: auto;
     max-width: 473px;
     color: $black-text;
     background-color: $white;

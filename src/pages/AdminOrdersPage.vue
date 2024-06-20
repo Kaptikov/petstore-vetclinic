@@ -2,11 +2,8 @@
   <Header />
   <main class="page admin-page">
     <div class="admin-page__container _container" v-if="userStore.user && userStore.user.id">
-      <!-- <Requests />
-      <Orders /> -->
-      <h5 class="admin-page__title">Admin Page</h5>
-      <router-link to="/admin/requests/" class="admin-page__link">Requests</router-link>
-      <router-link to="/admin/orders/" class="admin-page__link">Orders</router-link>
+      <!-- <Requests /> -->
+      <Orders />
     </div>
   </main>
   <Footer />
@@ -78,7 +75,14 @@ export default {
     margin-bottom: 100px;
   }
 
-
+  // .admin-page__wrapper
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    max-width: 888px;
+    width: 100%;
+    gap: 50px;
+  }
 
   // .admin-page__title
   &__title {
@@ -89,26 +93,22 @@ export default {
     color: #000;
   }
 
-  // .admin-page__link
-  &__link {
-    font-weight: 400;
-    font-size: 24px;
-    text-align: center;
-    padding: 15px;
-    width: 100%;
-    border-radius: 22px;
-    border: 1px solid $blue-main;
-    transition: 0.2s ease-in-out;
+  // // .admin-page__link
+  // &__link {
+  //   text-align: center;
+  //   color: $white;
+  //   background: $blue-main;
+  //   padding: 15px;
+  //   max-width: 150px;
+  //   width: 100%;
+  //   border-radius: 22px;
+  //   transition: background 0.2s ease-in-out;
 
-    &:not(:last-child) {
-      margin-bottom: 20px;
-    }
-
-    &:hover {
-      color: $white;
-      background: $blue-main;
-      transition: 0.2s ease-in-out;
-    }
-  }
+  //   &:hover {
+  //     color: $white;
+  //     background: $blue-second;
+  //     transition: background 0.2s ease-in-out;
+  //   }
+  // }
 }
 </style>

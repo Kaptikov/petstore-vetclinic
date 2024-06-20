@@ -100,10 +100,9 @@
           <router-link to="/favorite/" class="header__user-actions__favorites">
             <img src="@/assets/img/favorites.svg" alt="" />
 
-            <!-- <span class="header__user-actions__favorites-count"
-              v-if="favoriteStore.favouriteItems.length > 0 && userStore.user && userStore.user.id">
-              {{ favoriteStore.favouriteItems.length }}
-            </span> -->
+            <span class="header__user-actions__favorites-count" v-if="favouriteStore.favouriteItems.length > 0">
+              {{ favouriteStore.favouriteItems.length }}
+            </span>
           </router-link>
           <router-link to="/profile/" class="header__user-actions__user">
             <img v-if="userStore.isAdmin" src="@/assets/img/user-admin.svg" alt="" />
@@ -111,12 +110,12 @@
           </router-link>
           <router-link to="/cart" class="header__user-actions__cart">
             <img src="@/assets/img/cart.svg" alt="" />
-            <!-- <span class="header__user-actions__cart-count" v-if="cartStore.cartItems.length > 0">{{
+            <span class="header__user-actions__cart-count" v-if="cartStore.cartItems.length > 0">{{
               cartStore.cartItems.length
-            }}</span> -->
+            }}</span>
           </router-link>
           <router-link to="/admin/" v-if="userStore.isAdmin" class="header__user-actions__admin">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
               <path fill="currentColor"
                 d="M13 3c3.9 0 7 3.1 7 7c0 2.8-1.6 5.2-4 6.3V21H9v-3H8c-1.1 0-2-.9-2-2v-3H4.5c-.4 0-.7-.5-.4-.8L6 9.7C6.2 5.9 9.2 3 13 3m0-2C8.4 1 4.6 4.4 4.1 8.9L2.5 11c-.6.7-.7 1.7-.3 2.6c.4.7 1 1.2 1.8 1.4v1c0 1.9 1.3 3.4 3 3.9V23h11v-5.5c2.5-1.6 4-4.4 4-7.5c0-5-4-9-9-9m4 9H9V8h8z" />
             </svg>
@@ -177,7 +176,7 @@ export default {
     },
   },
   props: {
-    // id: {},
+    id: {},
     isMainPage: {
       type: Boolean,
       required: false,
@@ -191,7 +190,7 @@ export default {
     const categoryStore = useCategoryStore()
     const userStore = useUserStore()
     const cartStore = useCartStore()
-    const favoriteStore = useFavouriteStore()
+    const favouriteStore = useFavouriteStore()
     const productStore = useProductStore()
 
     function handleSearch(name) {
@@ -208,24 +207,28 @@ export default {
     onMounted(() => {
       categoryStore.getCategories()
       userStore.getUser()
+      // console.log(userStore.user.id);
+      // cartStore.getCartItems(userStore.user.id);
+      // favouriteStore.getFavouriteItems(userStore.user.id);
       // productStore.getProductFromSearch(productStore.searchProducts.name)
       // productStore.getProductFromSearch(name)
       // cartStore.getCartItems(userStore.user.id)
       // favoriteStore.getFavouriteItems(userStore.user.id)
     })
+
     // watch(() => productStore.searchProducts, (name) => {
     //   productStore.getProductFromSearch(name)
     // })
-    // watch(() => props.id, (newId) => {
-    //   // Fetch data when props.id changes
-    //   cartStore.getCartItems(newId);
-    //   favoriteStore.getFavouriteItems(newId);
-    // });
+    watch(() => props.id, (newId) => {
+      // Fetch data when props.id changes
+      cartStore.getCartItems(newId);
+      favouriteStore.getFavouriteItems(newId);
+    });
 
     return {
       userStore,
       cartStore,
-      favoriteStore,
+      favouriteStore,
       productStore,
       show,
       showOutline,
@@ -496,8 +499,14 @@ export default {
     position: absolute;
     top: -7px;
     right: -7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 15px;
     height: 15px;
+    font-weight: 600;
+    font-size: 10px;
+    color: $white;
     background: $blue-main;
     border-radius: 50%;
   }
@@ -513,8 +522,14 @@ export default {
     position: absolute;
     top: -5px;
     right: -7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 15px;
     height: 15px;
+    font-weight: 600;
+    font-size: 10px;
+    color: $white;
     background: $blue-main;
     border-radius: 50%;
 

@@ -14,7 +14,7 @@
             {{ review.users.name }}
             {{ review.users.lastname }}
           </div>
-          <div class="reviews__item-date">{{ review.date }}</div>
+          <div class="reviews__item-date">{{ formattedDate(review.date) }}</div>
         </div>
 
         <div class="reviews__item-text">
@@ -45,6 +45,12 @@ export default {
       type: Object,
     },
     isAdmin: {
+    }
+  },
+  methods: {
+    formattedDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString();
     }
   },
   setup(props) {

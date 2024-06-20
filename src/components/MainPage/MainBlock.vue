@@ -6,7 +6,10 @@
 				ваших любимцев
 			</h2>
 			<p class="main-block__subtitle">Новые скидки каждый день!</p>
-			<button class="main-block__btn">В каталог</button>
+			<button class="main-block__btn">
+				<span>В каталог</span>
+				<img src="@/assets/img/arrow-right.svg" alt="" />
+			</button>
 			<div class="main-block__img-sparkle">
 				<img src="@/assets/img/sparkle.svg" alt="" />
 			</div>
@@ -74,24 +77,32 @@ export default {}
 	// .main-block__btn
 	&__btn {
 		position: relative;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
 		margin-top: 47px;
-		padding: 10px 54px 10px 20px;
+		padding: 10px 25px 10px 20px;
 		color: $blue-main;
 		background: $white;
 		border-radius: 66px;
 		transition: outline-color 0.2s ease-in-out;
 		outline: 2px solid transparent;
 
-		&::after {
-			content: '';
-			position: absolute;
-			top: 9px;
-			right: 20px;
-			width: 24px;
-			height: 24px;
-			background: url('../assets/img/arrow-right.svg') no-repeat 100%;
-			transition: right 0.2s ease-in-out;
+		span {
+			margin-right: 10px;
 		}
+
+		// &::after {
+		// 	content: '';
+		// 	position: absolute;
+		// 	top: 9px;
+		// 	right: 20px;
+		// 	width: 24px;
+		// 	height: 24px;
+		// 	background: url('../assets/img/arrow-right.svg') no-repeat 100%;
+		// 	transition: right 0.2s ease-in-out;
+		// }
 
 		&:hover {
 			outline: 2px solid;

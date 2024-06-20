@@ -1,7 +1,12 @@
 <template>
 	<div class="аppointment-history__select select">
 		<div class="select__label" @click="toggleDropdown">
-			{{ selectedOption }}
+			<template v-if="selectedOption">
+				{{ formattedDate(selectedOption) }}
+			</template>
+			<template v-else>
+				Выберите дату
+			</template>
 			<svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
 					stroke-linejoin="round" />
@@ -12,7 +17,7 @@
 				<div class="select__option" v-for="scheduleDate of scheduleDates" :key="scheduleDate.id"
 					@click="toggleOptionSelect(scheduleDate)"
 					:class="{ 'select__option--active': scheduleDate === selectedOption }">
-					{{ scheduleDate }}
+					{{ formattedDate(scheduleDate) }}
 				</div>
 			</div>
 		</transition>
@@ -31,8 +36,14 @@ export default {
 				return []
 			}
 		},
-
 	},
+	methods: {
+		formattedDate(dateString) {
+			const date = new Date(dateString);
+			return date.toLocaleDateString();
+		}
+	},
+
 
 	setup(props) {
 		// const route = useRoute()

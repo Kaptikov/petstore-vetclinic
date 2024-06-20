@@ -1,6 +1,6 @@
 <template>
   <Header />
-  <main class="page catalog__page">
+  <main class="page cart__page">
     <template v-if="userStore.user && userStore.user.id">
       <Cart :id="userStore.user.id" />
     </template>
@@ -51,4 +51,19 @@ export default {
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.cart {
+  &__page {
+    padding-top: clamp(7.5rem, 4.688rem + 14.06vw, 11.438rem);
+    padding-bottom: clamp(4.375rem, 1.138rem + 14.39vw, 12.125rem);
+    background: $white-bg;
+  }
+
+  &__title {
+    font-weight: 700;
+    font-size: clamp(2.25rem, 1.886rem + 1.82vw, 3.25rem);
+    line-height: 110%;
+    // text-align: center;
+  }
+}
+</style>

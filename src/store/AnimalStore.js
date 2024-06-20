@@ -26,10 +26,11 @@ export const useAnimalStore = defineStore('animalStore', {
     //   }
     // },
 
-    async updateAnimal(id, name, type, gender, breed, age) {
+    async updateAnimal(id, name, description, type, gender, breed, age) {
       try {
         const response = await axios.put(`/api/Animal/${id}`, {
           name,
+          description,
           type,
           gender,
           breed,
@@ -54,7 +55,7 @@ export const useAnimalStore = defineStore('animalStore', {
           userId,
         })
         this.animals = response.data
-        console.log('CartItem added', this.animalss)
+        console.log('animals added', this.animals)
       } catch (error) {
         console.log(error)
       }

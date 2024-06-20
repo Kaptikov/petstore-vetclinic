@@ -67,9 +67,9 @@ export default {
 
 	// .cart__title
 	&__title {
-		font-weight: 700;
-		font-size: 52px;
-		line-height: 110%;
+		// font-weight: 700;
+		// font-size: clamp(2.625rem, 2.179rem + 2.23vw, 3.25rem);
+		// line-height: 110%;
 		margin-bottom: 59px;
 	}
 
@@ -104,6 +104,14 @@ export default {
 		// .cart__items
 		&__items {
 			max-width: 100%;
+		}
+	}
+}
+
+@media (max-width: 556px) {
+	.cart {
+		&__items {
+			align-items: center;
 		}
 	}
 }

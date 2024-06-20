@@ -4,8 +4,8 @@
 			<Filters :products="productStore.products" />
 			<div class="catalog__wrapper">
 				<Banner />
-				<Subcategories :subcategory="categoryStore.subcategories" />
-				<div class="catalog__title">Корм</div>
+				<Subcategories :subcategory="categoryStore.subcategoriesCatalog" />
+				<div class="catalog__title">Каталог</div>
 				<div class="catalog__controls catalog-controls">
 					<div class="catalog-controls__quantity">
 						{{ productStore.products.length }}
@@ -137,7 +137,12 @@ export default {
 		const categoryStore = useCategoryStore()
 		const userStore = useUserStore()
 		const productsPerPage = ref(2);
-
+		const titleCatalog = computed(() => {
+			const categoryId = route.params.id
+			const category = categoryStore.categories.find(category => category.id === categoryId)
+			return category ? category.name : ''
+		})
+		console.log(titleCatalog.value);
 		function setProductsPerPage(value) {
 			const categoryId = route.params.id
 			productsPerPage.value = value;
@@ -148,13 +153,13 @@ export default {
 		onMounted(() => {
 			userStore.getUser()
 			const categoryId = route.params.id
-			categoryStore.getSubcategories(categoryId)
+			categoryStore.getSubcategoriesForCatalog(categoryId)
 			productStore.getProductByCategory(categoryId)
 		})
 
 		watch(() => route.params.id, (newId) => {
 			productStore.getProductByCategory(newId);
-			categoryStore.getSubcategories(newId)
+			categoryStore.getSubcategoriesForCatalog(newId)
 		});
 
 		// watch(() => route.params.id, (newId) => {
@@ -182,10 +187,10 @@ export default {
 		justify-content: space-between;
 	}
 
-	// .catalog__filters
-	&__filters {
-		flex: 0 1 21.39%;
-	}
+	// // .catalog__filters
+	// &__filters {
+	// 	// flex: 0 1 21.39%;
+	// }
 
 	// .catalog__wrapper
 	&__wrapper {
@@ -218,7 +223,8 @@ export default {
 	// .catalog__products
 	&__products {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(250px, 282px));
+		grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+		// justify-content: center;
 		gap: 20px;
 		margin-top: 19px;
 	}
@@ -327,5 +333,34 @@ export default {
 			color: $blue-main;
 		}
 	}
+}
+
+@media (max-width: 1220px) {
+	.catalog {
+		&__wrapper {
+			flex: 0 1 100%;
+		}
+
+		&__products {
+			justify-content: center;
+		}
+	}
+}
+
+@media (max-width: 768px) {
+	.catalog {
+		&__controls {}
+	}
+
+	.catalog-controls {
+		&__filter-per-page {
+			display: none;
+		}
+
+		&__filter-view-mode {
+			display: none;
+		}
+	}
+
 }
 </style>

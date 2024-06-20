@@ -19,6 +19,18 @@ export const useAppointmentStore = defineStore('appointmentStore', {
         })
     },
 
+    // async getAllAppointments(id) {
+    //   axios
+    //     .get(`/api/Appointment/user/${id}`)
+    //     .then(response => {
+    //       this.appointments = response.data
+    //       console.log('appointments', this.appointments)
+    //     })
+    //     .catch(error => {
+    //       console.log(error)
+    //     })
+    // },
+
     // async getSchedule(id) {
     //   axios
     //     .get(`/api/Schedule/doctor/${id}`)
@@ -42,8 +54,8 @@ export const useAppointmentStore = defineStore('appointmentStore', {
           date,
           time,
         })
-        this.cartItems = response.data
-        console.log('CartItem added', this.cartItems)
+        this.appointments = response.data
+        console.log('appointments added', this.appointments)
       } catch (error) {
         console.log(error)
       }

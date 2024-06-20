@@ -1,9 +1,9 @@
 <template>
-  <button class="order-history__item-title btn-popup-menu" @click="openPopup">
+  <button class="orders-card__title btn-popup-menu" @click="openPopup">
     Заказ № {{ order.orderNumber }}
   </button>
   <transition name="popup-fade">
-    <div class="popup-menu" v-if="isOpen">
+    <div class="popup-menu" :class="{ 'popup-menu--open': isOpen }" v-if="isOpen">
       <div class="popup-menu__content">
         <h4 class="popup-menu__title"> Заказ № {{ order.orderNumber }}</h4>
         <div class="popup-menu__items">
@@ -11,11 +11,8 @@
             <div class="popup-menu__item-img">
               <img :src="orderItems.product.imgUrl" :alt="orderItems.product.name" />
             </div>
-            <div class="popup-menu__item-content">
+            <div class="popup-menu__item-text">
               <div class="popup-menu__item-title">{{ orderItems.product.name }}</div>
-              <!-- <router-link :to="`/product/${orderItems.product.id}`" class="popup-menu__item-title">{{
-                orderItems.product.name }}</router-link> -->
-
               <div class="popup-menu__item-price">
                 {{ orderItems.product.price }} ₽
               </div>
@@ -24,7 +21,9 @@
               </div>
             </div>
           </div>
+
         </div>
+        <!-- <button class="popup-menu__btn popup-menu__btn--save" type="submit">Оформить заказ</button> -->
         <button class="popup-menu__btn popup-menu__btn--cancel" type="button" @click="closePopup">Закрыть</button>
       </div>
     </div>
@@ -74,7 +73,15 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.popup-menu--open {
+  overflow: hidden;
+}
+
+body .popup-menu--open {
+  overflow: hidden;
+}
+
 .popup-fade-enter-active {
   transition: all 0.3s ease-out;
 }
@@ -114,14 +121,6 @@ export default {
   overflow: hidden;
 }
 
-.popup-menu--open {
-  overflow: hidden;
-}
-
-body .popup-menu--open {
-  overflow: hidden;
-}
-
 // .btn-popup-menu
 .btn-popup-menu {
   z-index: 3;
@@ -131,27 +130,28 @@ body .popup-menu--open {
   position: fixed;
   top: 0;
   left: 0;
-  display: flex;
-  align-items: center;
   width: 100%;
   height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 100;
   overflow-y: auto;
+  z-index: 100;
 
   // .popup-menu__content
   &__content {
-    margin: auto;
+    // position: absolute;
+    // top: 50%;
+    // left: 50%;
+    // transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
-    align-items: center;
     max-width: 473px;
-    width: 100%;
-    // max-height: 500px;
     background-color: $white;
     padding: 30px;
     border-radius: 20px;
-    // overflow-y: auto;
+    overflow-y: auto;
     z-index: 100;
   }
 
@@ -162,9 +162,10 @@ body .popup-menu--open {
     font-size: 32px;
     line-height: 110%;
     text-align: center;
-    margin-bottom: 20px;
     // color: $black;
   }
+
+
 
   // .popup-menu__form
   &__form {
@@ -176,7 +177,6 @@ body .popup-menu--open {
   &__item {
     display: flex;
     flex-direction: row;
-    align-items: center;
     font-weight: 400;
     font-size: 16px;
     line-height: 130%;
@@ -186,25 +186,68 @@ body .popup-menu--open {
     }
   }
 
-  // .popup-menu__item-content
-  &__item-content {
+  // .popup-menu__item-img
+  &__item-img {
+    max-width: 120px;
+    width: 100%;
+    margin-right: 20px;
+    // height: 120px;
+
+    // margin-bottom: 20px;
+    & img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  // .popup-menu__item-text
+  &__item-text {
     display: flex;
     flex-direction: column;
+    justify-content: center;
   }
 
   // .popup-menu__item-title
   &__item-title {
-    width: 50%;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 120%;
+    margin-bottom: 5px;
   }
 
   // .popup-menu__item-price
   &__item-price {
-    width: 50%;
+    font-size: 18px;
+    line-height: 120%;
+    margin-bottom: 5px;
+    color: $blue-main;
   }
 
   // .popup-menu__item-quantity
   &__item-quantity {
-    width: 50%;
+    font-size: 18px;
+    line-height: 120%;
+    margin-bottom: 5px;
+    white-space: nowrap;
+  }
+
+  // .popup-menu__label
+  &__label {
+    margin-block: 7px;
+  }
+
+  // .popup-menu__input
+  &__input {
+    // max-width: 413px;
+    width: 100%;
+    padding: 10px 17px;
+    border: 1px solid $gray-border;
+    border-radius: 80px;
+
+    &:focus {
+      outline: 1px solid $blue-main;
+    }
   }
 
   // .popup-menu__btn
@@ -232,7 +275,6 @@ body .popup-menu--open {
     color: $black-text;
     // background: $red;
     outline: 1px solid $blue-main;
-    margin-top: 20px;
 
     &:hover {
       outline: 1px solid $red;

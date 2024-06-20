@@ -25,7 +25,7 @@
       </div>
     </div>
     <div class="аppointment-history__item-datetime">
-      <div class="аppointment-history__item-date"> {{ appointment.date }} </div>
+      <div class="аppointment-history__item-date"> {{ formattedDate(appointment.date) }} </div>
       <div class="аppointment-history__item-time"> {{ appointment.time }} </div>
     </div>
   </div>
@@ -40,7 +40,13 @@ export default {
   props: {
     appointment: {
     }
-  }
+  },
+  methods: {
+    formattedDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString();
+    }
+  },
 }
 </script>
 

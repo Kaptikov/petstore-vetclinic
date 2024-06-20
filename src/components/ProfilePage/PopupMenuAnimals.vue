@@ -6,36 +6,42 @@
         fill="currentColor" />
     </svg>
   </button>
-  <div class="animals__popup" v-if="isOpen">
-    <div class="animals__popup-content">
-      <h2 class="animals__popup-title">Редактирование данных питомца</h2>
-      <form class="animals__popup-form" @submit.prevent="saveEdit">
-        <div class="animals__popup-item">
-          <label class="animals__popup-label" for="name">Имя питомца</label>
-          <input class="animals__popup-input" type="text" id="name" v-model="editedAnimal.name" />
-        </div>
-        <div class="animals__popup-item">
-          <label class="animals__popup-label" for="type">Тип</label>
-          <input class="animals__popup-input" type="text" id="type" v-model="editedAnimal.type" />
-        </div>
-        <div class="animals__popup-item">
-          <label class="animals__popup-label" for="gender">Пол</label>
-          <input class="animals__popup-input" type="text" id="gender" v-model="editedAnimal.gender" />
-        </div>
-        <div class="animals__popup-item">
-          <label class="animals__popup-label" for="breed">Порода</label>
-          <input class="animals__popup-input" type="text" id="breed" v-model="editedAnimal.breed" />
-        </div>
-        <div class="animals__popup-item">
-          <label class="animals__popup-label" for="age">Возраст</label>
-          <input class="animals__popup-input" type="text" id="age" v-model="editedAnimal.age" />
-        </div>
-        <button class="animals__popup-btn animals__popup-btn--save" type="submit">Сохранить</button>
-        <button class=" animals__popup-btn animals__popup-btn--cancel" type=" button"
-          @click="closePopup">Отмена</button>
-      </form>
+  <transition name="popup-fade">
+    <div class="animals__popup" v-if="isOpen">
+      <div class="animals__popup-content">
+        <h2 class="animals__popup-title">Редактирование данных питомца</h2>
+        <form class="animals__popup-form" @submit.prevent="saveEdit">
+          <div class="animals__popup-item">
+            <label class="animals__popup-label" for="name">Имя питомца</label>
+            <input class="animals__popup-input" type="text" id="name" v-model="editedAnimal.name" />
+          </div>
+          <div class="animals__popup-item">
+            <label class="animals__popup-label" for="description">Описание</label>
+            <input class="animals__popup-input" type="text" id="description" v-model="editedAnimal.description" />
+          </div>
+          <div class="animals__popup-item">
+            <label class="animals__popup-label" for="type">Тип</label>
+            <input class="animals__popup-input" type="text" id="type" v-model="editedAnimal.type" />
+          </div>
+          <div class="animals__popup-item">
+            <label class="animals__popup-label" for="gender">Пол</label>
+            <input class="animals__popup-input" type="text" id="gender" v-model="editedAnimal.gender" />
+          </div>
+          <div class="animals__popup-item">
+            <label class="animals__popup-label" for="breed">Порода</label>
+            <input class="animals__popup-input" type="text" id="breed" v-model="editedAnimal.breed" />
+          </div>
+          <div class="animals__popup-item">
+            <label class="animals__popup-label" for="age">Возраст</label>
+            <input class="animals__popup-input" type="text" id="age" v-model="editedAnimal.age" />
+          </div>
+          <button class="animals__popup-btn animals__popup-btn--save" type="submit">Сохранить</button>
+          <button class=" animals__popup-btn animals__popup-btn--cancel" type=" button"
+            @click="closePopup">Отмена</button>
+        </form>
+      </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -56,16 +62,18 @@ export default {
     const openPopup = () => {
       editedAnimal.value = { ...props.animals };
       isOpen.value = true;
+      document.body.classList.add('popup-menu--open');
       console.log(editedAnimal);
     };
 
     const closePopup = () => {
       isOpen.value = false;
+      document.body.classList.remove('popup-menu--open');
     };
 
     const saveEdit = async () => {
       // await userStore.updateUser(props.user.id, props.user.name, props.user.lastname, props.user.email, props.user.phone);
-      await animalStore.updateAnimal(editedAnimal.value.id, editedAnimal.value.name, editedAnimal.value.type, editedAnimal.value.gender, editedAnimal.value.breed, editedAnimal.value.age);
+      await animalStore.updateAnimal(editedAnimal.value.id, editedAnimal.value.name, editedAnimal.value.description, editedAnimal.value.type, editedAnimal.value.gender, editedAnimal.value.breed, editedAnimal.value.age);
       closePopup();
       animalStore.getAnimals(props.animals.userId);
     };
@@ -82,7 +90,50 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.popup-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.popup-fade-enter-active {
+  // transition: opacity 0.3s ease-out;
+  transition-delay: 0.1s;
+}
+
+.popup-fade-leave-active {
+  transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.popup-fade-enter-from,
+.popup-fade-leave-to {
+  // transform: scale(0.8);
+  opacity: 0;
+}
+
+.popup-fade-enter-active .animals__popup-content,
+.popup-fade-leave-active .animals__popup-content {
+  transition: all 0.3s ease-in-out;
+}
+
+.popup-fade-enter-active .animals__popup-content {
+  transition-delay: 0.1s;
+}
+
+.popup-fade-enter-from .animals__popup-content,
+.popup-fade-leave-to .animals__popup-content {
+  transform: scale(0);
+  // transform: scale3d(0.5, 0.5, 0.5);
+  opacity: 0;
+}
+
 .stop--scroll {
+  overflow: hidden;
+}
+
+.popup-menu--open {
+  overflow: hidden;
+}
+
+body .popup-menu--open {
   overflow: hidden;
 }
 
@@ -107,6 +158,8 @@ export default {
     position: fixed;
     top: 0;
     left: 0;
+    display: flex;
+    align-items: center;
     width: 100%;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.5);
@@ -116,10 +169,7 @@ export default {
 
   // .panimals__popup-content
   &__popup-content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    margin: auto;
     display: flex;
     flex-direction: column;
     // justify-content: center;

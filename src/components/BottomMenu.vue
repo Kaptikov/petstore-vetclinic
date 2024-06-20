@@ -14,7 +14,7 @@
         </a>
       </div>
       <div class="bottom-menu__item">
-        <a href="#" class="bottom-menu__link bottom-menu__link-profile">
+        <router-link :to="'/profile/'" class="bottom-menu__link bottom-menu__link-profile">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21"
@@ -23,22 +23,25 @@
               d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
-          <div class="bottom-menu__label">Войти</div>
-        </a>
+          <div class="bottom-menu__label" v-if="!id">Войти</div>
+          <div class="bottom-menu__label" v-else>Профиль</div>
+        </router-link>
       </div>
       <div class="bottom-menu__item">
-        <a href="#" class="bottom-menu__link bottom-menu__link-favorites">
+        <router-link :to="'/favorite/'" class="bottom-menu__link bottom-menu__link-favorites">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M20.8401 4.61012C20.3294 4.09912 19.7229 3.69376 19.0555 3.4172C18.388 3.14064 17.6726 2.99829 16.9501 2.99829C16.2276 2.99829 15.5122 3.14064 14.8448 3.4172C14.1773 3.69376 13.5709 4.09912 13.0601 4.61012L12.0001 5.67012L10.9401 4.61012C9.90843 3.57842 8.50915 2.99883 7.05012 2.99883C5.59109 2.99883 4.19181 3.57842 3.16012 4.61012C2.12843 5.64181 1.54883 7.04108 1.54883 8.50012C1.54883 9.95915 2.12843 11.3584 3.16012 12.3901L4.22012 13.4501L12.0001 21.2301L19.7801 13.4501L20.8401 12.3901C21.3511 11.8794 21.7565 11.2729 22.033 10.6055C22.3096 9.93801 22.4519 9.2226 22.4519 8.50012C22.4519 7.77763 22.3096 7.06222 22.033 6.39476C21.7565 5.7273 21.3511 5.12087 20.8401 4.61012V4.61012Z"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
           <div class="bottom-menu__label">Избранное</div>
-          <div class="bottom-menu__counter">0</div>
-        </a>
+          <div class="bottom-menu__count" v-if="favouriteStore.favouriteItems.length > 0">
+            {{ favouriteStore.favouriteItems.length }}
+          </div>
+        </router-link>
       </div>
       <div class="bottom-menu__item">
-        <a href="#" class="bottom-menu__link bottom-menu__link-cart">
+        <router-link :to="'/cart/'" class="bottom-menu__link bottom-menu__link-cart">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M9 22C9.55228 22 10 21.5523 10 21C10 20.4477 9.55228 20 9 20C8.44772 20 8 20.4477 8 21C8 21.5523 8.44772 22 9 22Z"
@@ -51,15 +54,46 @@
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
           <div class="bottom-menu__label">Корзина</div>
-          <div class="bottom-menu__counter">0</div>
-        </a>
+          <div class="bottom-menu__count" v-if="cartStore.cartItems.length > 0">
+            {{ cartStore.cartItems.length }}
+          </div>
+        </router-link>
       </div>
     </div>
   </div>
 </template>
 <script>
-export default {
+import { onMounted, watch } from 'vue';
 
+import { useCartStore } from '@/store/CartStore';
+import { useFavouriteStore } from '@/store/FavouriteStore';
+
+export default {
+  props: {
+    id: {
+
+    }
+  },
+
+  setup(props) {
+    const cartStore = useCartStore();
+    const favouriteStore = useFavouriteStore();
+
+    onMounted(() => {
+      // favouriteStore.getFavouriteItems(props.id);
+      // cartStore.getCartItems(props.id);
+    });
+
+    watch(() => props.id, (newId) => {
+      cartStore.getCartItems(newId);
+      favouriteStore.getFavouriteItems(newId);
+    });
+
+    return {
+      cartStore,
+      favouriteStore,
+    };
+  },
 }
 </script>
 <style lang="scss">
@@ -127,11 +161,11 @@ export default {
     }
   }
 
-  // .bottom-menu__counter
-  &__counter {
+  // .bottom-menu__count
+  &__count {
     position: absolute;
     top: -5px;
-    left: 53%;
+    left: 56%;
     transform: translateX(-50%);
     display: flex;
     justify-content: center;
@@ -144,7 +178,6 @@ export default {
     height: 15px;
     background: $blue-main;
     border-radius: 50%;
-
   }
 
   // .bottom-menu__link-search

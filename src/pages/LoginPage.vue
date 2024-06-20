@@ -11,4 +11,9 @@ export default {
   }
 }
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+.login-page {
+  flex: 0;
+  margin: auto 0;
+}
+</style>

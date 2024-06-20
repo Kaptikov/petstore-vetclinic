@@ -43,8 +43,10 @@
             </div>
             <div class="аppointment-history-popup__item">
               <label class="аppointment-history-popup__label" for="phone">Телефон*</label>
-              <input class="аppointment-history-popup__input" type="tel" id="phone" placeholder="+7 (___) ___-__-__"
-                required v-model="appointmentStore.appointments.phone" />
+              <!-- <input class="аppointment-history-popup__input" type="tel" id="phone" placeholder="+7 (___) ___-__-__"
+                required v-model="appointmentStore.appointments.phone" /> -->
+              <input class="аppointment-history-popup__input" type="tel" id="phone" :placeholder="maskPhone" required
+                v-model="appointmentStore.appointments.phone" @input="formatPhone" />
             </div>
             <!-- <div class="аppointment-history-popup__item">
               <label class="аppointment-history-popup__label" for="checkbox">Первый раз в клинике</label>
@@ -125,18 +127,27 @@ export default {
     const appointmentStore = useAppointmentStore();
     const isOpen = ref(false);
     const selectedTime = ref(null)
+    const maskPhone = "+7 (___) ___ - __ - __";
     // const editedUser = ref({ ...props.user });
     // console.log(editedUser);
+
+    const formatPhone = (event) => {
+      let input = event.target.value.replace(/\D/g, '').slice(0, 11);
+      let maskedPhone = '+7 (' + input.slice(1, 4) + ') ' + input.slice(4, 7) + '-' + input.slice(7, 9) + '-' + input.slice(9, 11);
+      appointmentStore.appointments.phone = maskedPhone;
+    }
 
     const openPopup = () => {
       // userStore.getUser();
       // editedUser.value = { ...props.user };
       isOpen.value = true;
+      document.body.classList.add('popup-menu--open');
       // console.log(editedUser);
     };
 
     const closePopup = () => {
       isOpen.value = false;
+      document.body.classList.remove('popup-menu--open');
       // applicationStore.applications.name = '';
       // applicationStore.applications.phone = '';
     };
@@ -192,6 +203,8 @@ export default {
       btnAddAppointment,
       openPopup,
       closePopup,
+      formatPhone,
+      maskPhone,
       // saveEdit,
     };
   },
@@ -238,6 +251,14 @@ export default {
   overflow: hidden;
 }
 
+.popup-menu--open {
+  overflow: hidden;
+}
+
+body .popup-menu--open {
+  overflow: hidden;
+}
+
 // .btn-аppointment-history-popup
 .btn-аppointment-history__popup {
   display: flex;
@@ -262,8 +283,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100vh;
-  // display: flex;
-  justify-content: center;
+  display: flex;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
   overflow-y: auto;
@@ -288,6 +308,7 @@ export default {
   // .аppointment-history-popup__content
   &__content {
     position: relative;
+    margin: auto;
     display: flex;
     flex-direction: column;
     max-width: 473px;

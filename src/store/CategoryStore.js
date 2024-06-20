@@ -5,8 +5,10 @@ export const useCategoryStore = defineStore('categoryStore', {
   state: () => ({
     categories: [],
     subcategories: [],
+    subcategoriesCatalog: [],
     subsubcategories: [],
     category: [],
+    // categoryName: '',
   }),
 
   actions: {
@@ -30,11 +32,22 @@ export const useCategoryStore = defineStore('categoryStore', {
         console.log(error)
       }
     },
+
     async getSubcategories(id) {
       try {
         const response = await axios.get(`/api/Category/subcategories/${id}`)
         this.subcategories = response.data
         console.log('subcategories', this.subcategories)
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
+    async getSubcategoriesForCatalog(id) {
+      try {
+        const response = await axios.get(`/api/Category/subcategories/${id}`)
+        this.subcategoriesCatalog = response.data
+        console.log('subcategories', this.subcategoriesCatalog)
       } catch (error) {
         console.log(error)
       }

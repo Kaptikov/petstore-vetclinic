@@ -1,8 +1,7 @@
 <template>
-	<aside сlass="catalog__filters catalog-filters filters">
-		<div class="filters__container">
-
-			<div class="filters__wrapper">
+	<div>
+		<aside class="catalog__filters filters">
+			<div class="filters__items">
 				<div class="filters__item">
 					<button @click="show = !show" class="filters__text filters__text--dropdown">Бренд</button>
 					<transition name="fade-up">
@@ -33,9 +32,9 @@
 					<div class="filters__text">Ценовой диапазон</div>
 					<form class="filters__form">
 						<div class="filters__range filters-range">
-							<input class="filters-range__input" type="range" value="0" min="0" max="99999" v-model="min"
+							<input class="filters-range__input" type="range" value="0" min="0" max="10000" v-model="min"
 								@input="filterFromPrice(min, max)">
-							<input class="filters-range__input" type="range" value="99999" min="0" max="99999" v-model="max"
+							<input class="filters-range__input" type="range" value="10000" min="0" max="10000" v-model="max"
 								@input="filterFromPrice(min, max)">
 						</div>
 						<div class="filters-range__text">
@@ -141,8 +140,8 @@
 				</button>
 				<button class="filters-controls__btn filters-controls__btn--reset">Сбросить фильтр</button>
 			</div>
-		</div>
-	</aside>
+		</aside>
+	</div>
 </template>
 
 <script>
@@ -160,7 +159,7 @@ export default {
 			],
 			rangeValues: {
 				min: 0,
-				max: 99999
+				max: 10000
 			}
 		};
 	},
@@ -175,7 +174,7 @@ export default {
 	setup() {
 		const show = ref(false)
 		const min = ref(1);
-		const max = ref(99999);
+		const max = ref(10000);
 		const route = useRoute()
 		// const categoryId = route.params.id
 		const productStore = useProductStore()
@@ -212,13 +211,15 @@ export default {
 	opacity: 0;
 }
 
+
 .filters {
+	flex: 0 1 25%;
 
 	// .filters__container
 	&__container {}
 
-	// .filters__wrapper
-	&__wrapper {
+	// .filters__items
+	&__items {
 		display: flex;
 		flex-direction: column;
 	}
@@ -478,6 +479,12 @@ export default {
 			color: $black-text;
 			border-color: $blue-second;
 		}
+	}
+}
+
+@media (max-width: 1220px) {
+	.filters {
+		display: none;
 	}
 }
 </style>

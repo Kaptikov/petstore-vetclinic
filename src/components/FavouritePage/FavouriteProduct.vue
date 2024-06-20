@@ -9,15 +9,16 @@
     <div class="favourite-item__content">
       <div class="favourite-item__top">
         <div class="favourite-item__info">
-          <div class="favourite-item__title">{{ favouriteItem.products.name }}</div>
+          <router-link :to="`/product/${favouriteItem.products.id}`" class="favourite-item__title">{{
+            favouriteItem.products.name }}</router-link>
           <div class="favourite-item__subtitle">{{ favouriteItem.products.description }}</div>
           <div class="favourite-item__weights">
-            <button class="favourite-item__weight">
+            <!-- <button class="favourite-item__weight">
               400г
-            </button>
+            </button> -->
           </div>
         </div>
-        <div class="favourite-item__quantity">
+        <div class="favourite-item__quantity" v-if="!isCart">
           <button class="favourite-item__quantity-button favourite-item__quantity-button--minus"
             @click="decrementQuantity"></button>
           <input class="favourite-item__quantity-input" type="text" v-model="quantity" />
@@ -101,21 +102,15 @@ export default {
 
     function incrementQuantity(id) {
       quantity.value++
-      if (isCart) {
-        console.log(123);
-        const cartItem = cartStore.cartItems.find(cartItem => cartItem.productId === id);
-        cartStore.updateCartItem(cartItem.id, quantity)
-      }
+      // if (isCart) {
+      //   console.log(123);
+      //   const cartItem = cartStore.cartItems.find(cartItem => cartItem.productId === id);
+      //   cartStore.updateCartItem(cartItem.id, quantity)
+      // }
     }
 
-    function decrementQuantity(id, quantity) {
-      if (quantity > 1) {
-        quantity--
-        if (condition) {
-
-        }
-        //cartStore.updateCartItem(id, quantity)
-      }
+    function decrementQuantity(id) {
+      quantity.value--
     }
 
     const isCart = computed(() => {
@@ -150,6 +145,7 @@ export default {
     flex-direction: row;
     align-items: center;
     width: 100%;
+    height: 100%;
     background: $white;
     border-radius: 22px;
     padding: 10px;
@@ -205,6 +201,7 @@ export default {
   &__content {
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
     width: 100%;
     padding: 10px;
   }
@@ -372,6 +369,7 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
+    margin-top: auto;
     gap: 11px;
     padding: 10px 30px;
     background: $blue-main;
@@ -415,7 +413,7 @@ export default {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin-top: 30px;
+    margin-top: auto;
   }
 
   // .favourite-item__btn--delete
@@ -473,6 +471,8 @@ export default {
 
     &__top {
       flex-direction: column;
+      align-items: flex-start;
+      // gap: 20px;
     }
 
     &__info {
